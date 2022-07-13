@@ -8,10 +8,11 @@ module.exports = router
 // POST /api/v1/users
 router.post('/', async (req, res) => {
   const newUser = req.body
-  const { auth0Id, email } = newUser
+  const { auth0Id, email, username } = newUser
   const user = {
     auth0_id: auth0Id,
     email,
+    username,
   }
   try {
     await db.createUser(user)

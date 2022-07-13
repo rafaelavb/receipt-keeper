@@ -24,15 +24,6 @@ function App() {
 
   const { isAuthenticated, user } = useAuth0()
 
-  // function handleRegister(e) {
-  //   e.preventDefault()
-  //   loginWithRedirect({
-  //     redirectUri: `${window.location.origin}/register`,
-  //   }).then((result) => {
-  //     console.log(result)
-  //   })
-  // }
-
   function handleLogin(e) {
     e.preventDefault()
     return loginWithRedirect()

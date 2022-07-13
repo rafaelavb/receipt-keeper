@@ -2,6 +2,12 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IfAuthenticated, IfNotAuthenticated } from './Authenticated'
 import { useAuth0 } from '@auth0/auth0-react'
+import { Routes, Route, Link } from 'react-router-dom'
+
+import Home from './Home'
+import Register from './Register'
+import Navbar from './Navbar'
+import Main from './Main'
 
 function App() {
   // const dispatch = useDispatch()
@@ -29,14 +35,12 @@ function App() {
 
   function handleLogin(e) {
     e.preventDefault()
-    const result = loginWithRedirect()
-    console.log(result)
+    return loginWithRedirect()
   }
 
   function handleLogout(e) {
     e.preventDefault()
-    const result = logout()
-    console.log(result)
+    return logout()
   }
 
   function consoleLog(e) {
@@ -47,15 +51,14 @@ function App() {
 
   return (
     <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/:username" element={<Main />} />
+      </Routes>
+
       <div className="app">
-        {/* <h1>Fullstack Boilerplate - with Fruits!</h1>
-        <ul>
-          {fruits.map((fruit) => (
-            <li key={fruit}>{fruit}</li>
-          ))}
-        </ul> */}
-        {/* receipts_keeper@hotmail.com
-receiptsTest!23 */}
         <h1>Hello World</h1>
         <IfAuthenticated>
           <button onClick={handleLogout}>Log out</button>
@@ -66,6 +69,13 @@ receiptsTest!23 */}
           <button onClick={handleLogin}>Log in</button>
         </IfNotAuthenticated>
       </div>
+
+      <Link to="/register">
+        <button>register page</button>
+      </Link>
+      <Link to="/lauren">
+        <button>user page</button>
+      </Link>
     </>
   )
 }

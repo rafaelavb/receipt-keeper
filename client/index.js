@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import store from './store'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { Auth0Provider } from '@auth0/auth0-react'
 
 import App from './components/App'
+import store from './store'
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
@@ -15,7 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
       audience="https://receipts/api"
     >
       <Provider store={store}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </Provider>
     </Auth0Provider>,
     document.getElementById('app')

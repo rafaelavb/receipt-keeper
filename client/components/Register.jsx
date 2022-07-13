@@ -5,6 +5,8 @@ import {
   FormHelperText,
   Input,
   InputLabel,
+  Stack,
+  Typography,
 } from '@mui/material'
 import React from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -14,7 +16,7 @@ import { useState, useEffect } from 'react'
 import { addUser } from '../apis'
 
 export default function Register() {
-  const user = useSelector((state) => state.loggedInUser)
+  const loggedInUser = useSelector((state) => state.loggedInUser)
   const [username, setUsername] = useState('')
   const navigate = useNavigate()
   const [form, setForm] = useState({
@@ -25,40 +27,52 @@ export default function Register() {
 
   useEffect(() => {
     setForm({
-      auth0Id: '',
-      email: '',
+      auth0Id: loggedInUser?.auth0Id,
+      email: loggedInUser?.email,
       username: username,
     })
-  }, [user, username])
+  }, [loggedInUser, username])
 
   async function handleRegister(e) {
+    console.log(form)
     await addUser(form)
-    navigate('/')
+    navigate(`/receipts/${username}`)
   }
 
   return (
-    <Box>
-      Register Componenet
-      <FormControl disabled variant="standard">
-        <InputLabel htmlFor="auth0Id">Auth0 Id: </InputLabel>
-        <Input id="auth0Id" value={form.auth0Id} />
-        <FormHelperText>Do not need to update this</FormHelperText>
-      </FormControl>
-      <FormControl disabled variant="standard">
-        <InputLabel htmlFor="email">Email: </InputLabel>
-        <Input id="email" value={form.email} />
-        <FormHelperText>Do not need to update this</FormHelperText>
-      </FormControl>
-      <FormControl variant="standard">
-        <InputLabel htmlFor="username">Username</InputLabel>
-        <Input
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <FormHelperText>Enter your username</FormHelperText>
-      </FormControl>
-      <Button onClick={handleRegister}>Register</Button>
+    <Box sx={{ width: '100%', marginTop: '50px' }}>
+      <Typography
+        variant="h5"
+        component="div"
+        sx={{ textAlign: 'center' }}
+        mb="50px"
+      >
+        Register your Username
+      </Typography>
+      <Stack direction="column" alignItems="center" gap={5}>
+        <FormControl disabled variant="standard" sx={{ width: '400px' }}>
+          <InputLabel htmlFor="auth0Id">Auth0 Id: </InputLabel>
+          <Input id="auth0Id" value={form.auth0Id} />
+          <FormHelperText>Do not need to update this</FormHelperText>
+        </FormControl>
+        <FormControl disabled variant="standard" sx={{ width: '400px' }}>
+          <InputLabel htmlFor="email">Email: </InputLabel>
+          <Input id="email" value={form.email} />
+          <FormHelperText>Do not need to update this</FormHelperText>
+        </FormControl>
+        <FormControl variant="standard" sx={{ width: '400px' }}>
+          <InputLabel htmlFor="username">Username</InputLabel>
+          <Input
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <FormHelperText>Enter your username</FormHelperText>
+        </FormControl>
+        <Button bgcolor="primary" onClick={handleRegister}>
+          Register
+        </Button>
+      </Stack>
     </Box>
   )
 }

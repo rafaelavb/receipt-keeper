@@ -1,5 +1,10 @@
 const request = require('superagent')
 
+const usersURL = '/api/v1/users'
 export function addUser(newUser) {
-  return request.post('/users').send(newUser).catch(logError)
+  return request
+    .post(usersURL)
+    .send(newUser)
+    .then((res) => res)
+    .catch((err) => console.log(err))
 }

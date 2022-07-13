@@ -12,7 +12,7 @@ export default function Home() {
     e.preventDefault()
     loginWithRedirect({
       redirectUri: `${window.location.origin}/register`,
-    }).then((result) => result)
+    }).then((res) => console.log(res))
   }
 
   const { isAuthenticated, user } = useAuth0()

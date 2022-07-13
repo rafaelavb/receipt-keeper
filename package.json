@@ -1,6 +1,6 @@
 {
-  "name": "boilerplate-fullstack",
-  "version": "2.0.0",
+  "name": "receipt-keeper",
+  "version": "1.0.0",
   "main": "server/index.js",
   "license": "MIT",
   "keywords": [

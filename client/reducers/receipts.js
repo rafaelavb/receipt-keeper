@@ -1,8 +1,8 @@
-import { SET_FRUITS } from '../actions'
+import { SET_FRUITS } from '../actions/receipts'
 
 const initialState = []
 
-const reducer = (state = initialState, action) => {
+const receiptsReducer = (state = initialState, action) => {
   const { type, payload } = action
   switch (type) {
     case SET_FRUITS:
@@ -12,4 +12,4 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export default reducer
+export default receiptsReducer

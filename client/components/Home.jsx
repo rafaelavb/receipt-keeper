@@ -26,18 +26,12 @@ export default function Home() {
     return logout()
   }
 
-  function consoleLog(e) {
-    e.preventDefault()
-    console.log('isAuthenticated', isAuthenticated)
-    console.log('user', user)
-  }
   return (
     <div>
       <div className="app">
         <h1>Hello World</h1>
         <IfAuthenticated>
           <button onClick={handleLogout}>Log out</button>
-          <button onClick={consoleLog}>Console Log</button>
         </IfAuthenticated>
         <IfNotAuthenticated>
           <button>
@@ -49,12 +43,6 @@ export default function Home() {
         </IfNotAuthenticated>
       </div>
 
-      <Link to="register">
-        <button>register page</button>
-      </Link>
-      <Link to="receipts/lauren">
-        <button>user page</button>
-      </Link>
     </div>
   )
 }

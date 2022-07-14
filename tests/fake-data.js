@@ -1,5 +1,5 @@
-export const objReceipts = {
-  receipt: {
+export const objReceipts = [
+  {
     id: 1,
     auth0_id: '1',
     name: 'TV',
@@ -10,4 +10,4 @@ export const objReceipts = {
     category_id: 2,
     note: '',
   },
-}
+]

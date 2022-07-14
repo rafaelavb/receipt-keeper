@@ -2,8 +2,8 @@ const jwt = require('express-jwt')
 const jwks = require('jwks-rsa')
 
 // TODO: set the domain and audience (API Identifier)
-const domain = ''
-const audience = ''
+const domain = 'https://lauren-dev.us.auth0.com'
+const audience = 'https://receipts/api'
 
 const checkJwt = jwt({
   secret: jwks.expressJwtSecret({

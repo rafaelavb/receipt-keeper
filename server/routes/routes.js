@@ -33,6 +33,20 @@ router.get('/:id', checkJwt, (req, res) => {
     })
 })
 
+//GET /api/v1/receipts.store
+
+router.get('/', checkJwt, (req, res) => {
+  const auth0Id = req.user?.sub
+  db.getStores(auth0Id)
+    .then((stores) => {
+      res.json(stores)
+    })
+    .catch((err) => {
+      console.error(err)
+      res.status(500).send('Server Error')
+    })
+})
+
 // ADD /api/v1/receipts
 // (add receipt)
 
@@ -83,6 +97,34 @@ router.delete('/:id', checkJwt, (req, res) => {
   db.deleteReceipt(id)
     .then(() => {
       res.json()
+    })
+    .catch((err) => {
+      console.error(err.message)
+      res.status(500).send('Server error')
+    })
+})
+
+//get the stores in the receipt
+//GET api/v1/receipts/all/stores
+
+router.get('/all/stores', checkJwt, (req, res) => {
+  const auth0Id = req.user?.sub
+  db.getStores(auth0Id)
+    .then((stores) => {
+      res.json(stores)
+    })
+    .catch((err) => {
+      console.error(err.message)
+      res.status(500).send('Server error')
+    })
+})
+
+//GET api/v1/receipts/all/categories
+router.get('/all/categories', checkJwt, (req, res) => {
+  const auth0Id = req.user?.sub
+  db.getTypes(auth0Id)
+    .then((categories) => {
+      res.json(categories)
     })
     .catch((err) => {
       console.error(err.message)

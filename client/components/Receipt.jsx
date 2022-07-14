@@ -18,7 +18,14 @@ export default function Receipt(props) {
   }, [])
 
   return (
-    <Card sx={{ width: 320, textAlign: 'center' }}>
+    <Card
+      sx={{
+        width: 320,
+        textAlign: 'center',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      }}
+    >
       <CardHeader
         title={receipt.name}
         subheader={

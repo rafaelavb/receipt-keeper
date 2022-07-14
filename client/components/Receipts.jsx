@@ -73,7 +73,14 @@ export default function Receipts(props) {
 
   return (
     <Box flex={5} p={2}>
-      <Stack direction="row" gap={15} margin={8} flexWrap="wrap">
+      <Stack
+        direction={{ xs: 'row', sm: 'column' }}
+        gap={15}
+        margin={{ xs: 0, sm: 8 }}
+        alignItmes={{ xs: 'center' }}
+        textAlign="center"
+        flexWrap="wrap"
+      >
         {!store &&
           receipts?.map((receipt, index) => {
             return <Receipt key={index} receipt={receipt} />

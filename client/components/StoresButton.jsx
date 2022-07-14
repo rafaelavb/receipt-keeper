@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Box,
   Tooltip,
@@ -21,8 +21,8 @@ export default function StoresButton() {
     'Pak n Save',
     'Harvey Norman',
   ] // need to delete hardcoded array for stores
-  const [anchorElNav, setAnchorElNav] = React.useState(null)
-  const [anchorElUser, setAnchorElUser] = React.useState(null)
+  const [anchorElNav, setAnchorElNav] = useState(null)
+  const [anchorElUser, setAnchorElUser] = useState(null)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -32,11 +32,11 @@ export default function StoresButton() {
   }
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
+    setAnchorElNav(false)
   }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
+    setAnchorElUser(false)
   }
   return (
     <Box sx={{ display: { xs: 'block', sm: 'none' } }}>

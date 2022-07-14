@@ -8,3 +8,13 @@ export function addUser(newUser) {
     .then((res) => res)
     .catch((err) => console.log(err))
 }
+
+export function getUsername(token) {
+  return request
+    .get('/username')
+    .set('authorization', `Bearer ${token}`)
+    .then((res) => {
+      return res.body
+    })
+    .catch((err) => console.log(err))
+}

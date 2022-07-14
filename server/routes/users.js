@@ -2,7 +2,7 @@ const express = require('express')
 const db = require('../db/users')
 
 const router = express.Router()
-
+const checkJwt = require('../auth0')
 module.exports = router
 
 // POST /api/v1/users
@@ -19,6 +19,17 @@ router.post('/', async (req, res) => {
     res.sendStatus(201)
   } catch (err) {
     console.error(err)
+    res.status(500).send(err.message)
+  }
+})
+
+router.get('/username', checkJwt, async (req, res) => {
+  try {
+    const auth0Id = req.user?.sub
+    const username = await db.getUsername(auth0Id)
+    res.json(username)
+  } catch (err) {
+    console.log(err)
     res.status(500).send(err.message)
   }
 })

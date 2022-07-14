@@ -25,7 +25,6 @@ export default function Receipt(props) {
         marginLeft: { xs: 'auto', sm: '50px' },
         marginRight: { xs: 'auto', sm: '50px' },
       }}
-      height={'100%'}
     >
       <CardHeader
         title={receipt.name}
@@ -44,7 +43,7 @@ export default function Receipt(props) {
         image={receipt.image}
         alt={receipt.name}
       />
-      <CardContent>
+      <CardContent height={'110px'}>
         {receipt.note ? (
           <Typography
             variant="body2"

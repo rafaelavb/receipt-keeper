@@ -1,8 +1,8 @@
 const connection = require('./connection')
 
 //shows all the receipts
-function getReceipts(db = connection) {
-  return db('receipts').select()
+function getReceipts(auth0_id, db = connection) {
+  return db('receipts').select().where({ auth0_id })
 }
 
 //show a single receipt

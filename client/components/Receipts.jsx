@@ -10,11 +10,11 @@ export default function Receipts(props) {
     {
       id: 1,
       auth0Id: 'auth0|62ce51224e478f1e65cfb444',
-      userName: 'Lauren',
+      username: 'Lauren',
       name: 'Toaster',
       image:
         'https://thumbs.dreamstime.com/b/vector-paper-check-sell-receipt-bill-template-vector-paper-cash-sell-receipt-139437685.jpg',
-      purchase_date: new Date('2022', '6', '11').toLocaleDateString('en-NZ'),
+      purchaseDate: new Date('2022', '6', '11').toLocaleDateString('en-NZ'),
       store: 'Noel Leeming',
       price: 108.5,
       categoryId: 1,
@@ -26,11 +26,11 @@ export default function Receipts(props) {
     {
       id: 2,
       auth0Id: 'auth0|62ce51224e478f1e65cfb444',
-      userName: 'Lauren',
+      username: 'Lauren',
       name: 'Hair dryer',
       image:
         'https://thumbs.dreamstime.com/b/vector-paper-check-sell-receipt-bill-template-vector-paper-cash-sell-receipt-139437685.jpg',
-      purchase_date: new Date('2022', '4', '11').toLocaleDateString('en-NZ'),
+      purchaseDate: new Date('2022', '4', '11').toLocaleDateString('en-NZ'),
       store: 'Harvey Norman',
       price: 65.99,
       categoryId: 1,
@@ -39,11 +39,11 @@ export default function Receipts(props) {
     {
       id: 3,
       auth0Id: 'auth0|62ce51224e478f1e65cfb444',
-      userName: 'Lauren',
+      username: 'Lauren',
       name: 'Toaster',
       image:
         'https://thumbs.dreamstime.com/b/vector-paper-check-sell-receipt-bill-template-vector-paper-cash-sell-receipt-139437685.jpg',
-      purchase_date: new Date('2022', '6', '11').toLocaleDateString('en-NZ'),
+      purchaseDate: new Date('2022', '6', '11').toLocaleDateString('en-NZ'),
       store: 'Noel Leeming',
       price: 108.5,
       categoryId: 1,
@@ -55,11 +55,11 @@ export default function Receipts(props) {
     {
       id: 4,
       auth0Id: 'auth0|62ce51224e478f1e65cfb444',
-      userName: 'Lauren',
+      username: 'Lauren',
       name: 'Hair dryer',
       image:
         'https://thumbs.dreamstime.com/b/vector-paper-check-sell-receipt-bill-template-vector-paper-cash-sell-receipt-139437685.jpg',
-      purchase_date: new Date('2022', '4', '11').toLocaleDateString('en-NZ'),
+      purchaseDate: new Date('2022', '4', '11').toLocaleDateString('en-NZ'),
       store: 'Harvey Norman',
       price: 65.99,
       categoryId: 1,

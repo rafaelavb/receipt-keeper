@@ -4,10 +4,14 @@ const db = require('../db/receipts')
 
 const router = express.Router()
 
+const checkJwt = require('../auth0')
+
 //gets all receipts
 //GET /api/v1/receipts
-router.get('/', (req, res) => {
-  db.getReceipts()
+router.get('/', checkJwt, (req, res) => {
+  const auth0Id = req.user?.sub
+  console.log(auth0Id)
+  db.getReceipts(auth0Id)
     .then((receipts) => {
       res.json(receipts)
     })

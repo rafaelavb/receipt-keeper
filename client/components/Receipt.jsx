@@ -31,7 +31,7 @@ export default function Receipt(props) {
         title={receipt.name}
         subheader={
           <IconButton disabled>
-            <CalendarMonth /> {receipt.purchase_date}
+            <CalendarMonth /> {receipt.purchaseDate}
           </IconButton>
         }
       />

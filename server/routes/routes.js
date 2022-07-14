@@ -1,13 +1,14 @@
 const express = require('express')
-
+const checkJwt = require('../auth0')
 const db = require('../db/receipts')
 
 const router = express.Router()
 
 //gets all receipts
 //GET /api/v1/receipts
-router.get('/', (req, res) => {
-  db.getReceipts()
+router.get('/', checkJwt, (req, res) => {
+  const auth0Id = req.user?.sub
+  db.getReceipts(auth0Id)
     .then((receipts) => {
       res.json(receipts)
     })
@@ -20,7 +21,7 @@ router.get('/', (req, res) => {
 //GET /api/v1/receipts/#
 //get single receipt by ID
 
-router.get('/:id', (req, res) => {
+router.get('/:id', checkJwt, (req, res) => {
   const id = req.params.id
   db.getReceipt(id)
     .then((receipt) => {
@@ -35,10 +36,11 @@ router.get('/:id', (req, res) => {
 // ADD /api/v1/receipts
 // (add receipt)
 
-router.post('/', (req, res) => {
+router.post('/', checkJwt, (req, res) => {
+  const auth0Id = req.user?.sub
   const receipt = req.body
   console.log(receipt)
-  db.addReceipt(receipt)
+  db.addReceipt(auth0Id, receipt)
     .then((ids) => {
       const newReceiptId = ids[0]
       console.log(newReceiptId)
@@ -56,7 +58,7 @@ router.post('/', (req, res) => {
 // Update receipt by id
 ///api/v1/receipts/#
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', checkJwt, (req, res) => {
   const updatedReceipt = req.body
   const id = Number(req.params.id)
 
@@ -76,7 +78,7 @@ router.patch('/:id', (req, res) => {
 //Delete receipt by id
 // /api/v1/receipts/#
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', checkJwt, (req, res) => {
   const id = Number(req.params.id)
   db.deleteReceipt(id)
     .then(() => {

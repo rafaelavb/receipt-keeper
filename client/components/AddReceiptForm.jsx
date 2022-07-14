@@ -82,6 +82,8 @@ export default function AddReceiptForm({ modalState, close }) {
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
           />
         </FormControl>
+
+        {/* Purchase Date */}
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             disableFuture

@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <Auth0Provider
       domain="lauren-dev.us.auth0.com"
-      clientId="gYY3mOkg7NFJh0cn4GzqHS7g7bfbSO80"
+      clientId="SKeBa9ehP66l3jMJho14gkmrbz46Bmew"
       redirectUri={window.location.origin}
       audience="https://receipts/api"
     >

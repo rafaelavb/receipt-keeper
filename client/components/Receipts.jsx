@@ -1,9 +1,11 @@
 import { Box, Stack } from '@mui/material'
 import React from 'react'
+import { useParams } from 'react-router-dom'
 
 import Receipt from './Receipt'
 
-export default function Receipts() {
+export default function Receipts(props) {
+  const { store } = useParams()
   const receipts = [
     {
       id: 1,
@@ -70,17 +72,21 @@ export default function Receipts() {
   // need to delete the hardcoded array (redux)
 
   return (
-    <Box bgcolor="pink" flex={5} p={2}>
-      <Stack
-        direction="row"
-        gap={15}
-        marginLeft={8}
-        marginRight={8}
-        flexWrap="wrap"
-      >
-        {receipts?.map((receipt, index) => {
-          return <Receipt key={index} receipt={receipt} />
-        })}
+    <Box flex={5} p={2}>
+      <Stack direction="row" gap={15} margin={8} flexWrap="wrap">
+        {!store &&
+          receipts?.map((receipt, index) => {
+            return <Receipt key={index} receipt={receipt} />
+          })}
+
+        {store &&
+          receipts?.map((receipt, index) => {
+            return receipt.store === store ? (
+              <Receipt key={index} receipt={receipt} />
+            ) : (
+              <Box key={index}></Box>
+            )
+          })}
       </Stack>
     </Box>
   )

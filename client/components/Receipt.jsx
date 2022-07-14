@@ -23,10 +23,13 @@ export default function Receipt(props) {
         title={receipt.name}
         subheader={
           <IconButton disabled>
-            <CalendarMonth marginLeft={1} /> {receipt.purchase_date}
+            <CalendarMonth /> {receipt.purchase_date}
           </IconButton>
         }
       />
+      <CardContent>
+        <Typography>{receipt.store}</Typography>
+      </CardContent>
       <CardMedia
         component="img"
         height="194"

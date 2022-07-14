@@ -1,6 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
-import { Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router , Routes, Route } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 
 import Home from './Home'
@@ -14,12 +13,44 @@ function App() {
   return (
     <>
       <Router>
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="register" element={<Register />} />
-          <Route path="/receipts/:username" element={<Main />} />
-          <Route path="/receipts/:username/:store" element={<Main />} />
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar home="home" />
+                <Home />
+              </>
+            }
+          />
+
+          <Route
+            path="register"
+            element={
+              <>
+                <Navbar />
+                <Register />
+              </>
+            }
+          />
+          <Route
+            path="/receipts/:username"
+            element={
+              <>
+                <Navbar />
+                <Main />
+              </>
+            }
+          />
+          <Route
+            path="/receipts/:username/:store"
+            element={
+              <>
+                <Navbar />
+                <Main />
+              </>
+            }
+          />
         </Routes>
       </Router>
     </>

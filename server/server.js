@@ -3,14 +3,19 @@ const path = require('path')
 
 const receiptRoutes = require('./routes/routes')
 const usersRoutes = require('./routes/users')
+// const homeRoutes = require('./routes/home')
 
 const server = express()
 
 server.use(express.json())
 server.use(express.static(path.join(__dirname, 'public')))
 
+// server.use('/api/v1/', homeRoutes)
 server.use('/api/v1/receipts', receiptRoutes)
 server.use('/api/v1/users', usersRoutes)
+server.use('/api/*', (req, res) => {
+  res.sendStatus(404)
+})
 
 server.use('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'))

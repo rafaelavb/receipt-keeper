@@ -12,26 +12,53 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 
 import { ReceiptLong } from '@mui/icons-material/'
+import { IfAuthenticated, IfNotAuthenticated } from './Authenticated'
+import { useAuth0 } from '@auth0/auth0-react'
 
-export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false)
+export default function Navbar(props) {
+  const { logout, loginWithRedirect } = useAuth0()
+  const { home } = props
+  const [anchorElUser, setAnchorElUser] = useState(null)
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget)
+  }
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(false)
+  }
+
+  function handleLogout(e) {
+    e.preventDefault()
+    logout().then((res) => handleCloseUserMenu())
+  }
+
+  function handleLogin(e) {
+    e.preventDefault()
+    loginWithRedirect().then((res) => handleCloseUserMenu())
+  }
 
   return (
     <AppBar position="sticky">
       <StyledToolbar>
-        <Typography variant="h6" sx={{ display: { xs: 'none', sm: 'block' } }}>
+        <Typography
+          variant="h6"
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+            '&:hover': { cursor: 'pointer' },
+          }}
+        >
           Receipt Keeper
         </Typography>
         <ReceiptLong sx={{ display: { xs: 'block', sm: 'none' } }} />
-        <SearchField>
-          <InputBase placeholder="Search..." />
-        </SearchField>
-        <MenuIcon onClick={(e) => setMenuOpen(true)}></MenuIcon>
+        {!home && (
+          <SearchField>
+            <InputBase placeholder="Search..." />
+          </SearchField>
+        )}
+        <MenuIcon onClick={handleOpenUserMenu}></MenuIcon>
         <Menu
-          id="demo-positioned-menu"
-          aria-labelledby="demo-positioned-button"
-          open={menuOpen}
-          onClose={(e) => setMenuOpen(false)}
+          anchorEl={anchorElUser}
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'right',
@@ -40,10 +67,15 @@ export default function Navbar() {
             vertical: 'top',
             horizontal: 'right',
           }}
+          open={Boolean(anchorElUser)}
+          onClose={handleCloseUserMenu}
         >
-          <MenuItem>Profile</MenuItem>
-          <MenuItem>My account</MenuItem>
-          <MenuItem>Logout</MenuItem>
+          <IfAuthenticated>
+            <MenuItem onClick={handleLogout}>Log out</MenuItem>
+          </IfAuthenticated>
+          <IfNotAuthenticated>
+            <MenuItem onClick={handleLogin}>Log In</MenuItem>
+          </IfNotAuthenticated>
         </Menu>
       </StyledToolbar>
     </AppBar>

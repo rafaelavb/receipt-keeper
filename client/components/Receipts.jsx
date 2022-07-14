@@ -3,6 +3,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 
 import Receipt from './Receipt'
+import AddReceipt from './AddReceipt'
 
 export default function Receipts(props) {
   const { store } = useParams()
@@ -95,6 +96,7 @@ export default function Receipts(props) {
             )
           })}
       </Stack>
+      <AddReceipt />
     </Box>
   )
 }

@@ -18,7 +18,7 @@ exports.seed = function (knex) {
         },
         {
           id: 2,
-          auth0_id: '2',
+          auth0_id: 'auth0|62ce51224e478f1e65cfb444',
           name: 'Fridge',
           image: '',
           purchase_date: '09 - 08 - 2020',

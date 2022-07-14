@@ -1,4 +1,4 @@
-import { Favorite, MoreVert, Share } from '@mui/icons-material'
+import { CalendarMonth, Favorite, MoreVert, Share } from '@mui/icons-material'
 import {
   Card,
   CardHeader,
@@ -18,8 +18,15 @@ export default function Receipt(props) {
   }, [])
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardHeader title={receipt.name} subheader={receipt.purchase_date} />
+    <Card sx={{ width: 320, textAlign: 'center' }}>
+      <CardHeader
+        title={receipt.name}
+        subheader={
+          <IconButton disabled>
+            <CalendarMonth marginLeft={1} /> {receipt.purchase_date}
+          </IconButton>
+        }
+      />
       <CardMedia
         component="img"
         height="194"
@@ -27,16 +34,28 @@ export default function Receipt(props) {
         alt={receipt.name}
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {receipt.note}
-        </Typography>
-        {receipt.expiryDate ? (
-          <Typography variant="body2" color="text.secondary">
-            Warranty expired on{receipt.expiryDate}
+        {receipt.note ? (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ fontStyle: 'italic' }}
+          >
+            {`"${receipt.note}"`}
           </Typography>
+        ) : null}
+
+        {receipt.expiryDate ? (
+          <>
+            <Typography variant="body1" color="text.primary">
+              Warranty expired on
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              {receipt.expiryDate}
+            </Typography>
+          </>
         ) : (
-          <Typography variant="body2" color="text.secondary">
-            No Warranty for the purchase
+          <Typography variant="body1" color="text.primary">
+            No Warranty
           </Typography>
         )}
       </CardContent>

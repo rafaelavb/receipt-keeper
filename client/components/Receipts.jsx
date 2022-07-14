@@ -32,10 +32,7 @@ export default function Receipts() {
       store: 'Harvey Norman',
       price: 65.99,
       categoryId: 1,
-      note: undefined,
       categoryType: 'appliance',
-      warrantyId: 2,
-      expiryDate: new Date('2024', '4', '11').toLocaleDateString('en-NZ'),
     },
     {
       id: 3,
@@ -70,9 +67,17 @@ export default function Receipts() {
       expiryDate: new Date('2024', '4', '11').toLocaleDateString('en-NZ'),
     },
   ]
+  // need to delete the hardcoded array (redux)
+
   return (
     <Box bgcolor="pink" flex={5} p={2}>
-      <Stack direction="row" col={3} gap={10}>
+      <Stack
+        direction="row"
+        gap={15}
+        marginLeft={8}
+        marginRight={8}
+        flexWrap="wrap"
+      >
         {receipts?.map((receipt, index) => {
           return <Receipt key={index} receipt={receipt} />
         })}

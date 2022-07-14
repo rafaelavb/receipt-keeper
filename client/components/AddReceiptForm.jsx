@@ -39,7 +39,10 @@ export default function AddReceiptForm({ modalState, close }) {
   return (
     <StyledModal
       open={modalState}
-      onClose={(e) => close(e, false)}
+      onClose={(e) => {
+        close(e, false)
+        setWarrantyChecked(false)
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >

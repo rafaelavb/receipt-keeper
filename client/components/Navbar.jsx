@@ -13,8 +13,9 @@ import MenuIcon from '@mui/icons-material/Menu'
 
 import { ReceiptLong } from '@mui/icons-material/'
 
-export default function Navbar() {
+export default function Navbar(props) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const { home } = props
 
   return (
     <AppBar position="sticky">
@@ -23,6 +24,7 @@ export default function Navbar() {
           Receipt Keeper
         </Typography>
         <ReceiptLong sx={{ display: { xs: 'block', sm: 'none' } }} />
+
         <SearchField>
           <InputBase placeholder="Search..." />
         </SearchField>

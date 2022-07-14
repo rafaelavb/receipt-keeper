@@ -14,12 +14,44 @@ function App() {
   return (
     <>
       <Router>
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="register" element={<Register />} />
-          <Route path="/receipts/:username" element={<Main />} />
-          <Route path="/receipts/:username/:store" element={<Main />} />
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar home="home" />
+                <Home />
+              </>
+            }
+          />
+
+          <Route
+            path="register"
+            element={
+              <>
+                <Navbar />
+                <Register />
+              </>
+            }
+          />
+          <Route
+            path="/receipts/:username"
+            element={
+              <>
+                <Navbar />
+                <Main />
+              </>
+            }
+          />
+          <Route
+            path="/receipts/:username/:store"
+            element={
+              <>
+                <Navbar />
+                <Main />
+              </>
+            }
+          />
         </Routes>
       </Router>
     </>

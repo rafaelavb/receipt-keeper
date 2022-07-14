@@ -21,40 +21,46 @@ export default function Sidebar() {
     'Harvey Norman',
   ] // need to delete hardcoded array for stores
   return (
-    <Box flex={1} p={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
-      <List>
-        <Link
-          to={`/receipts/${username}`}
-          style={{ textDecoration: 'none', color: 'gray' }}
-        >
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <Storefront />
-              </ListItemIcon>
-              <ListItemText primary={'All Stores'} />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        {stores?.map((store, index) => {
-          return (
-            <Link
-              to={`/receipts/${username}/${store}`}
-              style={{ textDecoration: 'none', color: 'gray' }}
-              key={index}
-            >
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Storefront />
-                  </ListItemIcon>
-                  <ListItemText primary={store} />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-          )
-        })}
-      </List>
+    <Box
+      flex={1}
+      p={2}
+      sx={{ display: { xs: 'none', sm: 'block' }, minWidth: '190px' }}
+    >
+      <Box position="fixed">
+        <List>
+          <Link
+            to={`/receipts/${username}`}
+            style={{ textDecoration: 'none', color: 'gray' }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Storefront />
+                </ListItemIcon>
+                <ListItemText primary={'All Stores'} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+          {stores?.map((store, index) => {
+            return (
+              <Link
+                to={`/receipts/${username}/${store}`}
+                style={{ textDecoration: 'none', color: 'gray' }}
+                key={index}
+              >
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <Storefront />
+                    </ListItemIcon>
+                    <ListItemText primary={store} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            )
+          })}
+        </List>
+      </Box>
     </Box>
   )
 }

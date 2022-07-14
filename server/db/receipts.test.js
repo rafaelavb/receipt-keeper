@@ -3,16 +3,18 @@ const server = require('../server')
 const db = require('./receipts')
 
 const { objReceipts } = require('../../tests/fake-data')
-// const { checkJwt } = require('../auth0')
+const { checkJwt } = require('../auth0')
 
 jest.mock('./receipts')
+jest.mock('../auth0')
 
 beforeAll(() => {
   jest.spyOn(console, 'error')
   console.error.mockImplementation(() => {})
-  // checkJwt.mockImplementation((req, res, next) => {
-  //   next()
-  // })
+  checkJwt.mockImplementation((req, res, next) => {
+    req.user = { objReceipts }
+    next()
+  })
 })
 afterAll(() => {
   console.error.mockRestore()

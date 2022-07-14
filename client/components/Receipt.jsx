@@ -8,14 +8,11 @@ import {
   CardActions,
   IconButton,
 } from '@mui/material'
-import React from 'react'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 export default function Receipt(props) {
   const { receipt } = props
-  useEffect(() => {
-    console.log(receipt)
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <Card sx={{ width: 320, textAlign: 'center' }}>

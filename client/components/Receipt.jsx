@@ -20,11 +20,12 @@ export default function Receipt(props) {
   return (
     <Card
       sx={{
-        width: 320,
+        width: 300,
         textAlign: 'center',
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        marginLeft: { xs: 'auto', sm: '50px' },
+        marginRight: { xs: 'auto', sm: '50px' },
       }}
+      height={'100%'}
     >
       <CardHeader
         title={receipt.name}
@@ -49,6 +50,7 @@ export default function Receipt(props) {
             variant="body2"
             color="text.secondary"
             sx={{ fontStyle: 'italic' }}
+            height="20px"
           >
             {`"${receipt.note}"`}
           </Typography>

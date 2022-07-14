@@ -72,14 +72,14 @@ export default function Receipts(props) {
   // need to delete the hardcoded array (redux)
 
   return (
-    <Box flex={5} p={2}>
+    <Box flex={5}>
       <Stack
-        direction={{ xs: 'row', sm: 'column' }}
-        gap={15}
-        margin={{ xs: 0, sm: 8 }}
-        alignItmes={{ xs: 'center' }}
+        direction={{ xs: 'column', sm: 'row' }}
+        margin={{ xs: 0, sm: 4 }}
+        alignItems={{ xs: 'center' }}
         textAlign="center"
         flexWrap="wrap"
+        gap={3}
       >
         {!store &&
           receipts?.map((receipt, index) => {

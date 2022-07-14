@@ -2,11 +2,13 @@ import React from 'react'
 import Sidebar from './Sidebar'
 import Receipts from './Receipts'
 import { Box, Stack } from '@mui/material'
+import StoresButton from './StoresButton'
 
 export default function Main() {
   return (
     <Box>
-      <Stack direction="row" spacing={2} justifyContent="space-between">
+      <StoresButton />
+      <Stack direction="row">
         <Sidebar />
         <Receipts />
       </Stack>

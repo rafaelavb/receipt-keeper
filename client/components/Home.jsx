@@ -20,6 +20,8 @@ export default function Home() {
 
   useEffect(() => {
     if (loggedInUser) {
+      console.log(loggedInUser)
+
       getAccessTokenSilently().then((token) => {
         console.log(token)
         getUsername(token).then((username) => {

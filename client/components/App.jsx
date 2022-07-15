@@ -1,5 +1,5 @@
-import React from 'react'
-import { BrowserRouter as Router , Routes, Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 
 import Home from './Home'
@@ -10,6 +10,7 @@ import { cacheUser } from '../auth0-utils'
 
 function App() {
   cacheUser(useAuth0)
+
   return (
     <>
       <Router>

@@ -1,18 +1,18 @@
-import { getFruits } from '../apis/receipts'
+import { getReceipts } from '../apis'
 
-export const SET_FRUITS = 'SET_FRUITS'
+export const GET_ALL_RECEIPTS = 'GET_ALL_RECEIPTS'
 
-export function setFruits(fruits) {
+export function getAllReceipts(receipts) {
   return {
-    type: SET_FRUITS,
-    payload: fruits,
+    type: GET_ALL_RECEIPTS,
+    payload: receipts,
   }
 }
 
-export function fetchFruits() {
+export function fetchReceipts(token) {
   return (dispatch) => {
-    return getFruits().then((fruits) => {
-      dispatch(setFruits(fruits))
+    return getReceipts(token).then((receipts) => {
+      dispatch(getAllReceipts(receipts))
       return null
     })
   }

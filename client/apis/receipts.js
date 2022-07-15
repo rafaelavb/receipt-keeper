@@ -29,3 +29,11 @@ export function deleteReceipt(receipt, token) {
     .send(receipt)
     .then((res) => res.body)
 }
+
+export function getStores(token) {
+  return request
+    .get(`${receiptsUrl}/all/stores`)
+    .set('authorization', `Bearer ${token}`)
+    .then((res) => res.body)
+    .catch(logError)
+}

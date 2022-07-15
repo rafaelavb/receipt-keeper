@@ -8,3 +8,14 @@ export function addUser(newUser) {
     .then((res) => res)
     .catch((err) => console.log(err))
 }
+
+export function getUsername(token) {
+  return request
+    .get(`${usersURL}/username`)
+    .set('authorization', `Bearer ${token}`)
+    .then((res) => {
+      console.log('api', res.body)
+      return res.body.username
+    })
+    .catch((err) => console.log(err))
+}

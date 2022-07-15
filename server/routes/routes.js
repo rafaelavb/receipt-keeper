@@ -8,6 +8,7 @@ const router = express.Router()
 //GET /api/v1/receipts
 router.get('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
+  console.log(auth0Id)
   db.getReceipts(auth0Id)
     .then((receipts) => {
       res.json(receipts)

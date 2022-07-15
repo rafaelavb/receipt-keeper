@@ -16,7 +16,7 @@ import { IfAuthenticated, IfNotAuthenticated } from './Authenticated'
 import { useAuth0 } from '@auth0/auth0-react'
 
 export default function Navbar(props) {
-  const { logout, loginWithRedirect } = useAuth0()
+  const { logout, loginWithRedirect, user, getAccessTokenSilently } = useAuth0()
   const { home } = props
   const [anchorElUser, setAnchorElUser] = useState(null)
 
@@ -25,7 +25,7 @@ export default function Navbar(props) {
   }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(false)
+    setAnchorElUser(null)
   }
 
   function handleLogout(e) {
@@ -33,9 +33,14 @@ export default function Navbar(props) {
     logout().then((res) => handleCloseUserMenu())
   }
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault()
-    loginWithRedirect().then((res) => handleCloseUserMenu())
+    handleCloseUserMenu()
+    try {
+      await loginWithRedirect()
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (

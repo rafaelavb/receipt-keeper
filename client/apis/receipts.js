@@ -1,32 +1,34 @@
 import request from 'superagent'
 
-const receiptsURL = '/api/v1/receipts'
+const receiptsUrl = '/api/v1/receipts'
 
 export function getReceipts(token) {
   return request
-    .get(receiptsURL)
-    .set('authorization', `Bearer${token}`)
-    .then((res) => {
-      return res.body
-    })
-    .catch(logError)
+    .get(receiptsUrl)
+    .set('authorization', `Bearer ${token}`)
+    .then((res) => res.body)
 }
 
 export function postReceipt(receipt, token) {
   return request
-    .post(receiptsURL)
+    .post(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
     .send(receipt)
-    .then((res) => {
-      return res.body
-    })
-    .catch(logError)
+    .then((res) => res.body)
 }
 
-export function getStores(token) {
+export function patchReceipt(receipt, token) {
   return request
-    .get(`${receiptsURL}/all/stores`)
+    .patch(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
+    .send(receipt)
     .then((res) => res.body)
-    .catch(logError)
+}
+
+export function deleteReceipt(receipt, token) {
+  return request
+    .delete(receiptsUrl)
+    .set('authorization', `Bearer ${token}`)
+    .send(receipt)
+    .then((res) => res.body)
 }

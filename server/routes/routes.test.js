@@ -5,6 +5,7 @@ const server = require('../server')
 import { getReceipts } from '../db/receipts'
 
 jest.mock('../db/receipts')
+jest.mock('./auth0')
 
 beforeAll(() => {
   jest.spyOn(console, 'error')

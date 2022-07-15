@@ -2,9 +2,27 @@ const connection = require('./connection')
 
 //shows all the receipts
 function getReceipts(auth0_id, db = connection) {
-  return db('receipts').select().where({ auth0_id })
+  return db('receipts')
+    .join('users', 'receipts.auth0_id', 'users.auth0_id')
+    .join('categories', 'receipts.category_id', 'categories.id')
+    .join('warranties', 'receipts.id', 'warranties.receipt_id')
+    .select(
+      'receipts.id as id',
+      'receipts.auth0Id as auth0Id',
+      'receipts.username as username',
+      'receipts.name as name',
+      'receipts.image as image',
+      'receipts.purchaseDate as purchaseDate',
+      'receipts.store as store',
+      'receipts.price as price',
+      'categories.id as catergoryId',
+      'receipts.note as note',
+      'categories.type as categoryType',
+      'warranties.id as warrantyId',
+      'warranties.expiry_date as expiryDate'
+    )
+    .where({ auth0_id })
 }
-
 //show a single receipt
 
 function getReceipt(id, db = connection) {

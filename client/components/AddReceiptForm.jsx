@@ -42,30 +42,29 @@ export default function AddReceiptForm({ modalState, close }) {
   const [period, setPeriod] = useState('year(s)')
 
   const [image, setImage] = useState(null)
+  const [previewMode, setPreviewMode] = useState(false)
+
   function handleImageChange(e) {
     e.preventDefault()
     const file = e.target.files[0]
     setImage(file)
   }
+
   function resetImage() {
     setImage(null)
   }
-  const [previewMode, setPreviewMode] = useState(false)
 
-  function openPreview() {
-    setPreviewMode(true)
-  }
-
-  function closePreview() {
-    setPreviewMode(false)
+  function setImagePreview(e) {
+    e.preventDefault()
+    setPreviewMode(!previewMode)
   }
 
   return (
     <StyledModal
       open={modalState}
       onClose={(e) => {
-        close(e, false)
         setWarrantyChecked(false)
+        close(e, false)
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -105,12 +104,12 @@ export default function AddReceiptForm({ modalState, close }) {
             color="primary"
             component="label"
             sx={{ width: '50px' }}
-            onClick={openPreview}
+            onClick={setImagePreview}
           >
             <ReceiptLong />
             <Preview
               previewMode={previewMode}
-              closePreview={closePreview}
+              setImagePreview={setImagePreview}
               image={image}
               resetImage={resetImage}
             />
@@ -137,6 +136,8 @@ export default function AddReceiptForm({ modalState, close }) {
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
           />
         </FormControl>
+
+        {/* Purchase Date */}
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             disableFuture

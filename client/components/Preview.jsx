@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, Modal, styled } from '@mui/material'
+import { Box, Button, Modal, styled, IconButton } from '@mui/material'
 import { Close } from '@mui/icons-material'
 
 export default function Preview({
   previewMode,
-  closePreview,
+  setImagePreview,
   image,
   resetImage,
 }) {
@@ -20,14 +20,15 @@ export default function Preview({
   }, [])
 
   function handleReset(e) {
-    closePreview()
+    e.preventDefault()
     resetImage()
+    setImagePreview(e)
   }
 
   return (
     <StyledModal
       open={previewMode}
-      onClose={closePreview}
+      onClose={setImagePreview}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -42,12 +43,12 @@ export default function Preview({
         p={3}
         borderRadius={5}
       >
-        <Button onClick={closePreview}>
+        <Button onClick={setImagePreview}>
           <Close />
         </Button>
 
         <img src={preview} />
-        <Button onClick={handleReset}>Reset</Button>
+        <Button onClick={(e) => handleReset(e)}>Reset</Button>
       </Box>
     </StyledModal>
   )

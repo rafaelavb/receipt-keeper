@@ -13,5 +13,10 @@ exports.seed = async function (knex) {
       username: 'Lauren',
     },
     { auth0_id: '3', email: 'fancyEmail@gmail.com', username: 'Raf' },
+    {
+      auth0_id: 'auth0|62d080b013253f06fced71d3',
+      email: 'random16@gmail.com',
+      username: 'Random16',
+    },
   ])
 }

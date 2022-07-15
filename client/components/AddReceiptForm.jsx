@@ -24,6 +24,8 @@ import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
 
 import Preview from './Preview'
 
+const cloudinaryPreset = 'nh01qzjk'
+
 const categories = [
   'Books',
   'Clothing',
@@ -58,6 +60,14 @@ export default function AddReceiptForm({ modalState, close }) {
     e.preventDefault()
     setPreviewMode(!previewMode)
   }
+
+  // function handleSubmit(e) {
+  //   e.preventDefault()
+  //   const formData = new FormData()
+  //   formData.append('file', image)
+  //   formData.append('upload_preset', cloudinaryPreset)
+  //   // return uploadImag
+  // }
 
   return (
     <StyledModal
@@ -219,11 +229,7 @@ export default function AddReceiptForm({ modalState, close }) {
         )}
 
         {/* Add Button */}
-        <Button
-          variant="contained"
-          type="submit"
-          // onClick={handleSubmit}
-        >
+        <Button variant="contained" type="submit">
           Add
         </Button>
       </Box>

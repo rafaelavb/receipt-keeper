@@ -1,47 +1,34 @@
-const request = require('supertest')
-const server = require('../server')
-const db = require('./receipts')
-
-import { objReceipts } from '../../tests/fake-data'
-const { checkJwt } = require('../auth0')
-
-jest.mock('./receipts')
-jest.mock('../auth0')
+const config = require('./knexfile')
+const knex = require('knex')
+const { getReceipt /*getReceipts*/ } = require('./receipts')
+// const { test } = require('./knexfile')
+const testDb = knex(config.test)
 
 beforeAll(() => {
-  jest.spyOn(console, 'error')
-  console.error.mockImplementation(() => {})
-  checkJwt.mockImplementation((req, res, next) => {
-    req.user = { sub: objReceipts.auth0_id }
-    next()
-  })
+  return testDb.migrate.latest()
 })
-afterAll(() => {
-  console.error.mockRestore()
-  jest.restoreAllMocks()
+beforeEach(() => {
+  return testDb.seed.run()
 })
 
-describe('GET /api/v1/receipts', () => {
-  it('returns all receipts from the db', () => {
+describe('getReceiptById', () => {
+  it('returns a single receipt by id', () => {
     expect.assertions(2)
-    db.getReceipts.mockReturnValue(Promise.resolve(objReceipts))
-    return request(server)
-      .get('/api/v1/receipts')
-      .then((res) => {
-        expect(res.status).toBe(200)
-        expect(res.body[0].store).toBe('Smiths City')
-      })
-  })
-  it("should return status 500 and error when database doesn't work", () => {
-    expect.assertions(2)
-    db.getReceipts.mockImplementation(() =>
-      Promise.reject(new Error('Something went wrong'))
-    )
-    return request(server)
-      .get('/api/v1/receipts')
-      .then((res) => {
-        expect(res.status).toBe(500)
-        expect(res.text).toContain('Server Error')
-      })
+    // getReceipts.mockImplementation(() =>
+    return getReceipt(1, testDb).then((receipt) => {
+      expect(receipt.id).toBe(1)
+      expect(receipt.name).toBe('TV')
+    })
   })
 })
+
+// describe('getAnAuth0Id', () => {
+//   it('returns all receipts from an auth user', () => {
+//     expect.assertions(1)
+//     return getReceipts('auth0|62ce51224e478f1e65cfb444', testDb).then(
+//       (receipts) => {
+//         expect(receipts).toBeNull()
+//       }
+//     )
+//   })
+// })

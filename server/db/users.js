@@ -4,6 +4,7 @@ module.exports = {
   userExists,
   getUserByName,
   createUser,
+  getUsername,
 }
 
 function userExists(username, db = connection) {
@@ -17,6 +18,10 @@ function userExists(username, db = connection) {
 
 function getUserByName(username, db = connection) {
   return db('users').select().where('username', username).first()
+}
+
+function getUsername(auth0_id, db = connection) {
+  return db('users').select('username').where({ auth0_id }).first()
 }
 
 function createUser(user, db = connection) {

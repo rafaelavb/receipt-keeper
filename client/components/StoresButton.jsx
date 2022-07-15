@@ -6,7 +6,6 @@ import {
   MenuItem,
   Typography,
   IconButton,
-  Avatar,
 } from '@mui/material'
 import { Storefront } from '@mui/icons-material'
 import { Link, useParams } from 'react-router-dom'

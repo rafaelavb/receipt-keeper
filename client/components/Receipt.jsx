@@ -22,13 +22,12 @@ export default function Receipt(props) {
         marginLeft: { xs: 'auto', sm: '50px' },
         marginRight: { xs: 'auto', sm: '50px' },
       }}
-      height={'100%'}
     >
       <CardHeader
         title={receipt.name}
         subheader={
           <IconButton disabled>
-            <CalendarMonth /> {receipt.purchase_date}
+            <CalendarMonth /> {receipt.purchaseDate}
           </IconButton>
         }
       />
@@ -41,7 +40,7 @@ export default function Receipt(props) {
         image={receipt.image}
         alt={receipt.name}
       />
-      <CardContent>
+      <CardContent height={'110px'}>
         {receipt.note ? (
           <Typography
             variant="body2"

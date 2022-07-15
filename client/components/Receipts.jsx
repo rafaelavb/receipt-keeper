@@ -86,7 +86,6 @@ export default function Receipts(props) {
           receipts?.map((receipt, index) => {
             return <Receipt key={index} receipt={receipt} />
           })}
-
         {store &&
           receipts?.map((receipt, index) => {
             return receipt.store === store ? (

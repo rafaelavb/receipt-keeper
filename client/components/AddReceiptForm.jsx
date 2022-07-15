@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   Box,
   Button,
@@ -22,6 +22,8 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
 
+import Preview from './Preview'
+
 const categories = [
   'Books',
   'Clothing',
@@ -40,21 +42,23 @@ export default function AddReceiptForm({ modalState, close }) {
   const [period, setPeriod] = useState('year(s)')
 
   const [image, setImage] = useState(null)
-  const [preview, setPreview] = useState(null)
   function handleImageChange(e) {
     e.preventDefault()
     const file = e.target.files[0]
     setImage(file)
   }
-  useEffect(() => {
-    if (image) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setPreview(reader.result)
-      }
-      reader.readAsDataURL(image)
-    }
-  }, [image])
+  function resetImage() {
+    setImage(null)
+  }
+  const [previewMode, setPreviewMode] = useState(false)
+
+  function openPreview() {
+    setPreviewMode(true)
+  }
+
+  function closePreview() {
+    setPreviewMode(false)
+  }
 
   return (
     <StyledModal
@@ -81,8 +85,12 @@ export default function AddReceiptForm({ modalState, close }) {
         <Typography variant="h6" color="primary" textAlign="center">
           New Receipt
         </Typography>
-        {!preview && (
-          <IconButton color="primary" component="label" sx={{ width: '50px' }}>
+        {!image && (
+          <IconButton
+            color="primary"
+            component="label"
+            sx={{ width: '50px', height: '50px' }}
+          >
             <input
               hidden
               accept="image/*"
@@ -92,10 +100,20 @@ export default function AddReceiptForm({ modalState, close }) {
             <PhotoCamera />
           </IconButton>
         )}
-        {preview && (
-          <IconButton color="primary" component="label" sx={{ width: '50px' }}>
+        {image && (
+          <IconButton
+            color="primary"
+            component="label"
+            sx={{ width: '50px' }}
+            onClick={openPreview}
+          >
             <ReceiptLong />
-            Preview
+            <Preview
+              previewMode={previewMode}
+              closePreview={closePreview}
+              image={image}
+              resetImage={resetImage}
+            />
           </IconButton>
         )}
 

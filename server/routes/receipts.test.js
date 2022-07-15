@@ -1,15 +1,20 @@
 const request = require('supertest')
-
 const server = require('../server')
+const db = require('../db/receipts')
 
-import { getReceipts } from '../db/receipts'
+import { objReceipts } from '../../tests/fake-data'
+const checkJwt = require('../auth0')
 
 jest.mock('../db/receipts')
-jest.mock('./auth0')
+jest.mock('../auth0')
 
 beforeAll(() => {
   jest.spyOn(console, 'error')
   console.error.mockImplementation(() => {})
+  checkJwt.mockImplementation((req, res, next) => {
+    req.user = { sub: objReceipts.auth0_id }
+    next()
+  })
 })
 afterAll(() => {
   console.error.mockRestore()
@@ -17,43 +22,26 @@ afterAll(() => {
 })
 
 describe('GET /api/v1/receipts', () => {
-  it('returns a list of all the receipts', () => {
-    getReceipts.mockImplementation(() =>
-      Promise.resolve([
-        {
-          auth0_id: 2,
-          name: 'randomName',
-          image: 'randomsImage',
-          purchase_date: '27-01-23',
-          store: 'Warehouse',
-          price: '44.60',
-          note: 'Clothes',
-        },
-      ])
-    )
+  it('returns all receipts from the db', () => {
+    expect.assertions(2)
+    db.getReceipts.mockReturnValue(Promise.resolve(objReceipts))
     return request(server)
       .get('/api/v1/receipts')
-      .expect(200)
       .then((res) => {
-        expect(res.body).toHaveLength(1)
-        expect(res.body[0].auth0_id).toBe(2)
-        expect(res.body[0].name).toBe('randomName')
-        expect(res.body[0].image).toBe('randomsImage')
-        expect(res.body[0].purchase_date).toBe('27-01-23')
-        expect(res.body[0].store).toBe('Warehouse')
-        expect(res.body[0].price).toBe('44.60')
-        expect(res.body[0].note).toBe('Clothes')
+        expect(res.status).toBe(200)
+        expect(res.body[0].store).toBe('Smiths City')
       })
   })
-  it('responds with 500 and error if not correct', () => {
-    getReceipts.mockImplementation(() =>
-      Promise.reject(new Error('Server Error'))
+  it("should return status 500 and error when database doesn't work", () => {
+    expect.assertions(2)
+    db.getReceipts.mockImplementation(() =>
+      Promise.reject(new Error('Something went wrong'))
     )
     return request(server)
       .get('/api/v1/receipts')
-      .expect(500)
-      .then((err) => {
-        expect(err.text).toBe('Server Error')
+      .then((res) => {
+        expect(res.status).toBe(500)
+        expect(res.text).toContain('Server Error')
       })
   })
 })

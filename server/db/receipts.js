@@ -8,11 +8,11 @@ function getReceipts(auth0_id, db = connection) {
     .join('warranties', 'receipts.id', 'warranties.receipt_id')
     .select(
       'receipts.id as id',
-      'receipts.auth0Id as auth0Id',
-      'receipts.username as username',
+      'users.auth0_id as auth0Id',
+      'users.username as username',
       'receipts.name as name',
       'receipts.image as image',
-      'receipts.purchaseDate as purchaseDate',
+      'receipts.purchase_date as purchaseDate',
       'receipts.store as store',
       'receipts.price as price',
       'categories.id as catergoryId',

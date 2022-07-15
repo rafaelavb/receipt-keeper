@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 
-const receiptRoutes = require('./routes/routes')
+const receiptRoutes = require('./routes/receipts')
 const usersRoutes = require('./routes/users')
 // const homeRoutes = require('./routes/home')
 

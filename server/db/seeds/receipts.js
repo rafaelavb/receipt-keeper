@@ -7,7 +7,7 @@ exports.seed = function (knex) {
       return knex('receipts').insert([
         {
           id: 1,
-          auth0_id: '1',
+          auth0_id: 'auth0|62d080b013253f06fced71d3',
           name: 'TV',
           image: '',
           purchase_date: '02 - 04 - 2019',
@@ -29,7 +29,7 @@ exports.seed = function (knex) {
         },
         {
           id: 3,
-          auth0_id: '3',
+          auth0_id: 'auth0|62d080b013253f06fced71d3',
           name: 'Drill',
           image: '',
           purchase_date: '3 - 03 - 2018',

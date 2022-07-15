@@ -7,17 +7,24 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
+  IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
   Modal,
   OutlinedInput,
+  Stack,
   styled,
   TextField,
   Typography,
 } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
+
+import Preview from './Preview'
+
+const cloudinaryPreset = 'nh01qzjk'
 
 const categories = [
   'Books',
@@ -36,12 +43,38 @@ export default function AddReceiptForm({ modalState, close }) {
   const [warrantyChecked, setWarrantyChecked] = useState(false)
   const [period, setPeriod] = useState('year(s)')
 
+  const [image, setImage] = useState(null)
+  const [previewMode, setPreviewMode] = useState(false)
+
+  function handleImageChange(e) {
+    e.preventDefault()
+    const file = e.target.files[0]
+    setImage(file)
+  }
+
+  function resetImage() {
+    setImage(null)
+  }
+
+  function setImagePreview(e) {
+    e.preventDefault()
+    setPreviewMode(!previewMode)
+  }
+
+  // function handleSubmit(e) {
+  //   e.preventDefault()
+  //   const formData = new FormData()
+  //   formData.append('file', image)
+  //   formData.append('upload_preset', cloudinaryPreset)
+  //   // return uploadImag
+  // }
+
   return (
     <StyledModal
       open={modalState}
       onClose={(e) => {
-        close(e, false)
         setWarrantyChecked(false)
+        close(e, false)
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -61,6 +94,37 @@ export default function AddReceiptForm({ modalState, close }) {
         <Typography variant="h6" color="primary" textAlign="center">
           New Receipt
         </Typography>
+        {!image && (
+          <IconButton
+            color="primary"
+            component="label"
+            sx={{ width: '50px', height: '50px' }}
+          >
+            <input
+              hidden
+              accept="image/*"
+              type="file"
+              onChange={handleImageChange}
+            />
+            <PhotoCamera />
+          </IconButton>
+        )}
+        {image && (
+          <IconButton
+            color="primary"
+            component="label"
+            sx={{ width: '50px' }}
+            onClick={setImagePreview}
+          >
+            <ReceiptLong />
+            <Preview
+              previewMode={previewMode}
+              setImagePreview={setImagePreview}
+              image={image}
+              resetImage={resetImage}
+            />
+          </IconButton>
+        )}
 
         {/* Receipt Name */}
         <TextField
@@ -165,11 +229,7 @@ export default function AddReceiptForm({ modalState, close }) {
         )}
 
         {/* Add Button */}
-        <Button
-          variant="contained"
-          type="submit"
-          // onClick={handleSubmit}
-        >
+        <Button variant="contained" type="submit">
           Add
         </Button>
       </Box>

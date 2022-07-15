@@ -6,7 +6,9 @@ export function getReceipts(token) {
   return request
     .get(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
-    .then((res) => res.body)
+    .then((res) => {
+      return res.body
+    })
 }
 
 export function postReceipt(receipt, token) {

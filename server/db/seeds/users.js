@@ -18,5 +18,10 @@ exports.seed = async function (knex) {
       email: 'random16@gmail.com',
       username: 'Random16',
     },
+    {
+      auth0_id: 'auth0|62d1e54bb624cf5ad8865601',
+      email: 'random17@gmail.com',
+      username: 'Random17',
+    },
   ])
 }

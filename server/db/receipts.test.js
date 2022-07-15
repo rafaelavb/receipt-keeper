@@ -2,7 +2,7 @@ const request = require('supertest')
 const server = require('../server')
 const db = require('./receipts')
 
-const { objReceipts } = require('../../tests/fake-data')
+import { objReceipts } from '../../tests/fake-data'
 const { checkJwt } = require('../auth0')
 
 jest.mock('./receipts')
@@ -12,7 +12,7 @@ beforeAll(() => {
   jest.spyOn(console, 'error')
   console.error.mockImplementation(() => {})
   checkJwt.mockImplementation((req, res, next) => {
-    req.user = { objReceipts }
+    req.user = { sub: objReceipts.auth0_id }
     next()
   })
 })

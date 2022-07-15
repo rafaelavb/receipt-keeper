@@ -11,10 +11,11 @@ export function addUser(newUser) {
 
 export function getUsername(token) {
   return request
-    .get('/username')
+    .get(`${usersURL}/username`)
     .set('authorization', `Bearer ${token}`)
     .then((res) => {
-      return res.body
+      console.log('api', res.body)
+      return res.body.username
     })
     .catch((err) => console.log(err))
 }

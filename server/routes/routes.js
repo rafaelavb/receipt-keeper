@@ -4,8 +4,6 @@ const db = require('../db/receipts')
 
 const router = express.Router()
 
-const checkJwt = require('../auth0')
-
 //gets all receipts
 //GET /api/v1/receipts
 router.get('/', checkJwt, (req, res) => {

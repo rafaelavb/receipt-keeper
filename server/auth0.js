@@ -1,4 +1,5 @@
-const { expressjwt: jwt } = require('express-jwt')
+// const { expressjwt: jwt } = require('express-jwt')
+const jwt = require('express-jwt')
 const jwks = require('jwks-rsa')
 
 // TODO: set the domain and audience (API Identifier)

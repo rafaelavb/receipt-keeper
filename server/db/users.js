@@ -21,7 +21,7 @@ function getUserByName(username, db = connection) {
 }
 
 function getUsername(auth0_id, db = connection) {
-  return db('users').select().where({ auth0_id }).first()
+  return db('users').select('username').where({ auth0_id }).first()
 }
 
 function createUser(user, db = connection) {

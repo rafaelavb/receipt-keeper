@@ -5,9 +5,10 @@ import { useSelector } from 'react-redux'
 
 import { getUsername } from '../apis'
 import { IfNotAuthenticated } from './Authenticated'
+import loggedInUserReducer from '../reducers/loggedInUser'
 
 export default function Home() {
-  const { loginWithRedirect, getAccessTokenSilently } = useAuth0()
+  const { loginWithRedirect, getAccessTokenSilently, user } = useAuth0()
   const navigate = useNavigate()
   const loggedInUser = useSelector((state) => state.loggedInUser)
 
@@ -19,22 +20,14 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (loggedInUser) {
-      console.log(loggedInUser)
-
-      getAccessTokenSilently().then((token) => {
-        console.log(token)
-        getUsername(token).then((username) => {
-          console.log(username)
+    console.log(loggedInUser)
+    if (loggedInUser.token) {
+      getUsername(loggedInUser.token).then((username) => {
+        console.log(username)
+        if (username) {
           navigate(`/receipts/${username}`)
-        })
+        }
       })
-      // getUsername(loggedInUser).then((username) => {
-      //   if (username) {
-      //     console.log(username)
-      //     navigate(`/receipts/${username}`)
-      //   }
-      // })
     }
   }, [loggedInUser])
 

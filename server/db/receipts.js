@@ -1,15 +1,15 @@
 const connection = require('./connection')
 
-//shows all the receipts
-function getReceipts(auth0Id, db = connection) {
+// shows all the receipts
+function getReceipts(auth0_id, db = connection) {
   return db('receipts')
     .join('users', 'receipts.auth0_id', 'users.auth0_id')
     .join('categories', 'receipts.category_id', 'categories.id')
     .join('warranties', 'receipts.id', 'warranties.receipt_id')
     .select(
+      'users.username as username',
       'receipts.id as id',
       'receipts.auth0_id as auth0Id',
-      'users.username as username',
       'receipts.name as name',
       'receipts.image as image',
       'receipts.purchase_date as purchaseDate',
@@ -21,28 +21,25 @@ function getReceipts(auth0Id, db = connection) {
       'warranties.id as warrantyId',
       'warranties.expiry_date as expiryDate'
     )
-    .where('receipts.auth0_id', 'auth0Id')
+    .where({ 'users.auth0_id': auth0_id })
 }
-//show a single receipt
 
+// show a single receipt
 function getReceipt(id, db = connection) {
   return db('receipts').select().where('id', id).first()
 }
 
-//gets all stores from receipts in an array
-
+// gets all stores from receipts in an array
 function getStores(auth0_id, db = connection) {
   return db('receipts').select('store').where({ auth0_id })
 }
 
-//gets all types from categories
-
+// gets all types from categories
 function getTypes(auth0_id, db = connection) {
   return db('categories').select('type').where({ auth0_id })
 }
 
-//add to a list of receipts
-
+// add to a list of receipts
 function addReceipt(auth0_id, receipts, db = connection) {
   const newReceipt = {
     auth0_id: auth0_id,

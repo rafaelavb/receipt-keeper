@@ -4,15 +4,13 @@ const db = require('../db/receipts')
 
 const router = express.Router()
 
-//gets all receipts
-//GET /api/v1/receipts
+// Gets all receipts
+// GET /api/v1/receipts
 router.get('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
-  console.log(auth0Id)
 
   db.getReceipts(auth0Id)
     .then((receipts) => {
-      console.log(receipts)
       res.json(receipts)
     })
     .catch((err) => {
@@ -21,11 +19,11 @@ router.get('/', checkJwt, (req, res) => {
     })
 })
 
-//GET /api/v1/receipts/#
-//get single receipt by ID
-
+// Get single receipt by ID
+// GET /api/v1/receipts/#
 router.get('/:id', checkJwt, (req, res) => {
   const id = req.params.id
+
   db.getReceipt(id)
     .then((receipt) => {
       res.json(receipt)
@@ -36,10 +34,11 @@ router.get('/:id', checkJwt, (req, res) => {
     })
 })
 
-//GET /api/v1/receipts.store
-
+// Get all stores
+// GET /api/v1/receipts.store
 router.get('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
+
   db.getStores(auth0Id)
     .then((stores) => {
       res.json(stores)
@@ -50,13 +49,12 @@ router.get('/', checkJwt, (req, res) => {
     })
 })
 
-// ADD /api/v1/receipts
 // (add receipt)
-
+// ADD /api/v1/receipts
 router.post('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
   const receipt = req.body
-  console.log(receipt)
+
   db.addReceipt(auth0Id, receipt)
     .then((ids) => {
       const newReceiptId = ids[0]
@@ -73,8 +71,7 @@ router.post('/', checkJwt, (req, res) => {
 })
 
 // Update receipt by id
-///api/v1/receipts/#
-
+// PATCH api/v1/receipts/#
 router.patch('/:id', checkJwt, (req, res) => {
   const updatedReceipt = req.body
   const id = Number(req.params.id)
@@ -92,11 +89,11 @@ router.patch('/:id', checkJwt, (req, res) => {
     })
 })
 
-//Delete receipt by id
-// /api/v1/receipts/#
-
+// Delete receipt by id
+// DELETE /api/v1/receipts/#
 router.delete('/:id', checkJwt, (req, res) => {
   const id = Number(req.params.id)
+
   db.deleteReceipt(id)
     .then(() => {
       res.json()
@@ -107,11 +104,11 @@ router.delete('/:id', checkJwt, (req, res) => {
     })
 })
 
-//get the stores in the receipt
-//GET api/v1/receipts/all/stores
-
-router.get('/all/stores', checkJwt, (req, res) => {
+// get the stores in the receipt
+// GET api/v1/receipts/stores
+router.get('/stores', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
+
   db.getStores(auth0Id)
     .then((stores) => {
       res.json(stores)
@@ -122,9 +119,10 @@ router.get('/all/stores', checkJwt, (req, res) => {
     })
 })
 
-//GET api/v1/receipts/all/categories
-router.get('/all/categories', checkJwt, (req, res) => {
+// GET api/v1/receipts/categories
+router.get('/categories', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
+
   db.getTypes(auth0Id)
     .then((categories) => {
       res.json(categories)

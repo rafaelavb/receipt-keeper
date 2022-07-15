@@ -9,12 +9,11 @@ import AddReceipt from './AddReceipt'
 
 export default function Receipts(props) {
   const { store } = useParams()
-  const dispatch = useDispatch()
   const receipts = useSelector((state) => state.receipts.data)
   const token = useSelector((state) => state.loggedInUser.token)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(token)
     if (token) {
       dispatch(fetchReceipts(token))
     }
@@ -48,68 +47,3 @@ export default function Receipts(props) {
     </Box>
   )
 }
-
-// need to delete the hardcoded array (redux)
-// const receipts = [
-//   {
-//     id: 1,
-//     auth0Id: 'auth0|62ce51224e478f1e65cfb444',
-//     username: 'Lauren',
-//     name: 'Toaster',
-//     image:
-//       'https://thumbs.dreamstime.com/b/vector-paper-check-sell-receipt-bill-template-vector-paper-cash-sell-receipt-139437685.jpg',
-//     purchaseDate: new Date('2022', '6', '11').toLocaleDateString('en-NZ'),
-//     store: 'Noel Leeming',
-//     price: 108.5,
-//     categoryId: 1,
-//     note: 'bought a toaster for office',
-//     categoryType: 'appliance',
-//     warrantyId: 1,
-//     expiryDate: new Date('2023', '6', '11').toLocaleDateString('en-NZ'),
-//   },
-//   {
-//     id: 2,
-//     auth0Id: 'auth0|62ce51224e478f1e65cfb444',
-//     username: 'Lauren',
-//     name: 'Hair dryer',
-//     image:
-//       'https://thumbs.dreamstime.com/b/vector-paper-check-sell-receipt-bill-template-vector-paper-cash-sell-receipt-139437685.jpg',
-//     purchaseDate: new Date('2022', '4', '11').toLocaleDateString('en-NZ'),
-//     store: 'Harvey Norman',
-//     price: 65.99,
-//     categoryId: 1,
-//     categoryType: 'appliance',
-//   },
-//   {
-//     id: 3,
-//     auth0Id: 'auth0|62ce51224e478f1e65cfb444',
-//     username: 'Lauren',
-//     name: 'Toaster',
-//     image:
-//       'https://thumbs.dreamstime.com/b/vector-paper-check-sell-receipt-bill-template-vector-paper-cash-sell-receipt-139437685.jpg',
-//     purchaseDate: new Date('2022', '6', '11').toLocaleDateString('en-NZ'),
-//     store: 'Noel Leeming',
-//     price: 108.5,
-//     categoryId: 1,
-//     note: 'bought a toaster for office',
-//     categoryType: 'appliance',
-//     warrantyId: 3,
-//     expiryDate: new Date('2023', '6', '11').toLocaleDateString('en-NZ'),
-//   },
-//   {
-//     id: 4,
-//     auth0Id: 'auth0|62ce51224e478f1e65cfb444',
-//     username: 'Lauren',
-//     name: 'Hair dryer',
-//     image:
-//       'https://thumbs.dreamstime.com/b/vector-paper-check-sell-receipt-bill-template-vector-paper-cash-sell-receipt-139437685.jpg',
-//     purchaseDate: new Date('2022', '4', '11').toLocaleDateString('en-NZ'),
-//     store: 'Harvey Norman',
-//     price: 65.99,
-//     categoryId: 1,
-//     note: undefined,
-//     categoryType: 'appliance',
-//     warrantyId: 4,
-//     expiryDate: new Date('2024', '4', '11').toLocaleDateString('en-NZ'),
-//   },
-// ]

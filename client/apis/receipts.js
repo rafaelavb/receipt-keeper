@@ -7,7 +7,6 @@ export function getReceipts(token) {
     .get(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
     .then((res) => {
-      console.log('api')
       return res.body
     })
 }

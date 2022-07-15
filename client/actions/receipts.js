@@ -21,7 +21,6 @@ export function fetchReceipts(token) {
     return api
       .getReceipts(token)
       .then((receipts) => {
-        console.log('action')
         dispatch(receiveReceipts(receipts))
       })
       .catch((error) => dispatch(setReceiptsError(error.message)))

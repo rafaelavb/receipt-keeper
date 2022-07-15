@@ -25,7 +25,6 @@ export default function receiptsReducer(state = initialState, action) {
     case ADD_RECEIPT:
     case UPDATE_RECEIPT:
     case DELETE_RECEIPT:
-      console.log('reducer')
       return {
         ...state,
         data: payload,

@@ -61,13 +61,13 @@ export default function AddReceiptForm({ modalState, close }) {
     setPreviewMode(!previewMode)
   }
 
-  // function handleSubmit(e) {
-  //   e.preventDefault()
-  //   const formData = new FormData()
-  //   formData.append('file', image)
-  //   formData.append('upload_preset', cloudinaryPreset)
-  //   // return uploadImag
-  // }
+  function handleSubmit(e) {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('file', image)
+    formData.append('upload_preset', cloudinaryPreset)
+    // return uploadImag
+  }
 
   return (
     <StyledModal
@@ -101,6 +101,7 @@ export default function AddReceiptForm({ modalState, close }) {
             sx={{ width: '50px', height: '50px' }}
           >
             <input
+              required
               hidden
               accept="image/*"
               type="file"
@@ -128,6 +129,7 @@ export default function AddReceiptForm({ modalState, close }) {
 
         {/* Receipt Name */}
         <TextField
+          required
           id="receipt-name"
           label="Name"
           variant="outlined"
@@ -139,6 +141,9 @@ export default function AddReceiptForm({ modalState, close }) {
         <FormControl fullWidth>
           <InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
           <OutlinedInput
+            type="decimal"
+            step={0.01}
+            required
             id="price"
             label="Price"
             // value={receipt.price}
@@ -150,6 +155,7 @@ export default function AddReceiptForm({ modalState, close }) {
         {/* Purchase Date */}
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
+            required
             disableFuture
             label="Purchase Date"
             openTo="year"
@@ -208,10 +214,11 @@ export default function AddReceiptForm({ modalState, close }) {
         {warrantyChecked && (
           <Grid container>
             <Grid item xs={8}>
-              <TextField id="warranty-duration" label="Warranty" />
+              <TextField id="warranty-duration" label="Warranty" required />
             </Grid>
             <Grid item xs={4}>
               <TextField
+                required
                 id="warranty-period"
                 label=""
                 select
@@ -229,7 +236,7 @@ export default function AddReceiptForm({ modalState, close }) {
         )}
 
         {/* Add Button */}
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" onClick={handleSubmit}>
           Add
         </Button>
       </Box>

@@ -6,7 +6,7 @@ exports.up = function (knex) {
   return knex.schema.createTable('users', (table) => {
     table.string('auth0_id').primary()
     table.string('email')
-    table.string('username')
+    table.string('username').unique()
   })
 }
 

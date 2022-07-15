@@ -7,7 +7,6 @@ module.exports = router
 
 router.get('/username', checkJwt, async (req, res) => {
   const auth0Id = req.user?.sub
-
   try {
     const username = await db.getUsername(auth0Id)
     console.log('username', username)

@@ -9,7 +9,6 @@ const router = express.Router()
 router.get('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
   console.log(auth0Id)
-
   db.getReceipts(auth0Id)
     .then((receipts) => {
       console.log(receipts)

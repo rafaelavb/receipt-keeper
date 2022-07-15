@@ -20,7 +20,9 @@ export function fetchReceipts(token) {
     dispatch(requestReceipts())
     return api
       .getReceipts(token)
-      .then((receipts) => dispatch(receiveReceipts(receipts)))
+      .then((receipts) => {
+        dispatch(receiveReceipts(receipts))
+      })
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }

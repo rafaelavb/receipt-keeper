@@ -13,7 +13,7 @@ const initialState = {
   errorMessage: null,
 }
 
-const receiptsReducer = (state = initialState, action) => {
+export default function receiptsReducer(state = initialState, action) {
   const { type, payload, errorMessage } = action
   switch (type) {
     case REQUEST_RECEIPTS:
@@ -40,5 +40,3 @@ const receiptsReducer = (state = initialState, action) => {
       return state
   }
 }
-
-export default receiptsReducer

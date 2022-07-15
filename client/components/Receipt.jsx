@@ -1,4 +1,10 @@
-import { CalendarMonth, Favorite, MoreVert, Share } from '@mui/icons-material'
+import {
+  CalendarMonth,
+  Favorite,
+  Image,
+  MoreVert,
+  Share,
+} from '@mui/icons-material'
 import {
   Card,
   CardHeader,
@@ -7,6 +13,7 @@ import {
   Typography,
   CardActions,
   IconButton,
+  Box,
 } from '@mui/material'
 import React, { useEffect } from 'react'
 
@@ -34,12 +41,19 @@ export default function Receipt(props) {
       <CardContent>
         <Typography>{receipt.store}</Typography>
       </CardContent>
-      <CardMedia
-        component="img"
-        height="194"
-        image={receipt.image}
-        alt={receipt.name}
-      />
+      {receipt.image ? (
+        <CardMedia
+          component="img"
+          height="194"
+          image={receipt.image}
+          alt={receipt.name}
+        />
+      ) : (
+        <Box>
+          <Image color="gray" />
+        </Box>
+      )}
+
       <CardContent height={'110px'}>
         {receipt.note ? (
           <Typography

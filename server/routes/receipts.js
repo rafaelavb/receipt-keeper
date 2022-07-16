@@ -4,6 +4,8 @@ const db = require('../db/receipts')
 
 const router = express.Router()
 
+module.exports = router
+
 // Gets all receipts
 // GET /api/v1/receipts
 router.get('/', checkJwt, (req, res) => {
@@ -19,38 +21,8 @@ router.get('/', checkJwt, (req, res) => {
     })
 })
 
-// Get single receipt by ID
-// GET /api/v1/receipts/#
-router.get('/:id', checkJwt, (req, res) => {
-  const id = req.params.id
-
-  db.getReceipt(id)
-    .then((receipt) => {
-      res.json(receipt)
-    })
-    .catch((err) => {
-      console.error(err.message)
-      res.status(500).send('Server error')
-    })
-})
-
-// Get all stores
-// GET /api/v1/receipts.store
-router.get('/', checkJwt, (req, res) => {
-  const auth0Id = req.user?.sub
-
-  db.getStores(auth0Id)
-    .then((stores) => {
-      res.json(stores)
-    })
-    .catch((err) => {
-      console.error(err)
-      res.status(500).send('Server Error')
-    })
-})
-
-// (add receipt)
-// ADD /api/v1/receipts
+// Add new receipt
+// POST /api/v1/receipts
 router.post('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
   const receipt = req.body
@@ -58,11 +30,10 @@ router.post('/', checkJwt, (req, res) => {
   db.addReceipt(auth0Id, receipt)
     .then((ids) => {
       const newReceiptId = ids[0]
-      console.log(newReceiptId)
-      return db.getReceipts()
+      db.getReceipt(newReceiptId)
     })
-    .then((receipt) => {
-      res.json(receipt)
+    .then((newReceipt) => {
+      res.json(newReceipt)
     })
     .catch((err) => {
       console.error(err.message)
@@ -70,18 +41,32 @@ router.post('/', checkJwt, (req, res) => {
     })
 })
 
-// Update receipt by id
-// PATCH api/v1/receipts/#
-router.patch('/:id', checkJwt, (req, res) => {
-  const updatedReceipt = req.body
-  const id = Number(req.params.id)
+// POST /api/v1/receipts (async / await option)
+// router.post('/', checkJwt, async (req, res) => {
+//   const auth0Id = req.user?.sub
+//   const receipt = req.body
 
-  db.updateReceipt(id, updatedReceipt)
+//   try {
+//     const [newReceiptId] = await db.addTask(auth0Id, receipt)
+//     const addedReceipt = await db.getTaskById(newReceiptId)
+//     res.json(addedReceipt)
+//   } catch (err) {
+//     console.error(err.message)
+//     res.status(500).send('Server error')
+//   }
+// })
+
+// Update receipt
+// PATCH api/v1/receipts/
+router.patch('/', checkJwt, (req, res) => {
+  const amendedReceipt = req.body
+
+  db.updateReceipt(amendedReceipt)
     .then(() => {
-      return db.getReceipt(updatedReceipt.id)
+      db.getReceipt(amendedReceipt.id)
     })
-    .then((receipt) => {
-      res.json(receipt)
+    .then((updatedReceipt) => {
+      res.json(updatedReceipt)
     })
     .catch((err) => {
       console.error(err.message)
@@ -89,12 +74,12 @@ router.patch('/:id', checkJwt, (req, res) => {
     })
 })
 
-// Delete receipt by id
-// DELETE /api/v1/receipts/#
-router.delete('/:id', checkJwt, (req, res) => {
-  const id = Number(req.params.id)
+// Delete receipt
+// DELETE /api/v1/receipts/
+router.delete('/', checkJwt, (req, res) => {
+  const receipt = req.body
 
-  db.deleteReceipt(id)
+  db.deleteReceipt(receipt)
     .then(() => {
       res.json()
     })
@@ -104,6 +89,7 @@ router.delete('/:id', checkJwt, (req, res) => {
     })
 })
 
+// *** Probably don't need ***
 // get the stores in the receipt
 // GET api/v1/receipts/stores
 router.get('/stores', checkJwt, (req, res) => {
@@ -119,6 +105,7 @@ router.get('/stores', checkJwt, (req, res) => {
     })
 })
 
+// *** Probably don't need ***
 // GET api/v1/receipts/categories
 router.get('/categories', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
@@ -133,4 +120,34 @@ router.get('/categories', checkJwt, (req, res) => {
     })
 })
 
-module.exports = router
+// *** Probably don't need ***
+// Get single receipt by ID
+// GET /api/v1/receipts/#
+router.get('/:id', checkJwt, (req, res) => {
+  const id = req.params.id
+
+  db.getReceipt(id)
+    .then((receipt) => {
+      res.json(receipt)
+    })
+    .catch((err) => {
+      console.error(err.message)
+      res.status(500).send('Server error')
+    })
+})
+
+// *** Probably don't need ***
+// Get all stores
+// GET /api/v1/receipts.store
+router.get('/', checkJwt, (req, res) => {
+  const auth0Id = req.user?.sub
+
+  db.getStores(auth0Id)
+    .then((stores) => {
+      res.json(stores)
+    })
+    .catch((err) => {
+      console.error(err)
+      res.status(500).send('Server Error')
+    })
+})

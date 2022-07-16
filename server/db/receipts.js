@@ -1,6 +1,6 @@
 const connection = require('./connection')
 
-// shows all the receipts
+// Get all the receipts
 function getReceipts(auth0_id, db = connection) {
   return db('receipts')
     .join('users', 'receipts.auth0_id', 'users.auth0_id')
@@ -28,7 +28,7 @@ function getReceipts(auth0_id, db = connection) {
 
 // Get a single receipt by id
 function getReceipt(receiptId, db = connection) {
-  return db('receipts').select().where({ receiptId }).first()
+  return db('receipts').select().where({ id: receiptId }).first()
 }
 
 // Add a receipt

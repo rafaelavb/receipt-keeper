@@ -16,7 +16,7 @@ import { IfAuthenticated, IfNotAuthenticated } from './Authenticated'
 import { useAuth0 } from '@auth0/auth0-react'
 
 export default function Navbar(props) {
-  const { logout, loginWithRedirect, user, getAccessTokenSilently } = useAuth0()
+  const { logout, loginWithRedirect } = useAuth0()
   const { home } = props
   const [anchorElUser, setAnchorElUser] = useState(null)
 

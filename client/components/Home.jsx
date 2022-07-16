@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react'
-import { useAuth0 } from '@auth0/auth0-react'
-import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
+import { useNavigate } from 'react-router-dom'
+import { useAuth0 } from '@auth0/auth0-react'
 import { getUsername } from '../apis'
+
 import { IfNotAuthenticated } from './Authenticated'
-import loggedInUserReducer from '../reducers/loggedInUser'
 
 export default function Home() {
-  const { loginWithRedirect, getAccessTokenSilently, user } = useAuth0()
+  const { loginWithRedirect } = useAuth0()
   const navigate = useNavigate()
   const loggedInUser = useSelector((state) => state.loggedInUser)
 

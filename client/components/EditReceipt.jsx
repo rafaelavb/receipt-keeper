@@ -60,8 +60,8 @@ export default function EditReceipt({
   const [warrantyChecked, setWarrantyChecked] = useState(
     receipt.warrantyId ? true : false
   )
-  const [periodUnit, setPeriodUnit] = useState(receipt.warrantyPeriodUnit)
   const [period, setPeriod] = useState(receipt.warrantyPeriod)
+  const [periodUnit, setPeriodUnit] = useState(receipt.warrantyPeriodUnit)
   const [image, setImage] = useState(
     typeof receipt.image === 'object' ? receipt.image.url : receipt.image
   )
@@ -270,7 +270,7 @@ export default function EditReceipt({
             control={
               <Checkbox
                 checked={warrantyChecked}
-                onChange={(e) => {
+                onChange={() => {
                   setWarrantyChecked(!warrantyChecked)
                 }}
               />

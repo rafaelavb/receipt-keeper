@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   Box,
   Button,
@@ -21,39 +22,44 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
 
-import Preview from './Preview'
-
 import { uploadImageToCloudinary } from '../apis'
-import { useSelector } from 'react-redux'
-
-import { calculateExpiryDate } from '../helperFunctions'
-
 const cloudinaryPreset = 'receipts_keepers'
 
-const categories = [
-  'Books',
-  'Clothing',
-  'Electronics',
-  'Food',
-  'Homeware',
-  'Jewellery',
-]
+import Preview from './Preview'
+import { calculateExpiryDate } from '../helperFunctions'
+import { createReceipt } from '../actions'
 
 const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
 
 export default function AddReceiptForm({ modalState, close }) {
   const token = useSelector((state) => state.loggedInUser.token)
-  const [name, setName] = useState('')
-  const [price, setPrice] = useState('')
-  const [note, setNote] = useState('')
-  const [category, setCategory] = useState('')
-  const [store, setStore] = useState('')
+  const categories = useSelector((state) => state.categories.data)
   const [purchaseDate, setPurchaseDate] = useState(new Date())
   const [warrantyChecked, setWarrantyChecked] = useState(false)
-  const [periodUnit, setPeriodUnit] = useState('year(s)')
-  const [period, setPeriod] = useState('')
   const [image, setImage] = useState(null)
   const [previewMode, setPreviewMode] = useState(false)
+  const dispatch = useDispatch()
+
+  const [newReceipt, setNewReceipt] = useState({
+    name: '',
+    price: '',
+    purchaseDate: '',
+    store: '',
+    category: '',
+    note: '',
+    expiryDate: '',
+    warrantyPeriod: '',
+    warrantyPeriodUnit: '',
+  })
+
+  function handleReceiptChange(e) {
+    const { name, value } = e.target
+    setNewReceipt({
+      ...newReceipt,
+      [name]: value,
+      purchaseDate,
+    })
+  }
 
   function handleImageChange(e) {
     e.preventDefault()
@@ -73,32 +79,40 @@ export default function AddReceiptForm({ modalState, close }) {
   function handleSubmit(e) {
     e.preventDefault()
 
-    const expiryDate =
-      warrantyChecked && purchaseDate && period && periodUnit
-        ? calculateExpiryDate(purchaseDate, period, periodUnit)
+    newReceipt.expiryDate =
+      warrantyChecked &&
+      purchaseDate &&
+      newReceipt.warrantyPeriod &&
+      newReceipt.warrantyPeriodUnit
+        ? calculateExpiryDate(
+            purchaseDate,
+            newReceipt.warrantyPeriod,
+            newReceipt.warrantyPeriodUnit
+          )
         : null
-    console.log(expiryDate)
+    // console.log(newReceipt.expiryDate)
 
-    if (image && name && price && store) {
+    if (image && newReceipt.name && newReceipt.price && newReceipt.store) {
       const formData = new FormData()
       formData.append('file', image)
       formData.append('upload_preset', cloudinaryPreset)
-      return uploadImageToCloudinary(formData).then((res) => {
-        console.log(res)
-        const imageInfo = JSON.stringify(res)
-        const newReceipt = {
-          name,
-          image: imageInfo,
-          purchaseDate,
-          store,
-          price,
-          category: category ? category : 'none',
-          note: note ? note : 'none',
-          expiryDate: warrantyChecked ? expiryDate : null,
-          warrantyPeriod: warrantyChecked ? period : null,
-          warrantyPeriodUnit: warrantyChecked ? periodUnit : null,
-        }
-      })
+      return uploadImageToCloudinary(formData)
+        .then((res) => {
+          // console.log(res)
+          const imageInfo = JSON.stringify(res)
+          // console.log(imageInfo)
+          setNewReceipt({
+            ...newReceipt,
+            image: imageInfo,
+          })
+        })
+        .then(() => {
+          if (newReceipt.image) {
+            // console.log(newReceipt)
+            // console.log(newReceipt.image)
+            dispatch(createReceipt(newReceipt, token))
+          }
+        })
     }
   }
 
@@ -131,6 +145,8 @@ export default function AddReceiptForm({ modalState, close }) {
         <Typography variant="h6" color="primary" textAlign="center">
           New Receipt
         </Typography>
+
+        {/* Image */}
         {!image && (
           <IconButton
             color="primary"
@@ -170,8 +186,9 @@ export default function AddReceiptForm({ modalState, close }) {
           id="receipt-name"
           label="Name"
           variant="outlined"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          name="name"
+          value={newReceipt.name}
+          onChange={handleReceiptChange}
         />
 
         {/* Price */}
@@ -183,8 +200,9 @@ export default function AddReceiptForm({ modalState, close }) {
             required
             id="price"
             label="Price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            name="price"
+            value={newReceipt.price}
+            onChange={handleReceiptChange}
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
           />
         </FormControl>
@@ -198,6 +216,7 @@ export default function AddReceiptForm({ modalState, close }) {
             openTo="year"
             views={['year', 'month', 'day']}
             inputFormat="dd/MM/yyyy"
+            // name="purchaseDate"
             value={purchaseDate}
             onChange={(newDate) => {
               setPurchaseDate(newDate)
@@ -206,30 +225,32 @@ export default function AddReceiptForm({ modalState, close }) {
           />
         </LocalizationProvider>
 
-        {/* Category */}
-        <TextField
-          id="category"
-          label="Category"
-          select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          {categories.map((category) => (
-            <MenuItem key={category} value={category}>
-              {category}
-            </MenuItem>
-          ))}
-        </TextField>
-
         {/* Store */}
         <TextField
           required
           id="receipt-store"
           label="Store"
           variant="outlined"
-          value={store}
-          onChange={(e) => setStore(e.target.value)}
+          name="store"
+          value={newReceipt.store}
+          onChange={handleReceiptChange}
         />
+
+        {/* Category */}
+        <TextField
+          id="category"
+          label="Category"
+          select
+          name="category"
+          value={newReceipt.category}
+          onChange={handleReceiptChange}
+        >
+          {categories.map((category) => (
+            <MenuItem key={category.categoryType} value={category.categoryType}>
+              {category.categoryType}
+            </MenuItem>
+          ))}
+        </TextField>
 
         {/* Note */}
         <TextField
@@ -238,8 +259,9 @@ export default function AddReceiptForm({ modalState, close }) {
           multiline
           rows={2}
           placeholder="Enter your note here..."
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
+          name="note"
+          value={newReceipt.note}
+          onChange={handleReceiptChange}
         />
 
         {/* Warranty */}
@@ -248,7 +270,7 @@ export default function AddReceiptForm({ modalState, close }) {
             control={
               <Checkbox
                 checked={warrantyChecked}
-                onChange={(e) => {
+                onChange={() => {
                   setWarrantyChecked(!warrantyChecked)
                 }}
               />
@@ -262,21 +284,23 @@ export default function AddReceiptForm({ modalState, close }) {
           <Grid container>
             <Grid item xs={8}>
               <TextField
-                id="warranty-duration"
+                id="warranty-period"
                 label="Warranty"
                 required
-                value={period}
-                onChange={(e) => setPeriod(e.target.value)}
+                name="warrantyPeriod"
+                value={newReceipt.warrantyPeriod}
+                onChange={handleReceiptChange}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 required
-                id="warranty-period"
+                id="warranty-period-unit"
                 label=""
                 select
-                value={periodUnit}
-                onChange={(e) => setPeriodUnit(e.target.value)}
+                name="warrantyPeriodUnit"
+                value={newReceipt.warrantyPeriodUnit}
+                onChange={handleReceiptChange}
               >
                 {periods.map((unit) => (
                   <MenuItem key={unit} value={unit}>

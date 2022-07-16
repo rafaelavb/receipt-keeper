@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
+import categoriesReducer from './categories'
 import receiptsReducer from './receipts'
 import loggedInUserReducer from './loggedInUser'
-import storesReducer from './stores'
 
 export default combineReducers({
+  categories: categoriesReducer,
   receipts: receiptsReducer,
   loggedInUser: loggedInUserReducer,
-  stores: storesReducer,
 })

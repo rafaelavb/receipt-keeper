@@ -1,10 +1,10 @@
 import request from 'superagent'
 
-const receiptsUrl = '/api/v1/receipts'
+const categoriesUrl = '/api/v1/categories'
 
-export function getStores(token) {
+export function getCategories(token) {
   return request
-    .get(`${receiptsUrl}/stores`)
+    .get(categoriesUrl)
     .set('authorization', `Bearer ${token}`)
     .then((res) => res.body)
 }

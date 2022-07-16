@@ -106,21 +106,6 @@ router.get('/stores', checkJwt, (req, res) => {
 })
 
 // *** Probably don't need ***
-// GET api/v1/receipts/categories
-router.get('/categories', checkJwt, (req, res) => {
-  const auth0Id = req.user?.sub
-
-  db.getTypes(auth0Id)
-    .then((categories) => {
-      res.json(categories)
-    })
-    .catch((err) => {
-      console.error(err.message)
-      res.status(500).send('Server error')
-    })
-})
-
-// *** Probably don't need ***
 // Get single receipt by ID
 // GET /api/v1/receipts/#
 router.get('/:id', checkJwt, (req, res) => {

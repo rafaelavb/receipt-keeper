@@ -26,6 +26,8 @@ import Preview from './Preview'
 import { uploadImageToCloudinary } from '../apis'
 import { useSelector } from 'react-redux'
 
+import { calculateExpiryDate } from '../helperFunctions'
+
 const cloudinaryPreset = 'receipts_keepers'
 
 const categories = [
@@ -59,10 +61,6 @@ export default function AddReceiptForm({ modalState, close }) {
     setImage(file)
   }
 
-  useEffect(() => {
-    console.log(periodUnit)
-  }, [periodUnit])
-
   function setImagePreview(e) {
     e.preventDefault()
     setPreviewMode(!previewMode)
@@ -74,8 +72,14 @@ export default function AddReceiptForm({ modalState, close }) {
 
   function handleSubmit(e) {
     e.preventDefault()
-    // calculateExpiryDate(purchaseDate, period, periodUnit)
-    if (image && name && price) {
+
+    const expiryDate =
+      warrantyChecked && purchaseDate && period && periodUnit
+        ? calculateExpiryDate(purchaseDate, period, periodUnit)
+        : null
+    console.log(expiryDate)
+
+    if (image && name && price && store) {
       const formData = new FormData()
       formData.append('file', image)
       formData.append('upload_preset', cloudinaryPreset)
@@ -90,39 +94,11 @@ export default function AddReceiptForm({ modalState, close }) {
           price,
           category: category ? category : 'none',
           note: note ? note : 'none',
-          // expiryDate: warrantyChecked ?
+          expiryDate,
         }
       })
     }
   }
-
-  // function calculateExpiryDate(prevDate, exPeriod, unit) {
-  //   const x = parseInt(exPeriod)
-  //   let expiryDateInmSec
-  //   let expiryDate
-  //   const purchaseDateInmSec = new Date(prevDate).getTime()
-  //   const purchaseDateInDays = purchaseDateInmSec / 1000 / 60 / 60 / 24
-  //   const purchaseDateInWeeks = purchaseDateInDays / 7
-
-  //   if (unit === 'day(s)') {
-  //     const expiryDateInDays = purchaseDateInDays + x
-  //     expiryDateInmSec = expiryDateInDays * 1000 * 60 * 60 * 24
-  //     expiryDate = new Date(expiryDateInmSec)
-  //     return expiryDate
-  //   }
-
-  //   if (unit === 'week(s)') {
-  //     const expiryDateInWeeks = purchaseDateInWeeks + x
-  //     expiryDateInmSec = expiryDateInWeeks * 1000 * 60 * 60 * 24 * 7
-  //     expiryDate = new Date(expiryDateInmSec)
-  //     return expiryDate
-  //   }
-
-  //   if (unit === 'month(s)') {
-  //     const purchaseMonth = new Date(prevDate).getMonth() + 1
-  //     console.log(purchaseMonth)
-  //   }
-  // }
 
   return (
     <StyledModal

@@ -1,12 +1,14 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Box, Stack } from '@mui/material'
 
 import Receipt from './Receipt'
 import AddReceipt from './AddReceipt'
 
-export default function Receipts({ receipts }) {
+export default function Receipts() {
   const { store } = useParams()
+  const receipts = useSelector((state) => state.receipts.data)
 
   return (
     <Box flex={5}>
@@ -31,7 +33,7 @@ export default function Receipts({ receipts }) {
             )
           })}
       </Stack>
-      <AddReceipt receipts={receipts} />
+      <AddReceipt />
     </Box>
   )
 }

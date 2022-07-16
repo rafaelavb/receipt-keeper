@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 
 import { getUsername } from '../apis'
 import { IfNotAuthenticated } from './Authenticated'
-import loggedInUserReducer from '../reducers/loggedInUser'
 
 export default function Home() {
   const { loginWithRedirect, getAccessTokenSilently, user } = useAuth0()

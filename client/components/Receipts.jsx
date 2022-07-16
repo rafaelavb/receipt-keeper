@@ -9,7 +9,7 @@ import AddReceipt from './AddReceipt'
 
 export default function Receipts(props) {
   const { store } = useParams()
-  const receipts = useSelector((state) => state.receipts.data)
+  const { receipts } = props
   const token = useSelector((state) => state.loggedInUser.token)
   const dispatch = useDispatch()
 

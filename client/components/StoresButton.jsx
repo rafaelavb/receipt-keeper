@@ -10,16 +10,11 @@ import {
 import { Storefront } from '@mui/icons-material'
 import { Link, useParams } from 'react-router-dom'
 
-export default function StoresButton() {
+export default function StoresButton(props) {
   const { username } = useParams()
+  const { receipts } = props
+  const stores = receipts.map((receipt) => receipt.store)
 
-  const stores = [
-    'Countdown',
-    'Noel Leeming',
-    'PB Tech',
-    'Pak n Save',
-    'Harvey Norman',
-  ] // need to delete hardcoded array for stores
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
 
@@ -37,6 +32,7 @@ export default function StoresButton() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(false)
   }
+
   return (
     <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
       <Tooltip title="Stores List">

@@ -195,7 +195,7 @@ export default function AddReceiptForm({ modalState, close }) {
             control={
               <Checkbox
                 checked={warrantyChecked}
-                onChange={(e) => {
+                onChange={() => {
                   setWarrantyChecked(!warrantyChecked)
                 }}
               />

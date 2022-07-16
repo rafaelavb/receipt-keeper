@@ -39,7 +39,7 @@ export function createReceipt(receipt, token) {
   return (dispatch) => {
     return api
       .postReceipt(receipt, token)
-      .then((receipt) => dispatch(addReceipt(receipt)))
+      .then((createdReceipt) => dispatch(addReceipt(createdReceipt)))
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }
@@ -56,7 +56,7 @@ export function updateReceipt(receipt, token) {
   return (dispatch) => {
     return api
       .patchReceipt(receipt, token)
-      .then((receipt) => dispatch(updateReceiptAction(receipt)))
+      .then((updatedReceipt) => dispatch(updateReceiptAction(updatedReceipt)))
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }
@@ -69,11 +69,11 @@ export function deleteReceipt(receipt) {
   }
 }
 
-export function removeReceipt(receipt, token) {
+export function removeReceipt(receiptToDelete, token) {
   return (dispatch) => {
     return api
-      .deleteReceipt(receipt, token)
-      .then((receipt) => dispatch(deleteReceipt(receipt)))
+      .deleteReceipt(receiptToDelete, token)
+      .then((receiptToDelete) => dispatch(deleteReceipt(receiptToDelete)))
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }

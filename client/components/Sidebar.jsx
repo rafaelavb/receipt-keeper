@@ -1,3 +1,5 @@
+import React from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { Storefront } from '@mui/icons-material'
 import {
   Box,
@@ -7,19 +9,12 @@ import {
   ListItemText,
   List,
 } from '@mui/material'
-import React from 'react'
 
-import { Link, useParams } from 'react-router-dom'
-
-export default function Sidebar() {
+export default function Sidebar(props) {
   const { username } = useParams()
-  const stores = [
-    'Countdown',
-    'Noel Leeming',
-    'PB Tech',
-    'Pak n Save',
-    'Harvey Norman',
-  ] // need to delete hardcoded array for stores
+  const { receipts } = props
+  const stores = receipts.map((receipt) => receipt.store)
+
   return (
     <Box
       flex={1}

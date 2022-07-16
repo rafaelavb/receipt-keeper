@@ -9,9 +9,7 @@ module.exports = router
 // Get all predefined categories from database
 // GET api/v1/categories
 router.get('/', checkJwt, (req, res) => {
-  const auth0Id = req.user?.sub
-
-  db.getCategories(auth0Id)
+  db.getCategories()
     .then((categories) => {
       res.json(categories)
     })

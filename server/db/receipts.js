@@ -19,7 +19,9 @@ function getReceipts(auth0_id, db = connection) {
       'categories.id as catergoryId',
       'categories.type as categoryType',
       'warranties.id as warrantyId',
-      'warranties.expiry_date as expiryDate'
+      'warranties.expiry_date as expiryDate',
+      'warranties.period as warrantyPeriod',
+      'warranties.period_unit as warrantyPeriodUnit'
     )
     .where({ 'users.auth0_id': auth0_id })
 }

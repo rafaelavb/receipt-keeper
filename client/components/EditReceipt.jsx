@@ -21,7 +21,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
 
-import Preview from './Preview'
+import EditPreview from './EditPreview'
 
 import { uploadImageToCloudinary } from '../apis'
 import { useSelector } from 'react-redux'
@@ -41,18 +41,30 @@ const categories = [
 
 const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
 
-export default function AddReceiptForm({ modalState, close }) {
+export default function EditReceipt({
+  currentReceipt: receipt,
+  modalState,
+  close,
+}) {
   const token = useSelector((state) => state.loggedInUser.token)
-  const [name, setName] = useState('')
-  const [price, setPrice] = useState('')
-  const [note, setNote] = useState('')
-  const [category, setCategory] = useState('')
-  const [store, setStore] = useState('')
-  const [purchaseDate, setPurchaseDate] = useState(new Date())
-  const [warrantyChecked, setWarrantyChecked] = useState(false)
-  const [periodUnit, setPeriodUnit] = useState('year(s)')
-  const [period, setPeriod] = useState('')
-  const [image, setImage] = useState(null)
+  const [name, setName] = useState(receipt.name)
+  const [price, setPrice] = useState(receipt.price)
+  const [note, setNote] = useState(receipt.note ? receipt.note : '')
+  const [category, setCategory] = useState(
+    receipt.category ? receipt.category : ''
+  )
+  const [store, setStore] = useState(receipt.store)
+  const [purchaseDate, setPurchaseDate] = useState(
+    new Date(receipt.purchaseDate)
+  )
+  const [warrantyChecked, setWarrantyChecked] = useState(
+    receipt.warrantyId ? true : false
+  )
+  const [periodUnit, setPeriodUnit] = useState(receipt.warrantyPeriodUnit)
+  const [period, setPeriod] = useState(receipt.warrantyPeriod)
+  const [image, setImage] = useState(
+    typeof receipt.image === 'object' ? receipt.image.url : receipt.image
+  )
   const [previewMode, setPreviewMode] = useState(false)
 
   function handleImageChange(e) {
@@ -72,7 +84,6 @@ export default function AddReceiptForm({ modalState, close }) {
 
   function handleSubmit(e) {
     e.preventDefault()
-
     const expiryDate =
       warrantyChecked && purchaseDate && period && periodUnit
         ? calculateExpiryDate(purchaseDate, period, periodUnit)
@@ -80,25 +91,36 @@ export default function AddReceiptForm({ modalState, close }) {
     console.log(expiryDate)
 
     if (image && name && price && store) {
-      const formData = new FormData()
-      formData.append('file', image)
-      formData.append('upload_preset', cloudinaryPreset)
-      return uploadImageToCloudinary(formData).then((res) => {
-        console.log(res)
-        const imageInfo = JSON.stringify(res)
+      if (image === receipt.image || image === receipt.image.url) {
         const newReceipt = {
           name,
-          image: imageInfo,
+          image,
           purchaseDate,
           store,
           price,
           category: category ? category : 'none',
           note: note ? note : 'none',
-          expiryDate: warrantyChecked ? expiryDate : null,
-          warrantyPeriod: warrantyChecked ? period : null,
-          warrantyPeriodUnit: warrantyChecked ? periodUnit : null,
+          expiryDate,
         }
-      })
+      } else {
+        const formData = new FormData()
+        formData.append('file', image)
+        formData.append('upload_preset', cloudinaryPreset)
+        return uploadImageToCloudinary(formData).then((res) => {
+          console.log(res)
+          const imageInfo = JSON.stringify(res)
+          const newReceipt = {
+            name,
+            image: imageInfo,
+            purchaseDate,
+            store,
+            price,
+            category: category ? category : 'none',
+            note: note ? note : 'none',
+            expiryDate,
+          }
+        })
+      }
     }
   }
 
@@ -129,7 +151,7 @@ export default function AddReceiptForm({ modalState, close }) {
         borderRadius={5}
       >
         <Typography variant="h6" color="primary" textAlign="center">
-          New Receipt
+          Edit Receipt
         </Typography>
         {!image && (
           <IconButton
@@ -155,7 +177,7 @@ export default function AddReceiptForm({ modalState, close }) {
             onClick={setImagePreview}
           >
             <ReceiptLong />
-            <Preview
+            <EditPreview
               previewMode={previewMode}
               setImagePreview={setImagePreview}
               image={image}
@@ -211,7 +233,7 @@ export default function AddReceiptForm({ modalState, close }) {
           id="category"
           label="Category"
           select
-          value={category}
+          defaultValue={category}
           onChange={(e) => setCategory(e.target.value)}
         >
           {categories.map((category) => (
@@ -290,7 +312,7 @@ export default function AddReceiptForm({ modalState, close }) {
 
         {/* Add Button */}
         <Button variant="contained" type="submit" onClick={handleSubmit}>
-          Add
+          Edit
         </Button>
       </Box>
     </StyledModal>

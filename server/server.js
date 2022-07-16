@@ -13,6 +13,7 @@ server.use(express.static(path.join(__dirname, 'public')))
 // server.use('/api/v1/', homeRoutes)
 server.use('/api/v1/receipts', receiptRoutes)
 server.use('/api/v1/users', usersRoutes)
+
 server.use('/api/*', (req, res) => {
   res.sendStatus(404)
 })

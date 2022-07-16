@@ -2,7 +2,7 @@ import Axios from 'axios'
 
 const cloudinaryUploadEndpoint =
   'https://api.cloudinary.com/v1_1/receipt-keepers/image/upload'
-export function uploadImageToCloudinary(data, token) {
+export function uploadImageToCloudinary(data) {
   return Axios.post(cloudinaryUploadEndpoint, data)
     .then((res) => {
       const { url, public_id, signature } = res.data

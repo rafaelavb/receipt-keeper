@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   Box,
   Button,
@@ -27,52 +27,39 @@ const cloudinaryPreset = 'receipts_keepers'
 
 import Preview from './Preview'
 import { calculateExpiryDate } from '../helperFunctions'
+import { createReceipt } from '../actions'
 
 const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
 
 export default function AddReceiptForm({ modalState, close }) {
+  const token = useSelector((state) => state.loggedInUser.token)
   const categories = useSelector((state) => state.categories.data)
   const [purchaseDate, setPurchaseDate] = useState(new Date())
   const [warrantyChecked, setWarrantyChecked] = useState(false)
   const [image, setImage] = useState(null)
   const [previewMode, setPreviewMode] = useState(false)
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
   const [newReceipt, setNewReceipt] = useState({
     name: '',
-    // image: '',
     price: '',
-    // purchaseDate: new Date(),
+    purchaseDate: '',
     store: '',
     category: '',
     note: '',
-    // expiryDate: null,
+    expiryDate: '',
     warrantyPeriod: '',
     warrantyPeriodUnit: '',
   })
 
   function handleReceiptChange(e) {
     const { name, value } = e.target
-    console.log(e.target)
     setNewReceipt({
       ...newReceipt,
       [name]: value,
-      // purchaseDate: setPurchaseDate(value),
+      purchaseDate,
     })
   }
-
-  // const newReceipt = {
-  //   name,
-  //   image: imageInfo,
-  //   price,
-  //   purchaseDate,
-  //   store,
-  //   category: category ? category : 'none',
-  //   note: note ? note : 'none',
-  //   expiryDate: warrantyChecked ? expiryDate : null,
-  //   warrantyPeriod: warrantyChecked ? period : null,
-  //   warrantyPeriodUnit: warrantyChecked ? periodUnit : null,
-  // }
 
   function handleImageChange(e) {
     e.preventDefault()
@@ -92,32 +79,40 @@ export default function AddReceiptForm({ modalState, close }) {
   function handleSubmit(e) {
     e.preventDefault()
 
-    const expiryDate =
-      warrantyChecked && purchaseDate && period && periodUnit
-        ? calculateExpiryDate(purchaseDate, period, periodUnit)
+    newReceipt.expiryDate =
+      warrantyChecked &&
+      purchaseDate &&
+      newReceipt.warrantyPeriod &&
+      newReceipt.warrantyPeriodUnit
+        ? calculateExpiryDate(
+            purchaseDate,
+            newReceipt.warrantyPeriod,
+            newReceipt.warrantyPeriodUnit
+          )
         : null
-    console.log(expiryDate)
+    // console.log(newReceipt.expiryDate)
 
-    if (image && name && price && store) {
+    if (image && newReceipt.name && newReceipt.price && newReceipt.store) {
       const formData = new FormData()
       formData.append('file', image)
       formData.append('upload_preset', cloudinaryPreset)
-      return uploadImageToCloudinary(formData).then((res) => {
-        console.log(res)
-        const imageInfo = JSON.stringify(res)
-        // const newReceipt = {
-        //   name,
-        //   image: imageInfo,
-        //   purchaseDate,
-        //   store,
-        //   price,
-        //   category: category ? category : 'none',
-        //   note: note ? note : 'none',
-        //   expiryDate: warrantyChecked ? expiryDate : null,
-        //   warrantyPeriod: warrantyChecked ? period : null,
-        //   warrantyPeriodUnit: warrantyChecked ? periodUnit : null,
-        // }
-      })
+      return uploadImageToCloudinary(formData)
+        .then((res) => {
+          // console.log(res)
+          const imageInfo = JSON.stringify(res)
+          // console.log(imageInfo)
+          setNewReceipt({
+            ...newReceipt,
+            image: imageInfo,
+          })
+        })
+        .then(() => {
+          if (newReceipt.image) {
+            // console.log(newReceipt)
+            // console.log(newReceipt.image)
+            dispatch(createReceipt(newReceipt, token))
+          }
+        })
     }
   }
 
@@ -223,7 +218,6 @@ export default function AddReceiptForm({ modalState, close }) {
             inputFormat="dd/MM/yyyy"
             // name="purchaseDate"
             value={purchaseDate}
-            // onChange={handleReceiptChange}
             onChange={(newDate) => {
               setPurchaseDate(newDate)
             }}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Stack } from '@mui/material'
 
@@ -10,8 +10,7 @@ import { fetchReceipts, fetchCategories } from '../actions'
 export default function Main() {
   const token = useSelector((state) => state.loggedInUser.token)
   const receipts = useSelector((state) => state.receipts.data)
-  const stores = receipts.map((receipt) => receipt.store)
-
+  const [stores, setStores] = useState([])
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -20,6 +19,11 @@ export default function Main() {
       dispatch(fetchCategories(token))
     }
   }, [token])
+
+  useEffect(() => {
+    const storesList = receipts.map((receipt) => receipt.store)
+    setStores(storesList)
+  }, [receipts])
 
   return (
     <Box>

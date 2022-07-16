@@ -28,7 +28,7 @@ function getReceipts(auth0_id, db = connection) {
 
 // Get a single receipt by id
 function getReceipt(receiptId, db = connection) {
-  return db('receipts').select().where({ receiptId }).first()
+  return db('receipts').select().where({ id: receiptId }).first()
 }
 
 // Add a receipt

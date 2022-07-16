@@ -10,10 +10,8 @@ import {
 import { Storefront } from '@mui/icons-material'
 import { Link, useParams } from 'react-router-dom'
 
-export default function StoresButton(props) {
+export default function StoresButton({ stores }) {
   const { username } = useParams()
-  const { receipts } = props
-  const stores = receipts.map((receipt) => receipt.store)
 
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)

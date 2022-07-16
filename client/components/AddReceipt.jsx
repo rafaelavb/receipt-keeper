@@ -4,7 +4,7 @@ import { Add as AddIcon } from '@mui/icons-material'
 
 import AddReceiptForm from './AddReceiptForm'
 
-export default function AddReceipt() {
+export default function AddReceipt({ receipts }) {
   const [modalOpen, setModalOpen] = useState(false)
 
   function handleClickOpen(e) {
@@ -31,7 +31,11 @@ export default function AddReceipt() {
           <AddIcon />
         </Fab>
       </Tooltip>
-      <AddReceiptForm modalState={modalOpen} close={handleClose} />
+      <AddReceiptForm
+        modalState={modalOpen}
+        close={handleClose}
+        receipts={receipts}
+      />
     </>
   )
 }

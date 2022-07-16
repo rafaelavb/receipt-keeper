@@ -10,10 +10,8 @@ import {
   List,
 } from '@mui/material'
 
-export default function Sidebar(props) {
+export default function Sidebar({ stores }) {
   const { username } = useParams()
-  const { receipts } = props
-  const stores = receipts.map((receipt) => receipt.store)
 
   return (
     <Box

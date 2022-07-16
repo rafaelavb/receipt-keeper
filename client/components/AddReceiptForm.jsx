@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import {
   Box,
   Button,
@@ -21,39 +22,51 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
 
-import Preview from './Preview'
-
-import { uploadImageToCloudinary } from '../apis'
-import { useSelector } from 'react-redux'
-
 import { calculateExpiryDate } from '../helperFunctions'
 
+import { uploadImageToCloudinary } from '../apis'
 const cloudinaryPreset = 'receipts_keepers'
 
-const categories = [
-  'Books',
-  'Clothing',
-  'Electronics',
-  'Food',
-  'Homeware',
-  'Jewellery',
-]
+import Preview from './Preview'
+
+// const categories = [
+//   'Books',
+//   'Clothing',
+//   'Electronics',
+//   'Food',
+//   'Homeware',
+//   'Jewellery',
+// ]
 
 const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
 
-export default function AddReceiptForm({ modalState, close }) {
+export default function AddReceiptForm({ modalState, close, receipts }) {
   const token = useSelector((state) => state.loggedInUser.token)
+  const categories = receipts.map((receipt) => receipt.categoryType)
+  console.log(categories)
+
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
-  const [note, setNote] = useState('')
+  const [purchaseDate, setPurchaseDate] = useState(new Date())
   const [category, setCategory] = useState('')
   const [store, setStore] = useState('')
-  const [purchaseDate, setPurchaseDate] = useState(new Date())
+  const [note, setNote] = useState('')
   const [warrantyChecked, setWarrantyChecked] = useState(false)
-  const [periodUnit, setPeriodUnit] = useState('year(s)')
   const [period, setPeriod] = useState('')
+  const [periodUnit, setPeriodUnit] = useState('year(s)')
   const [image, setImage] = useState(null)
   const [previewMode, setPreviewMode] = useState(false)
+
+  const [receipt, setReceipt] = useState({
+    name: '',
+    image: '',
+    purchaseDate: new Date(),
+    store: '',
+    price: '',
+    category: '',
+    note: '',
+    // expiryDate: warrantyChecked ?
+  })
 
   function handleImageChange(e) {
     e.preventDefault()

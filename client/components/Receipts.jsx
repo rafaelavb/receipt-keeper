@@ -1,23 +1,12 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import { Box, Stack } from '@mui/material'
-import { fetchReceipts } from '../actions/receipts'
 
 import Receipt from './Receipt'
 import AddReceipt from './AddReceipt'
 
-export default function Receipts(props) {
+export default function Receipts({ receipts }) {
   const { store } = useParams()
-  const { receipts } = props
-  const token = useSelector((state) => state.loggedInUser.token)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (token) {
-      dispatch(fetchReceipts(token))
-    }
-  }, [token])
 
   return (
     <Box flex={5}>
@@ -42,7 +31,7 @@ export default function Receipts(props) {
             )
           })}
       </Stack>
-      <AddReceipt />
+      <AddReceipt receipts={receipts} />
     </Box>
   )
 }

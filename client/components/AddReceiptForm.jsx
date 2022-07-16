@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Box,
   Button,
@@ -13,7 +13,6 @@ import {
   MenuItem,
   Modal,
   OutlinedInput,
-  Stack,
   styled,
   TextField,
   Typography,
@@ -24,7 +23,10 @@ import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
 
 import Preview from './Preview'
 
-const cloudinaryPreset = 'nh01qzjk'
+import { uploadImageToCloudinary } from '../apis'
+import { useSelector } from 'react-redux'
+
+const cloudinaryPreset = 'receipts_keepers'
 
 const categories = [
   'Books',
@@ -38,11 +40,16 @@ const categories = [
 const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
 
 export default function AddReceiptForm({ modalState, close }) {
+  const token = useSelector((state) => state.loggedInUser.token)
+  const [name, setName] = useState('')
+  const [price, setPrice] = useState('')
+  const [note, setNote] = useState('')
   const [category, setCategory] = useState('')
+  const [store, setStore] = useState('')
   const [purchaseDate, setPurchaseDate] = useState(new Date())
   const [warrantyChecked, setWarrantyChecked] = useState(false)
-  const [period, setPeriod] = useState('year(s)')
-
+  const [periodUnit, setPeriodUnit] = useState('year(s)')
+  const [period, setPeriod] = useState('')
   const [image, setImage] = useState(null)
   const [previewMode, setPreviewMode] = useState(false)
 
@@ -52,22 +59,70 @@ export default function AddReceiptForm({ modalState, close }) {
     setImage(file)
   }
 
-  function resetImage() {
-    setImage(null)
-  }
+  useEffect(() => {
+    console.log(periodUnit)
+  }, [periodUnit])
 
   function setImagePreview(e) {
     e.preventDefault()
     setPreviewMode(!previewMode)
   }
 
+  function resetImage() {
+    setImage(null)
+  }
+
   function handleSubmit(e) {
     e.preventDefault()
-    const formData = new FormData()
-    formData.append('file', image)
-    formData.append('upload_preset', cloudinaryPreset)
-    // return uploadImag
+    // calculateExpiryDate(purchaseDate, period, periodUnit)
+    if (image && name && price) {
+      const formData = new FormData()
+      formData.append('file', image)
+      formData.append('upload_preset', cloudinaryPreset)
+      return uploadImageToCloudinary(formData).then((res) => {
+        console.log(res)
+        const imageInfo = JSON.stringify(res)
+        const newReceipt = {
+          name,
+          image: imageInfo,
+          purchaseDate,
+          store,
+          price,
+          category: category ? category : 'none',
+          note: note ? note : 'none',
+          // expiryDate: warrantyChecked ?
+        }
+      })
+    }
   }
+
+  // function calculateExpiryDate(prevDate, exPeriod, unit) {
+  //   const x = parseInt(exPeriod)
+  //   let expiryDateInmSec
+  //   let expiryDate
+  //   const purchaseDateInmSec = new Date(prevDate).getTime()
+  //   const purchaseDateInDays = purchaseDateInmSec / 1000 / 60 / 60 / 24
+  //   const purchaseDateInWeeks = purchaseDateInDays / 7
+
+  //   if (unit === 'day(s)') {
+  //     const expiryDateInDays = purchaseDateInDays + x
+  //     expiryDateInmSec = expiryDateInDays * 1000 * 60 * 60 * 24
+  //     expiryDate = new Date(expiryDateInmSec)
+  //     return expiryDate
+  //   }
+
+  //   if (unit === 'week(s)') {
+  //     const expiryDateInWeeks = purchaseDateInWeeks + x
+  //     expiryDateInmSec = expiryDateInWeeks * 1000 * 60 * 60 * 24 * 7
+  //     expiryDate = new Date(expiryDateInmSec)
+  //     return expiryDate
+  //   }
+
+  //   if (unit === 'month(s)') {
+  //     const purchaseMonth = new Date(prevDate).getMonth() + 1
+  //     console.log(purchaseMonth)
+  //   }
+  // }
 
   return (
     <StyledModal
@@ -133,21 +188,21 @@ export default function AddReceiptForm({ modalState, close }) {
           id="receipt-name"
           label="Name"
           variant="outlined"
-          // value={receipt.name}
-          // onChange={handleChange}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
 
         {/* Price */}
         <FormControl fullWidth>
           <InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
           <OutlinedInput
-            type="decimal"
-            step={0.01}
+            type="number"
+            step={1.01}
             required
             id="price"
             label="Price"
-            // value={receipt.price}
-            // onChange={handleChange}
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
           />
         </FormControl>
@@ -184,6 +239,16 @@ export default function AddReceiptForm({ modalState, close }) {
           ))}
         </TextField>
 
+        {/* Store */}
+        <TextField
+          required
+          id="receipt-store"
+          label="Store"
+          variant="outlined"
+          value={store}
+          onChange={(e) => setStore(e.target.value)}
+        />
+
         {/* Note */}
         <TextField
           id="note"
@@ -191,8 +256,8 @@ export default function AddReceiptForm({ modalState, close }) {
           multiline
           rows={2}
           placeholder="Enter your note here..."
-          // value={receipt.note}
-          // onChange={handleChange}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
         />
 
         {/* Warranty */}
@@ -214,7 +279,13 @@ export default function AddReceiptForm({ modalState, close }) {
         {warrantyChecked && (
           <Grid container>
             <Grid item xs={8}>
-              <TextField id="warranty-duration" label="Warranty" required />
+              <TextField
+                id="warranty-duration"
+                label="Warranty"
+                required
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
+              />
             </Grid>
             <Grid item xs={4}>
               <TextField
@@ -222,12 +293,12 @@ export default function AddReceiptForm({ modalState, close }) {
                 id="warranty-period"
                 label=""
                 select
-                value={period}
-                onChange={(e) => setPeriod(e.target.value)}
+                value={periodUnit}
+                onChange={(e) => setPeriodUnit(e.target.value)}
               >
-                {periods.map((period) => (
-                  <MenuItem key={period} value={period}>
-                    {period}
+                {periods.map((unit) => (
+                  <MenuItem key={unit} value={unit}>
+                    {unit}
                   </MenuItem>
                 ))}
               </TextField>

@@ -1,11 +1,12 @@
-const request = require('superagent')
-const imageURL = 'api/v1/uploadImage'
+import Axios from 'axios'
 
+const cloudinaryUploadEndpoint =
+  'https://api.cloudinary.com/v1_1/receipt-keepers/image/upload'
 export function uploadImageToCloudinary(data, token) {
-  return request
-    .post(imageURL)
-    .set('authorization', `Bearer ${token}`)
-    .send(data)
-    .then((res) => console.log(res.body))
+  return Axios.post(cloudinaryUploadEndpoint, data)
+    .then((res) => {
+      const { url, public_id, signature } = res.data
+      return { url, public_id, signature }
+    })
     .catch((err) => console.log(err))
 }

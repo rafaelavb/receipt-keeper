@@ -1,20 +1,21 @@
 import {
+  REQUEST_RECEIPTS,
+  RECEIVE_RECEIPTS,
   ADD_RECEIPT,
+  UPDATE_RECEIPT,
   DELETE_RECEIPT,
   RECEIPTS_ERROR,
-  RECEIVE_RECEIPTS,
-  REQUEST_RECEIPTS,
-  UPDATE_RECEIPT,
-} from '../actions/receipts'
+} from '../actions'
 
 const initialState = {
   data: [],
   // loading: false,
-  errorMessage: null,
+  error: null,
 }
 
 export default function receiptsReducer(state = initialState, action) {
-  const { type, payload, errorMessage } = action
+  const { type, payload, error } = action
+
   switch (type) {
     case REQUEST_RECEIPTS:
       return {
@@ -53,7 +54,7 @@ export default function receiptsReducer(state = initialState, action) {
       return {
         ...state,
         // loading: false,
-        errorMessage: errorMessage,
+        error: error,
       }
     default:
       return state

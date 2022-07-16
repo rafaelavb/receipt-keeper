@@ -20,9 +20,7 @@ export function fetchReceipts(token) {
     dispatch(requestReceipts())
     return api
       .getReceipts(token)
-      .then((receipts) => {
-        dispatch(receiveReceipts(receipts))
-      })
+      .then((receipts) => dispatch(receiveReceipts(receipts)))
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }
@@ -79,9 +77,9 @@ export function removeReceipt(receiptToDelete, token) {
 }
 
 export const RECEIPTS_ERROR = 'RECEIPTS_ERROR'
-export function setReceiptsError(error) {
+export function setReceiptsError(errorMessage) {
   return {
     type: RECEIPTS_ERROR,
-    errorMessage: error,
+    error: errorMessage,
   }
 }

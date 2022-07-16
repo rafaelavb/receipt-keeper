@@ -1,6 +1,6 @@
 const connection = require('./connection')
 
-// shows all the receipts
+// Get all the receipts
 function getReceipts(auth0_id, db = connection) {
   return db('receipts')
     .join('users', 'receipts.auth0_id', 'users.auth0_id')

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Box,
   Button,
@@ -22,12 +22,12 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
 
-import { calculateExpiryDate } from '../helperFunctions'
-
 import { uploadImageToCloudinary } from '../apis'
 const cloudinaryPreset = 'receipts_keepers'
 
 import Preview from './Preview'
+import { calculateExpiryDate } from '../helperFunctions'
+import { fetchCategories } from '../actions'
 
 // const categories = [
 //   'Books',
@@ -40,11 +40,9 @@ import Preview from './Preview'
 
 const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
 
-export default function AddReceiptForm({ modalState, close, receipts }) {
+export default function AddReceiptForm({ modalState, close }) {
   const token = useSelector((state) => state.loggedInUser.token)
-  const categories = receipts.map((receipt) => receipt.categoryType)
-  console.log(categories)
-
+  const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
   const [purchaseDate, setPurchaseDate] = useState(new Date())
@@ -67,6 +65,13 @@ export default function AddReceiptForm({ modalState, close, receipts }) {
     note: '',
     // expiryDate: warrantyChecked ?
   })
+
+  const categories = useSelector((state) => state.categories.data)
+  // console.log(categories)
+
+  useEffect(() => {
+    dispatch(fetchCategories(token))
+  }, [token])
 
   function handleImageChange(e) {
     e.preventDefault()

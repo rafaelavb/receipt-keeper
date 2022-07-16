@@ -3,6 +3,8 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
+import { Stack } from '@mui/material'
+
 import { getUsername } from '../apis'
 import { IfNotAuthenticated } from './Authenticated'
 import loggedInUserReducer from '../reducers/loggedInUser'
@@ -32,17 +34,23 @@ export default function Home() {
   }, [loggedInUser])
 
   return (
-    <div>
-      <div className="app">
-        <h1>Hello World</h1>
-        <IfNotAuthenticated>
-          <button>
-            <a href="/" onClick={handleRegister}>
-              Register
-            </a>
-          </button>
-        </IfNotAuthenticated>
-      </div>
+    <div className="app">
+      <Stack direction="row" justifyContent="center">
+        <h1>"We keep your receipts for you" </h1>
+      </Stack>
+      <IfNotAuthenticated>
+        <button>
+          <a href="/" onClick={handleRegister}>
+            Register
+          </a>
+        </button>
+      </IfNotAuthenticated>
     </div>
   )
 }
+
+/* <body>
+<div id="app"></div>
+<script src="/bundle.js"></script>
+<div><p>hello there how is it going</p></div>
+</body> */

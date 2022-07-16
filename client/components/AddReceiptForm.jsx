@@ -42,35 +42,50 @@ const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
 
 export default function AddReceiptForm({ modalState, close }) {
   const token = useSelector((state) => state.loggedInUser.token)
-  const dispatch = useDispatch()
+  const categories = useSelector((state) => state.categories.data)
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
   const [purchaseDate, setPurchaseDate] = useState(new Date())
-  const [category, setCategory] = useState('')
   const [store, setStore] = useState('')
+  const [category, setCategory] = useState('')
   const [note, setNote] = useState('')
   const [warrantyChecked, setWarrantyChecked] = useState(false)
   const [period, setPeriod] = useState('')
   const [periodUnit, setPeriodUnit] = useState('year(s)')
   const [image, setImage] = useState(null)
   const [previewMode, setPreviewMode] = useState(false)
+  const dispatch = useDispatch()
 
-  const [receipt, setReceipt] = useState({
+  const [newReceipt, setNewReceipt] = useState({
     name: '',
     image: '',
+    price: '',
     purchaseDate: new Date(),
     store: '',
-    price: '',
     category: '',
     note: '',
-    // expiryDate: warrantyChecked ?
+    expiryDate: null,
+    warrantyPeriod: null,
+    warrantyPeriodUnit: null,
   })
 
-  const categories = useSelector((state) => state.categories.data)
-  // console.log(categories)
+  // const newReceipt = {
+  //   name,
+  //   image: imageInfo,
+  //   price,
+  //   purchaseDate,
+  //   store,
+  //   category: category ? category : 'none',
+  //   note: note ? note : 'none',
+  //   expiryDate: warrantyChecked ? expiryDate : null,
+  //   warrantyPeriod: warrantyChecked ? period : null,
+  //   warrantyPeriodUnit: warrantyChecked ? periodUnit : null,
+  // }
 
   useEffect(() => {
-    dispatch(fetchCategories(token))
+    if (token) {
+      dispatch(fetchCategories(token))
+    }
   }, [token])
 
   function handleImageChange(e) {
@@ -104,18 +119,18 @@ export default function AddReceiptForm({ modalState, close }) {
       return uploadImageToCloudinary(formData).then((res) => {
         console.log(res)
         const imageInfo = JSON.stringify(res)
-        const newReceipt = {
-          name,
-          image: imageInfo,
-          purchaseDate,
-          store,
-          price,
-          category: category ? category : 'none',
-          note: note ? note : 'none',
-          expiryDate: warrantyChecked ? expiryDate : null,
-          warrantyPeriod: warrantyChecked ? period : null,
-          warrantyPeriodUnit: warrantyChecked ? periodUnit : null,
-        }
+        // const newReceipt = {
+        //   name,
+        //   image: imageInfo,
+        //   purchaseDate,
+        //   store,
+        //   price,
+        //   category: category ? category : 'none',
+        //   note: note ? note : 'none',
+        //   expiryDate: warrantyChecked ? expiryDate : null,
+        //   warrantyPeriod: warrantyChecked ? period : null,
+        //   warrantyPeriodUnit: warrantyChecked ? periodUnit : null,
+        // }
       })
     }
   }
@@ -224,21 +239,6 @@ export default function AddReceiptForm({ modalState, close }) {
           />
         </LocalizationProvider>
 
-        {/* Category */}
-        <TextField
-          id="category"
-          label="Category"
-          select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          {categories.map((category) => (
-            <MenuItem key={category} value={category}>
-              {category}
-            </MenuItem>
-          ))}
-        </TextField>
-
         {/* Store */}
         <TextField
           required
@@ -248,6 +248,21 @@ export default function AddReceiptForm({ modalState, close }) {
           value={store}
           onChange={(e) => setStore(e.target.value)}
         />
+
+        {/* Category */}
+        <TextField
+          id="category"
+          label="Category"
+          select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          {categories.map((category) => (
+            <MenuItem key={category.categoryType} value={category.categoryType}>
+              {category.categoryType}
+            </MenuItem>
+          ))}
+        </TextField>
 
         {/* Note */}
         <TextField

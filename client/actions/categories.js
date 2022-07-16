@@ -20,10 +20,7 @@ export function fetchCategories(token) {
     dispatch(requestCategories())
     return api
       .getCategories(token)
-      .then((categories) => {
-        console.log('action')
-        dispatch(receiveCategories(categories))
-      })
+      .then((categories) => dispatch(receiveCategories(categories)))
       .catch((error) => dispatch(setCategoriesError(error.message)))
   }
 }

@@ -6,8 +6,5 @@ export function getCategories(token) {
   return request
     .get(categoriesUrl)
     .set('authorization', `Bearer ${token}`)
-    .then((res) => {
-      console.log('api')
-      return res.body
-    })
+    .then((res) => res.body)
 }

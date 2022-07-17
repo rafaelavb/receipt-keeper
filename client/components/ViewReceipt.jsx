@@ -221,7 +221,7 @@ export default function ViewReceipt({
 
             {/* Del Button */}
             <Button variant="contained" onClick={handleDelete}>
-              Del
+              Delete
             </Button>
           </Stack>
         </Box>

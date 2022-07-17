@@ -73,7 +73,11 @@ router.post('/', checkJwt, async (req, res) => {
     const [newReceiptId] = await db.addReceipt(auth0Id, receipt)
     await db.addWarranty(receipt, newReceiptId)
     const createdReceipt = await db.getReceipt(newReceiptId)
-    res.json(createdReceipt)
+    const parsed = {
+      ...createdReceipt,
+      image: JSON.parse(createdReceipt.image),
+    }
+    res.json(parsed)
   } catch (err) {
     console.error(err.message)
     res.status(500).send('Server error')
@@ -114,7 +118,11 @@ router.patch('/', checkJwt, async (req, res) => {
     await db.updateReceipt(updatedReceipt)
     await db.updateWarranty(updatedReceipt)
     const patchedReceipt = await db.getReceipt(updatedReceipt.id)
-    res.json(patchedReceipt)
+    const parsed = {
+      ...patchedReceipt,
+      image: JSON.parse(patchedReceipt.image),
+    }
+    res.json(parsed)
   } catch (err) {
     console.error(err.message)
     res.status(500).send('Server error')

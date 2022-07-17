@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Box,
   Button,
@@ -33,13 +33,12 @@ const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
 
 export default function AddReceiptForm({ modalState, close }) {
   const token = useSelector((state) => state.loggedInUser.token)
-  const categories = useSelector((state) => state.categories.data)
+  const categories = useSelector((state) => state.categories?.data)
   const [purchaseDate, setPurchaseDate] = useState(new Date())
   const [warrantyChecked, setWarrantyChecked] = useState(false)
   const [image, setImage] = useState(null)
   const [previewMode, setPreviewMode] = useState(false)
   const dispatch = useDispatch()
-
   const [newReceipt, setNewReceipt] = useState({
     name: '',
     price: '',
@@ -78,7 +77,6 @@ export default function AddReceiptForm({ modalState, close }) {
 
   function handleSubmit(e) {
     e.preventDefault()
-
     newReceipt.expiryDate =
       warrantyChecked &&
       purchaseDate &&
@@ -96,25 +94,25 @@ export default function AddReceiptForm({ modalState, close }) {
       const formData = new FormData()
       formData.append('file', image)
       formData.append('upload_preset', cloudinaryPreset)
-      return uploadImageToCloudinary(formData)
-        .then((res) => {
-          // console.log(res)
-          const imageInfo = JSON.stringify(res)
-          // console.log(imageInfo)
-          setNewReceipt({
-            ...newReceipt,
-            image: imageInfo,
-          })
+      return uploadImageToCloudinary(formData).then((res) => {
+        console.log(res)
+        const imageInfo = JSON.stringify(res)
+        console.log(imageInfo)
+        setNewReceipt({
+          ...newReceipt,
+          image: imageInfo,
         })
-        .then(() => {
-          if (newReceipt.image) {
-            // console.log(newReceipt)
-            // console.log(newReceipt.image)
-            dispatch(createReceipt(newReceipt, token))
-          }
-        })
+      })
     }
   }
+
+  useEffect(() => {
+    if (newReceipt.image) {
+      console.log(newReceipt)
+      console.log(newReceipt.image)
+      dispatch(createReceipt(newReceipt, token))
+    }
+  }, [newReceipt])
 
   return (
     <StyledModal
@@ -287,6 +285,7 @@ export default function AddReceiptForm({ modalState, close }) {
                 id="warranty-period"
                 label="Warranty"
                 required
+                type="number"
                 name="warrantyPeriod"
                 value={newReceipt.warrantyPeriod}
                 onChange={handleReceiptChange}

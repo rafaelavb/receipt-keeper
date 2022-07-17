@@ -8,10 +8,9 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 import { addUser } from '../apis'
 
 export default function Register() {
@@ -33,7 +32,6 @@ export default function Register() {
   }, [loggedInUser, username])
 
   async function handleRegister(e) {
-    console.log(form)
     await addUser(form)
     navigate(`/receipts/${username}`)
   }

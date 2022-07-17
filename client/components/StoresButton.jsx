@@ -13,18 +13,10 @@ import { Link, useParams } from 'react-router-dom'
 export default function StoresButton({ stores }) {
   const { username } = useParams()
 
-  const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget)
-  }
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget)
-  }
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(false)
   }
 
   const handleCloseUserMenu = () => {

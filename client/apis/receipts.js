@@ -6,9 +6,7 @@ export function getReceipts(token) {
   return request
     .get(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
-    .then((res) => {
-      return res.body
-    })
+    .then((res) => res.body)
 }
 
 export function postReceipt(receipt, token) {
@@ -16,11 +14,7 @@ export function postReceipt(receipt, token) {
     .post(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
     .send(receipt)
-    .then((res) => {
-      console.log('api came back')
-      console.log('response', res.body)
-      return res.body
-    })
+    .then((res) => res.body)
 }
 
 export function patchReceipt(receipt, token) {

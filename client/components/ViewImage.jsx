@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Box, Button, Modal, styled, IconButton } from '@mui/material'
+import React from 'react'
+import { Box, Button, Modal, styled } from '@mui/material'
 import { Close } from '@mui/icons-material'
 
 export default function ViewImage({ viewImageMode, setViewMode, image }) {

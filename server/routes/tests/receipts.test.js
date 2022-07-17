@@ -1,9 +1,9 @@
 const request = require('supertest')
-const server = require('../server')
-const db = require('../db/receipts')
+const server = require('../../server')
+const db = require('../../db/receipts')
 
-import { objReceipts } from '../../tests/fake-data'
-const checkJwt = require('../auth0')
+import { objReceipts } from '../../../tests/fake-data'
+const checkJwt = require('../../auth0')
 
 jest.mock('../db/receipts')
 jest.mock('../auth0')
@@ -45,3 +45,10 @@ describe('GET /api/v1/receipts', () => {
       })
   })
 })
+
+//  TO DO
+// describe('POST /api/v1/receipts', () => {})
+
+// describe('PATCH api/v1/receipts', () => {})
+
+// describe('DELETE api/v1/receipts', () => {})

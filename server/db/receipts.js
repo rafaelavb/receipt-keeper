@@ -87,8 +87,8 @@ function updateReceipt(
 }
 
 // Delete receipt by id
-function deleteReceipt(receipt, db = connection) {
-  return db('receipts').del().where(receipt.id)
+function deleteReceipt(receiptId, db = connection) {
+  return db('receipts').del().where({ 'receipts.id': receiptId })
 }
 
 module.exports = {

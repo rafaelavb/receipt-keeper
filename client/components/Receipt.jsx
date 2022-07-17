@@ -53,7 +53,7 @@ export default function Receipt(props) {
               <CardMedia
                 component="img"
                 height="194"
-                image={receipt.image}
+                image={receipt.image.url}
                 alt={receipt.name}
               />
             ) : (

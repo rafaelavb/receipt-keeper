@@ -8,10 +8,12 @@ const router = express.Router()
 // GET /api/v1/receipts
 router.get('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
-
   db.getReceipts(auth0Id)
     .then((receipts) => {
-      res.json(receipts)
+      const parsed = receipts.map((receipt) => {
+        return { ...receipt, image: JSON.parse(receipt.image) }
+      })
+      res.json(parsed)
     })
     .catch((err) => {
       console.error(err)
@@ -36,59 +38,104 @@ router.get('/', checkJwt, (req, res) => {
 // })
 
 // Add new receipt
-// ADD /api/v1/receipts
-router.post('/', checkJwt, (req, res) => {
-  const auth0Id = req.user?.sub
-  const receiptData = req.body
+// POST /api/v1/receipts
+// router.post('/', checkJwt, (req, res) => {
+// const auth0Id = req.user?.sub
+// const receiptData = req.body
 
-  db.addReceipt(auth0Id, receiptData)
-    .then((ids) => {
-      const newReceiptId = ids[0]
-      db.addWarranty(receiptData, newReceiptId)
-      return newReceiptId
-    })
-    .then((newReceiptId) => {
-      console.log('second promise', newReceiptId)
-      const createdReceipt = db.getReceipt(newReceiptId)
-      console.log('new receipt from db', '\n', createdReceipt)
-      res.json(createdReceipt)
-    })
-    .catch((err) => {
-      console.error(err.message)
-      res.status(500).send('Server error')
-    })
+// db.addReceipt(auth0Id, receiptData)
+// .then((ids) => {
+//   const newReceiptId = ids[0]
+//   db.addWarranty(receiptData, newReceiptId).then((idArr) => {
+//     // console.log('second promise', newReceiptId)
+//     db.getReceipt(newReceiptId).then((createdReceipt) => {
+//       // console.log('new receipt from db', '\n', createdReceipt)
+//       // const parsed = {
+//         //   ...createdReceipt,
+//         //   image: JSON.parse(createdReceipt.image),
+//         // }
+//         res.json(createdReceipt)
+//       })
+//     })
+//   })
+//   .catch((err) => {
+//     console.error(err.message)
+//     res.status(500).send('Server error')
+//   })
+
+// *** SECOND METHOD ***
+// POST /api/v1/receipts (async / await option)
+router.post('/', checkJwt, async (req, res) => {
+  const auth0Id = req.user?.sub
+  const receipt = req.body
+
+  try {
+    const [newReceiptId] = await db.addReceipt(auth0Id, receipt)
+    await db.addWarranty(receipt, newReceiptId)
+    const createdReceipt = await db.getReceipt(newReceiptId)
+    const parsed = {
+      ...createdReceipt,
+      image: JSON.parse(createdReceipt.image),
+    }
+    res.json(parsed)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send('Server error')
+  }
 })
 
 // Update receipt
 // PATCH /api/v1/receipts
-router.patch('/', checkJwt, (req, res) => {
+// router.patch('/', checkJwt, (req, res) => {
+//   const updatedReceipt = req.body
+
+//   db.updateReceipt(updatedReceipt)
+//     .then(() => {
+//       return db.updateWarranty(updatedReceipt)
+//     })
+//     .then(() => {
+//       return db.getReceipt(updatedReceipt.id)
+//     })
+//     .then((receipt) => {
+//       // const parsed = {
+//       //   ...receipt,
+//       //   image: JSON.parse(receipt.image),
+//       // }
+//       res.json(receipt)
+//     })
+//     .catch((err) => {
+//       console.error(err.message)
+//       res.status(500).send('Server error')
+//     })
+// })
+
+// *** SECOND METHOD ***
+// PATCH /api/v1/receipts (async / await option)
+router.patch('/', checkJwt, async (req, res) => {
   const updatedReceipt = req.body
 
-  db.updateReceipt(updatedReceipt)
-    .then(() => {
-      return db.updateWarranty(updatedReceipt)
-    })
-    .then(() => {
-      return db.getReceipt(updatedReceipt.id)
-    })
-    .then((receipt) => {
-      console.log(receipt)
-      res.json(receipt)
-    })
-    .catch((err) => {
-      console.error(err.message)
-      res.status(500).send('Server error')
-    })
+  try {
+    await db.updateReceipt(updatedReceipt)
+    await db.updateWarranty(updatedReceipt)
+    const patchedReceipt = await db.getReceipt(updatedReceipt.id)
+    const parsed = {
+      ...patchedReceipt,
+      image: JSON.parse(patchedReceipt.image),
+    }
+    res.json(parsed)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send('Server error')
+  }
 })
 
 // Delete receipt
 // DELETE /api/v1/receipts
-router.delete('/', checkJwt, (req, res) => {
-  const receipt = req.body
-
-  db.deleteReceipt(receipt)
-    .then(() => {
-      res.json()
+router.delete('/:id', checkJwt, (req, res) => {
+  const receiptId = req.params.id
+  db.deleteReceipt(receiptId)
+    .then((response) => {
+      res.send(receiptId)
     })
     .catch((err) => {
       console.error(err.message)

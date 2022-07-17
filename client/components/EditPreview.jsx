@@ -6,11 +6,22 @@ export default function EditPreview({
   previewMode,
   setImagePreview,
   image,
-  resetImage,
+  changeImage,
 }) {
+  const [preview, setPreview] = useState(null)
+  useEffect(() => {
+    if (image && typeof image === 'object') {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreview(reader.result)
+      }
+      reader.readAsDataURL(image)
+    }
+  }, [])
+
   function handleReset(e) {
     e.preventDefault()
-    resetImage()
+    changeImage(null)
     setImagePreview(e)
   }
 
@@ -36,7 +47,7 @@ export default function EditPreview({
           <Close />
         </Button>
 
-        <img src={image} />
+        <img src={typeof image === 'object' ? preview : image} />
         <Button onClick={(e) => handleReset(e)}>Reset</Button>
       </Box>
     </StyledModal>

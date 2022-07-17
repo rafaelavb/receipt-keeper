@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   Box,
   Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
   Modal,
-  OutlinedInput,
   styled,
-  TextField,
   Typography,
   Stack,
   List,
@@ -26,12 +16,15 @@ import { Close, ReceiptLong } from '@mui/icons-material'
 
 import ViewImage from './ViewImage'
 import EditReceipt from './EditReceipt'
+import { removeReceipt } from '../actions'
 
 export default function ViewReceipt({
   currentReceipt: receipt,
   modalState,
   close,
 }) {
+  const token = useSelector((state) => state.loggedInUser.token)
+  const dispatch = useDispatch()
   const [viewImage, setViewImage] = useState(false)
   function setViewMode(e) {
     e.preventDefault()
@@ -47,6 +40,11 @@ export default function ViewReceipt({
   function handleClose(e, bool) {
     e.preventDefault()
     setEditMode(bool)
+  }
+
+  function handleDelete(e) {
+    dispatch(removeReceipt(receipt.id, token))
+    close(e, false)
   }
   return (
     <>
@@ -118,11 +116,7 @@ export default function ViewReceipt({
             <ViewImage
               viewImageMode={viewImage}
               setViewMode={setViewMode}
-              image={
-                typeof receipt.image === 'object'
-                  ? receipt.image.url
-                  : receipt.image
-              }
+              image={receipt.image.url}
             />
           </Box>
 
@@ -226,7 +220,9 @@ export default function ViewReceipt({
             </Button>
 
             {/* Del Button */}
-            <Button variant="contained">Del</Button>
+            <Button variant="contained" onClick={handleDelete}>
+              Del
+            </Button>
           </Stack>
         </Box>
       </StyledModal>
@@ -234,6 +230,7 @@ export default function ViewReceipt({
         currentReceipt={receipt}
         modalState={editMode}
         close={handleClose}
+        closeView={close}
       />
     </>
   )

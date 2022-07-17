@@ -15,9 +15,9 @@ export function postReceipt(receipt, token) {
     .set('authorization', `Bearer ${token}`)
     .send(receipt)
     .then((res) => {
-      console.log('api')
-      console.log(res.body)
-      res.body
+      console.log('api came back')
+      console.log('response', res.body)
+      return res.body
     })
 }
 

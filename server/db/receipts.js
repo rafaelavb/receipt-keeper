@@ -16,7 +16,7 @@ function getReceipts(auth0_id, db = connection) {
       'receipts.store as store',
       'receipts.price as price',
       'receipts.note as note',
-      'categories.id as catergoryId',
+      'categories.id as categoryId',
       'categories.type as categoryType',
       'warranties.id as warrantyId',
       'warranties.expiry_date as expiryDate',
@@ -28,7 +28,6 @@ function getReceipts(auth0_id, db = connection) {
 
 // Get a single receipt by id
 function getReceipt(receiptId, db = connection) {
-  console.log('getReceipt good')
   return db('receipts')
     .join('users', 'receipts.auth0_id', 'users.auth0_id')
     .join('categories', 'receipts.category_id', 'categories.id')
@@ -43,7 +42,7 @@ function getReceipt(receiptId, db = connection) {
       'receipts.store as store',
       'receipts.price as price',
       'receipts.note as note',
-      'categories.id as catergoryId',
+      'categories.id as categoryId',
       'categories.type as categoryType',
       'warranties.id as warrantyId',
       'warranties.expiry_date as expiryDate',
@@ -56,6 +55,7 @@ function getReceipt(receiptId, db = connection) {
 
 // Add a receipt
 function addReceipt(auth0_id, newReceipt, db = connection) {
+  console.log('db newReceipt', newReceipt)
   return db('receipts').insert({
     auth0_id: auth0_id,
     name: newReceipt.name,
@@ -63,7 +63,7 @@ function addReceipt(auth0_id, newReceipt, db = connection) {
     purchase_date: newReceipt.purchaseDate,
     store: newReceipt.store,
     price: newReceipt.price,
-    category_id: newReceipt.catergoryId,
+    category_id: newReceipt.categoryId,
     note: newReceipt.note,
   })
 }
@@ -73,31 +73,22 @@ function updateReceipt(
   { id, name, image, purchaseDate, store, price, note, categoryId },
   db = connection
 ) {
-  return db('receipts').where({ id }).update({
-    name,
-    image,
-    purchase_date: purchaseDate,
-    store,
-    price,
-    category_id: categoryId,
-    note,
-  })
-}
-
-function updateWarranty(
-  { warrantyId, expiryDate, warrantyPeriod, warrantyPeriodUnit },
-  db = connection
-) {
-  return db('warranties').where({ id: warrantyId }).update({
-    expiry_date: expiryDate,
-    period: warrantyPeriod,
-    period_unit: warrantyPeriodUnit,
-  })
+  return db('receipts')
+    .update({
+      name,
+      image,
+      purchase_date: purchaseDate,
+      store,
+      price,
+      category_id: categoryId,
+      note,
+    })
+    .where({ id })
 }
 
 // Delete receipt by id
 function deleteReceipt(receipt, db = connection) {
-  return db('receipts').where(receipt.id).del()
+  return db('receipts').del().where(receipt.id)
 }
 
 module.exports = {
@@ -106,5 +97,4 @@ module.exports = {
   addReceipt,
   deleteReceipt,
   updateReceipt,
-  updateWarranty,
 }

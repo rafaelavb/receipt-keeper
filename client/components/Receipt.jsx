@@ -9,11 +9,18 @@ import {
   Box,
 } from '@mui/material'
 import React, { useState } from 'react'
+import { useEffect } from 'react'
 import ViewReceipt from './ViewReceipt'
 
 export default function Receipt(props) {
   const { receipt } = props
   const [modalOpen, setModalOpen] = useState(false)
+  const [expired, setExpired] = useState(false)
+  useEffect(() => {
+    if (receipt.expiryDate) {
+      setExpired(new Date(receipt.expiryDate) < new Date())
+    }
+  }, [receipt.expiryDate])
 
   function handleClickOpen(e) {
     e.preventDefault()
@@ -34,6 +41,7 @@ export default function Receipt(props) {
               textAlign: 'center',
               marginLeft: { xs: 'auto', sm: '50px' },
               marginRight: { xs: 'auto', sm: '50px' },
+              opacity: expired ? '0.7' : '1',
             }}
             onClick={handleClickOpen}
           >
@@ -48,7 +56,9 @@ export default function Receipt(props) {
             />
             <CardContent>
               <Typography>{receipt.store}</Typography>
+              <Typography>$ {receipt.price}</Typography>
             </CardContent>
+
             {receipt.image ? (
               <CardMedia
                 component="img"
@@ -79,8 +89,14 @@ export default function Receipt(props) {
                   <Typography variant="body1" color="text.primary">
                     Warranty expired on
                   </Typography>
-                  <Typography variant="body1" color="text.primary">
+                  <Typography
+                    variant="body1"
+                    color="text.primary"
+                    sx={{ textDecoration: expired ? 'line-through' : 'none' }}
+                  >
                     {new Date(receipt.expiryDate).toLocaleDateString('en-NZ')}
+                    &nbsp;
+                    <span>{expired ? '(expired)' : ''}</span>
                   </Typography>
                 </>
               ) : (

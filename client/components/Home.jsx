@@ -1,13 +1,8 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-<<<<<<< HEAD
 
-import { Stack } from '@mui/material'
-
-=======
 import { useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
->>>>>>> 99be20b1949d98bd7255b522637fb39b1fd49b9d
 import { getUsername } from '../apis'
 
 import { IfNotAuthenticated } from './Authenticated'

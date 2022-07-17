@@ -9,6 +9,7 @@ import { IfNotAuthenticated } from './Authenticated'
 
 import { Typography } from '@mui/material'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 
 export default function Home() {
   const { loginWithRedirect } = useAuth0()
@@ -44,11 +45,16 @@ export default function Home() {
         </Box>
 
         <Box pd={3} textAlign="center">
-          <button>
-            <a href="/" onClick={handleRegister}>
+          <Button variant="contained">
+            <a
+              sx={{ color: 'white' }}
+              style={{ textDecoration: 'none' }}
+              href="/"
+              onClick={handleRegister}
+            >
               Register
             </a>
-          </button>
+          </Button>
         </Box>
       </IfNotAuthenticated>
     </div>

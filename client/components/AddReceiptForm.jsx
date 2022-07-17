@@ -80,6 +80,7 @@ export default function AddReceiptForm({ modalState, close }) {
 
   function handleSubmit(e) {
     e.preventDefault()
+
     newReceipt.expiryDate =
       warrantyChecked &&
       purchaseDate &&
@@ -91,7 +92,7 @@ export default function AddReceiptForm({ modalState, close }) {
             newReceipt.warrantyPeriodUnit
           )
         : null
-    // console.log(newReceipt.expiryDate)
+
     if (image && newReceipt.name && newReceipt.price && newReceipt.store) {
       setErrorMessage('')
       const formData = new FormData()

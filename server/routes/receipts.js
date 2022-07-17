@@ -4,16 +4,19 @@ const db = require('../db/')
 
 const router = express.Router()
 
+module.exports = router
+
 // Get all receipts
 // GET /api/v1/receipts
 router.get('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
+
   db.getReceipts(auth0Id)
     .then((receipts) => {
-      console.log(receipts)
-      const parsed = receipts.map((receipt) => {
-        return { ...receipt, image: JSON.parse(receipt.image) }
-      })
+      const parsed = receipts.map((receipt) => ({
+        ...receipt,
+        image: JSON.parse(receipt.image),
+      }))
       res.json(parsed)
     })
     .catch((err) => {
@@ -134,8 +137,9 @@ router.patch('/', checkJwt, async (req, res) => {
 // DELETE /api/v1/receipts
 router.delete('/:id', checkJwt, (req, res) => {
   const receiptId = req.params.id
+
   db.deleteReceipt(receiptId)
-    .then((response) => {
+    .then(() => {
       res.send(receiptId)
     })
     .catch((err) => {
@@ -189,5 +193,3 @@ router.delete('/:id', checkJwt, (req, res) => {
 //       res.status(500).send('Server error')
 //     })
 // })
-
-module.exports = router

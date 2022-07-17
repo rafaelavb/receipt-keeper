@@ -37,10 +37,7 @@ export function createReceipt(receipt, token) {
   return (dispatch) => {
     return api
       .postReceipt(receipt, token)
-      .then((createdReceipt) => {
-        console.log('dispatch action')
-        dispatch(addReceipt(createdReceipt))
-      })
+      .then((createdReceipt) => dispatch(addReceipt(createdReceipt)))
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }

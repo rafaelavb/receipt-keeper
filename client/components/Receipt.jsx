@@ -9,11 +9,18 @@ import {
   Box,
 } from '@mui/material'
 import React, { useState } from 'react'
+import { useEffect } from 'react'
 import ViewReceipt from './ViewReceipt'
 
 export default function Receipt(props) {
   const { receipt } = props
   const [modalOpen, setModalOpen] = useState(false)
+  const [expired, setExpired] = useState(false)
+  useEffect(() => {
+    if (receipt.expiryDate) {
+      setExpired(new Date(receipt.expiryDate) < new Date())
+    }
+  }, [receipt.expiryDate])
 
   function handleClickOpen(e) {
     e.preventDefault()
@@ -34,6 +41,7 @@ export default function Receipt(props) {
               textAlign: 'center',
               marginLeft: { xs: 'auto', sm: '50px' },
               marginRight: { xs: 'auto', sm: '50px' },
+              opacity: expired ? '0.7' : '1',
             }}
             onClick={handleClickOpen}
           >
@@ -41,14 +49,20 @@ export default function Receipt(props) {
               title={receipt.name}
               subheader={
                 <IconButton disabled>
-                  <CalendarMonth />{' '}
-                  {new Date(receipt.purchaseDate).toLocaleDateString('en-NZ')}
+                  <CalendarMonth />
+                  {new Date(receipt.purchaseDate).toLocaleDateString('en-NZ', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })}
                 </IconButton>
               }
             />
             <CardContent>
               <Typography>{receipt.store}</Typography>
+              <Typography>$ {receipt.price}</Typography>
             </CardContent>
+
             {receipt.image ? (
               <CardMedia
                 component="img"
@@ -79,8 +93,18 @@ export default function Receipt(props) {
                   <Typography variant="body1" color="text.primary">
                     Warranty expired on
                   </Typography>
-                  <Typography variant="body1" color="text.primary">
-                    {new Date(receipt.expiryDate).toLocaleDateString('en-NZ')}
+                  <Typography
+                    variant="body1"
+                    color="text.primary"
+                    sx={{ textDecoration: expired ? 'line-through' : 'none' }}
+                  >
+                    {new Date(receipt.expiryDate).toLocaleDateString('en-NZ', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    })}
+                    &nbsp;
+                    <span>{expired ? '(expired)' : ''}</span>
                   </Typography>
                 </>
               ) : (

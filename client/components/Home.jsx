@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { Stack } from '@mui/material'
-
 import { useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 import { getUsername } from '../apis'
 
 import { IfNotAuthenticated } from './Authenticated'
+
+import { Stack, Typography } from '@mui/material'
 
 export default function Home() {
   const { loginWithRedirect } = useAuth0()
@@ -36,9 +36,7 @@ export default function Home() {
   return (
     <div className="app">
       <Stack direction="row" justifyContent="center">
-        <font size="+3">
-          <h1>We keep your receipts for you </h1>
-        </font>
+        <Typography variant="h1">We keep your receipts for you</Typography>
       </Stack>
       <IfNotAuthenticated>
         <button>

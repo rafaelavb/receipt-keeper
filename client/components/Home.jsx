@@ -36,7 +36,9 @@ export default function Home() {
   return (
     <div className="app">
       <Stack direction="row" justifyContent="center">
-        <h1>"We keep your receipts for you" </h1>
+        <font size="+3">
+          <h1>We keep your receipts for you </h1>
+        </font>
       </Stack>
       <IfNotAuthenticated>
         <button>

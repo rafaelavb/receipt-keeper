@@ -170,7 +170,9 @@ export default function ViewReceipt({
                     color="text.secondary"
                   >
                     {receipt.expiryDate
-                      ? `Expired on ${receipt.expiryDate}`
+                      ? `Expired on ${new Date(
+                          receipt.expiryDate
+                        ).toLocaleDateString('en-NZ')}`
                       : 'No warranty'}
                   </Typography>
                 }
@@ -218,12 +220,13 @@ export default function ViewReceipt({
             <Divider />
           </List>
           <Stack direction="row" justifyContent="space-around">
-            {/* Del Button */}
-            <Button variant="contained">Del</Button>
             {/* Edit Button */}
             <Button variant="contained" onClick={handleClickOpen}>
               Edit
             </Button>
+
+            {/* Del Button */}
+            <Button variant="contained">Del</Button>
           </Stack>
         </Box>
       </StyledModal>

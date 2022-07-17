@@ -14,7 +14,11 @@ export function postReceipt(receipt, token) {
     .post(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
     .send(receipt)
-    .then((res) => res.body)
+    .then((res) => {
+      console.log('api')
+      console.log(res.body)
+      res.body
+    })
 }
 
 export function patchReceipt(receipt, token) {

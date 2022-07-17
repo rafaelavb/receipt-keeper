@@ -28,7 +28,30 @@ function getReceipts(auth0_id, db = connection) {
 
 // Get a single receipt by id
 function getReceipt(receiptId, db = connection) {
-  return db('receipts').select().where({ id: receiptId }).first()
+  console.log('getReceipt good')
+  return db('receipts')
+    .join('users', 'receipts.auth0_id', 'users.auth0_id')
+    .join('categories', 'receipts.category_id', 'categories.id')
+    .join('warranties', 'receipts.id', 'warranties.receipt_id')
+    .select(
+      'users.username as username',
+      'receipts.id as id',
+      'receipts.auth0_id as auth0Id',
+      'receipts.name as name',
+      'receipts.image as image',
+      'receipts.purchase_date as purchaseDate',
+      'receipts.store as store',
+      'receipts.price as price',
+      'receipts.note as note',
+      'categories.id as catergoryId',
+      'categories.type as categoryType',
+      'warranties.id as warrantyId',
+      'warranties.expiry_date as expiryDate',
+      'warranties.period as warrantyPeriod',
+      'warranties.period_unit as warrantyPeriodUnit'
+    )
+    .where({ 'receipts.id': receiptId })
+    .first()
 }
 
 // Add a receipt
@@ -46,8 +69,30 @@ function addReceipt(auth0_id, newReceipt, db = connection) {
 }
 
 // Update receipt by id
-function updateReceipt(updatedReceipt, db = connection) {
-  return db('receipts').where(updatedReceipt.id).update(updatedReceipt)
+function updateReceipt(
+  { id, name, image, purchaseDate, store, price, note, categoryId },
+  db = connection
+) {
+  return db('receipts').where({ id }).update({
+    name,
+    image,
+    purchase_date: purchaseDate,
+    store,
+    price,
+    category_id: categoryId,
+    note,
+  })
+}
+
+function updateWarranty(
+  { warrantyId, expiryDate, warrantyPeriod, warrantyPeriodUnit },
+  db = connection
+) {
+  return db('warranties').where({ id: warrantyId }).update({
+    expiry_date: expiryDate,
+    period: warrantyPeriod,
+    period_unit: warrantyPeriodUnit,
+  })
 }
 
 // Delete receipt by id
@@ -61,4 +106,5 @@ module.exports = {
   addReceipt,
   deleteReceipt,
   updateReceipt,
+  updateWarranty,
 }

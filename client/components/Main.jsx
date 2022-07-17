@@ -9,7 +9,7 @@ import { fetchReceipts, fetchCategories } from '../actions'
 
 export default function Main() {
   const token = useSelector((state) => state.loggedInUser.token)
-  const receipts = useSelector((state) => state.receipts.data)
+  const receipts = useSelector((state) => state.receipts?.data)
   const [stores, setStores] = useState([])
   const dispatch = useDispatch()
 
@@ -21,17 +21,23 @@ export default function Main() {
   }, [token])
 
   useEffect(() => {
-    const storesList = receipts.map((receipt) => receipt.store)
-    setStores(storesList)
+    if (receipts) {
+      const storesList = receipts.map((receipt) => receipt?.store)
+      setStores(storesList)
+    }
   }, [receipts])
 
   return (
     <Box>
-      <StoresButton stores={stores} />
-      <Stack direction="row">
-        <Sidebar stores={stores} />
-        <Receipts />
-      </Stack>
+      {stores && (
+        <>
+          <StoresButton stores={stores} />
+          <Stack direction="row">
+            <Sidebar stores={stores} />
+            <Receipts />
+          </Stack>
+        </>
+      )}
     </Box>
   )
 }

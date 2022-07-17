@@ -55,7 +55,6 @@ function getReceipt(receiptId, db = connection) {
 
 // Add a receipt
 function addReceipt(auth0_id, newReceipt, db = connection) {
-  console.log('db newReceipt', newReceipt)
   return db('receipts').insert({
     auth0_id: auth0_id,
     name: newReceipt.name,

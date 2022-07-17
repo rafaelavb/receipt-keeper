@@ -24,10 +24,8 @@ export default function Home() {
   }
 
   useEffect(() => {
-    console.log(loggedInUser)
     if (loggedInUser.token) {
       getUsername(loggedInUser.token).then((username) => {
-        console.log(username)
         if (username) {
           navigate(`/receipts/${username}`)
         }

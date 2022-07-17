@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, Modal, styled } from '@mui/material'
+import { Box, Button, Modal, styled, IconButton } from '@mui/material'
 import { Close } from '@mui/icons-material'
 
-export default function Preview({
+export default function EditPreview({
   previewMode,
   setImagePreview,
   image,
-  resetImage,
+  changeImage,
 }) {
   const [preview, setPreview] = useState(null)
   useEffect(() => {
-    if (image) {
+    if (image && typeof image === 'object') {
       const reader = new FileReader()
       reader.onloadend = () => {
         setPreview(reader.result)
@@ -21,7 +21,7 @@ export default function Preview({
 
   function handleReset(e) {
     e.preventDefault()
-    resetImage()
+    changeImage(null)
     setImagePreview(e)
   }
 
@@ -47,7 +47,7 @@ export default function Preview({
           <Close />
         </Button>
 
-        <img src={preview} />
+        <img src={typeof image === 'object' ? preview : image} />
         <Button onClick={(e) => handleReset(e)}>Reset</Button>
       </Box>
     </StyledModal>

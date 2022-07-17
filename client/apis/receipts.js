@@ -16,7 +16,11 @@ export function postReceipt(receipt, token) {
     .post(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
     .send(receipt)
-    .then((res) => res.body)
+    .then((res) => {
+      console.log('api came back')
+      console.log('response', res.body)
+      return res.body
+    })
 }
 
 export function patchReceipt(receipt, token) {
@@ -27,10 +31,9 @@ export function patchReceipt(receipt, token) {
     .then((res) => res.body)
 }
 
-export function deleteReceipt(receipt, token) {
+export function deleteReceipt(receiptId, token) {
   return request
-    .delete(receiptsUrl)
+    .delete(`${receiptsUrl}/${receiptId}`)
     .set('authorization', `Bearer ${token}`)
-    .send(receipt)
     .then((res) => res.body)
 }

@@ -14,8 +14,6 @@ export function getUsername(token) {
   return request
     .get(`${usersUrl}/username`)
     .set('authorization', `Bearer ${token}`)
-    .then((res) => {
-      return res.body.username
-    })
+    .then((res) => res.body.username)
     .catch((err) => console.log(err))
 }

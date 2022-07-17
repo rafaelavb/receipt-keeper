@@ -20,9 +20,7 @@ export function fetchReceipts(token) {
     dispatch(requestReceipts())
     return api
       .getReceipts(token)
-      .then((receipts) => {
-        dispatch(receiveReceipts(receipts))
-      })
+      .then((receipts) => dispatch(receiveReceipts(receipts)))
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }
@@ -39,7 +37,10 @@ export function createReceipt(receipt, token) {
   return (dispatch) => {
     return api
       .postReceipt(receipt, token)
-      .then((receipt) => dispatch(addReceipt(receipt)))
+      .then((createdReceipt) => {
+        console.log('dispatch action')
+        dispatch(addReceipt(createdReceipt))
+      })
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }
@@ -56,32 +57,32 @@ export function updateReceipt(receipt, token) {
   return (dispatch) => {
     return api
       .patchReceipt(receipt, token)
-      .then((receipt) => dispatch(updateReceiptAction(receipt)))
+      .then((updatedReceipt) => dispatch(updateReceiptAction(updatedReceipt)))
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }
 
 export const DELETE_RECEIPT = 'DELETE_RECEIPT'
-export function deleteReceipt(receipt) {
+export function deleteReceipt(receiptId) {
   return {
     type: DELETE_RECEIPT,
-    payload: receipt,
+    payload: receiptId,
   }
 }
 
-export function removeReceipt(receipt, token) {
+export function removeReceipt(receiptId, token) {
   return (dispatch) => {
     return api
-      .deleteReceipt(receipt, token)
-      .then((receipt) => dispatch(deleteReceipt(receipt)))
+      .deleteReceipt(receiptId, token)
+      .then((deletedId) => dispatch(deleteReceipt(deletedId)))
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }
 
 export const RECEIPTS_ERROR = 'RECEIPTS_ERROR'
-export function setReceiptsError(error) {
+export function setReceiptsError(errorMessage) {
   return {
     type: RECEIPTS_ERROR,
-    errorMessage: error,
+    error: errorMessage,
   }
 }

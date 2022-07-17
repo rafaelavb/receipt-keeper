@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+
 import {
   Box,
   Button,
@@ -22,46 +23,54 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
 
+import EditPreview from './EditPreview'
 import { uploadImageToCloudinary } from '../apis'
+import { calculateExpiryDate } from '../helperFunctions'
+import { updateReceipt } from '../actions'
+
 const cloudinaryPreset = 'receipts_keepers'
 
-import Preview from './Preview'
-import { calculateExpiryDate } from '../helperFunctions'
-import { createReceipt } from '../actions'
+const categories = [
+  'Books',
+  'Clothing',
+  'Electronics',
+  'Food',
+  'Homeware',
+  'Jewellery',
+]
 
 const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
-const blankReceipt = {
-  name: '',
-  price: '',
-  purchaseDate: '',
-  store: '',
-  categoryId: 0,
-  categoryType: '',
-  note: '',
-  expiryDate: '',
-  warrantyPeriod: '',
-  warrantyPeriodUnit: '',
-}
 
-export default function AddReceiptForm({ modalState, close }) {
+export default function EditReceipt({
+  currentReceipt: receipt,
+  modalState,
+  close,
+  closeView,
+}) {
   const token = useSelector((state) => state.loggedInUser.token)
-  const categories = useSelector((state) => state.categories?.data)
-  const [purchaseDate, setPurchaseDate] = useState(new Date())
-  const [warrantyChecked, setWarrantyChecked] = useState(false)
-  const [image, setImage] = useState(null)
-  const [previewMode, setPreviewMode] = useState(false)
   const dispatch = useDispatch()
-  const [newReceipt, setNewReceipt] = useState(blankReceipt)
-  const [errorMessage, setErrorMessage] = useState(null)
-
-  function handleReceiptChange(e) {
-    const { name, value } = e.target
-    setNewReceipt({
-      ...newReceipt,
-      [name]: value,
-      purchaseDate,
-    })
-  }
+  const [name, setName] = useState(receipt.name)
+  const [price, setPrice] = useState(receipt.price)
+  const [note, setNote] = useState(
+    receipt.note && receipt.note ? receipt.note : ''
+  )
+  const [category, setCategory] = useState(
+    receipt.category ? receipt.category : ''
+  )
+  const [store, setStore] = useState(receipt.store)
+  const [purchaseDate, setPurchaseDate] = useState(
+    new Date(receipt.purchaseDate)
+  )
+  const [warrantyChecked, setWarrantyChecked] = useState(
+    receipt.warrantyId ? true : false
+  )
+  const [expiryDate, setExpiryDate] = useState(
+    receipt.warrantyId ? receipt.expiryDate : ''
+  )
+  const [period, setPeriod] = useState(receipt.warrantyPeriod)
+  const [periodUnit, setPeriodUnit] = useState(receipt.warrantyPeriodUnit)
+  const [image, setImage] = useState(receipt.image.url)
+  const [previewMode, setPreviewMode] = useState(false)
 
   function handleImageChange(e) {
     e.preventDefault()
@@ -74,60 +83,70 @@ export default function AddReceiptForm({ modalState, close }) {
     setPreviewMode(!previewMode)
   }
 
-  function resetImage() {
-    setImage(null)
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault()
-    newReceipt.expiryDate =
-      warrantyChecked &&
-      purchaseDate &&
-      newReceipt.warrantyPeriod &&
-      newReceipt.warrantyPeriodUnit
-        ? calculateExpiryDate(
-            purchaseDate,
-            newReceipt.warrantyPeriod,
-            newReceipt.warrantyPeriodUnit
-          )
-        : null
-    // console.log(newReceipt.expiryDate)
-    if (image && newReceipt.name && newReceipt.price && newReceipt.store) {
-      setErrorMessage('')
-      const formData = new FormData()
-      formData.append('file', image)
-      formData.append('upload_preset', cloudinaryPreset)
-      close(e, false)
-      return uploadImageToCloudinary(formData).then((res) => {
-        const imageInfo = JSON.stringify(res)
-        const { categoryId: actualCategoryId } = categories.find((category) => {
-          if (category.categoryType === newReceipt.categoryType) {
-            return category.categoryId
-          }
-        })
-        setNewReceipt({
-          ...newReceipt,
-          image: imageInfo,
-          categoryId: actualCategoryId,
-        })
-      })
-    } else {
-      setErrorMessage(
-        'You must add image of receipt and specify name, price, store to save your receipt'
-      )
-    }
+  function changeImage(changedImage) {
+    setImage(changedImage)
   }
 
   useEffect(() => {
-    if (newReceipt.image) {
-      dispatch(createReceipt(newReceipt, token)).then(
-        () => setNewReceipt(blankReceipt),
-        setImage(null),
-        setWarrantyChecked(false)
-      )
+    setExpiryDate(calculateExpiryDate(purchaseDate, period, periodUnit))
+  }, [purchaseDate, period, periodUnit])
+
+  useEffect(() => {
+    console.log(expiryDate)
+  }, [expiryDate])
+
+  function handleEdit(e) {
+    e.preventDefault()
+
+    if (image && name && price && store) {
+      if (image === receipt.image || image === receipt.image.url) {
+        const updated = {
+          id: receipt.id,
+          name,
+          image,
+          purchaseDate,
+          store,
+          price,
+          // categoryId: category ? category : 'none',
+          note: note && note !== 'none' ? note : '',
+          warrantyId: receipt.warrantyId,
+          expiryDate,
+          warrantyPeriod: period,
+          warrantyPeriodUnit: periodUnit,
+        }
+        dispatch(updateReceipt(updated, token)).then(() => {
+          close(e, false)
+          closeView(e, false)
+        })
+      } else {
+        const formData = new FormData()
+        formData.append('file', image)
+        formData.append('upload_preset', cloudinaryPreset)
+        return uploadImageToCloudinary(formData).then((res) => {
+          // console.log(res)
+          const imageInfo = JSON.stringify(res)
+          const updated = {
+            id: receipt.id,
+            name,
+            image: imageInfo,
+            purchaseDate,
+            store,
+            price,
+            // categoryId: category ? category : 'none',
+            note: note ? note : 'none',
+            warrantyId: receipt.warrantyId,
+            expiryDate,
+            warrantyPeriod: period,
+            warrantyPeriodUnit: periodUnit,
+          }
+          dispatch(updateReceipt(updated, token)).then(() => {
+            close(e, false)
+            closeView(e, false)
+          })
+        })
+      }
     }
-    return
-  }, [newReceipt])
+  }
 
   return (
     <StyledModal
@@ -156,10 +175,8 @@ export default function AddReceiptForm({ modalState, close }) {
         borderRadius={5}
       >
         <Typography variant="h6" color="primary" textAlign="center">
-          New Receipt
+          Edit Receipt
         </Typography>
-
-        {/* Image */}
         {!image && (
           <IconButton
             color="primary"
@@ -184,11 +201,11 @@ export default function AddReceiptForm({ modalState, close }) {
             onClick={setImagePreview}
           >
             <ReceiptLong />
-            <Preview
+            <EditPreview
               previewMode={previewMode}
               setImagePreview={setImagePreview}
               image={image}
-              resetImage={resetImage}
+              changeImage={changeImage}
             />
           </IconButton>
         )}
@@ -199,9 +216,8 @@ export default function AddReceiptForm({ modalState, close }) {
           id="receipt-name"
           label="Name"
           variant="outlined"
-          name="name"
-          value={newReceipt.name}
-          onChange={handleReceiptChange}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
 
         {/* Price */}
@@ -213,9 +229,8 @@ export default function AddReceiptForm({ modalState, close }) {
             required
             id="price"
             label="Price"
-            name="price"
-            value={newReceipt.price}
-            onChange={handleReceiptChange}
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
           />
         </FormControl>
@@ -229,7 +244,6 @@ export default function AddReceiptForm({ modalState, close }) {
             openTo="year"
             views={['year', 'month', 'day']}
             inputFormat="dd/MM/yyyy"
-            // name="purchaseDate"
             value={purchaseDate}
             onChange={(newDate) => {
               setPurchaseDate(newDate)
@@ -238,32 +252,30 @@ export default function AddReceiptForm({ modalState, close }) {
           />
         </LocalizationProvider>
 
+        {/* Category */}
+        <TextField
+          id="category"
+          label="Category"
+          select
+          defaultValue={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          {categories.map((category) => (
+            <MenuItem key={category} value={category}>
+              {category}
+            </MenuItem>
+          ))}
+        </TextField>
+
         {/* Store */}
         <TextField
           required
           id="receipt-store"
           label="Store"
           variant="outlined"
-          name="store"
-          value={newReceipt.store}
-          onChange={handleReceiptChange}
+          value={store}
+          onChange={(e) => setStore(e.target.value)}
         />
-
-        {/* Category */}
-        <TextField
-          id="category"
-          label="Category"
-          select
-          name="categoryType"
-          value={newReceipt.categoryType}
-          onChange={handleReceiptChange}
-        >
-          {categories.map((category) => (
-            <MenuItem key={category.categoryType} value={category.categoryType}>
-              {category.categoryType}
-            </MenuItem>
-          ))}
-        </TextField>
 
         {/* Note */}
         <TextField
@@ -272,9 +284,8 @@ export default function AddReceiptForm({ modalState, close }) {
           multiline
           rows={2}
           placeholder="Enter your note here..."
-          name="note"
-          value={newReceipt.note}
-          onChange={handleReceiptChange}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
         />
 
         {/* Warranty */}
@@ -297,24 +308,21 @@ export default function AddReceiptForm({ modalState, close }) {
           <Grid container>
             <Grid item xs={8}>
               <TextField
-                id="warranty-period"
+                id="warranty-duration"
                 label="Warranty"
                 required
-                type="number"
-                name="warrantyPeriod"
-                value={newReceipt.warrantyPeriod}
-                onChange={handleReceiptChange}
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 required
-                id="warranty-period-unit"
+                id="warranty-period"
                 label=""
                 select
-                name="warrantyPeriodUnit"
-                value={newReceipt.warrantyPeriodUnit}
-                onChange={handleReceiptChange}
+                value={periodUnit}
+                onChange={(e) => setPeriodUnit(e.target.value)}
               >
                 {periods.map((unit) => (
                   <MenuItem key={unit} value={unit}>
@@ -325,13 +333,10 @@ export default function AddReceiptForm({ modalState, close }) {
             </Grid>
           </Grid>
         )}
-        <Box textAlign="center" color="primary">
-          {errorMessage}
-        </Box>
 
-        {/* Add Button */}
-        <Button variant="contained" type="submit" onClick={handleSubmit}>
-          Add
+        {/* Edit Button */}
+        <Button variant="contained" type="submit" onClick={handleEdit}>
+          Edit
         </Button>
       </Box>
     </StyledModal>

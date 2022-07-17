@@ -30,6 +30,18 @@ import { calculateExpiryDate } from '../helperFunctions'
 import { createReceipt } from '../actions'
 
 const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
+const blankReceipt = {
+  name: '',
+  price: '',
+  purchaseDate: '',
+  store: '',
+  categoryId: 0,
+  categoryType: '',
+  note: '',
+  expiryDate: '',
+  warrantyPeriod: '',
+  warrantyPeriodUnit: '',
+}
 
 export default function AddReceiptForm({ modalState, close }) {
   const token = useSelector((state) => state.loggedInUser.token)
@@ -39,17 +51,7 @@ export default function AddReceiptForm({ modalState, close }) {
   const [image, setImage] = useState(null)
   const [previewMode, setPreviewMode] = useState(false)
   const dispatch = useDispatch()
-  const [newReceipt, setNewReceipt] = useState({
-    name: '',
-    price: '',
-    purchaseDate: '',
-    store: '',
-    category: '',
-    note: '',
-    expiryDate: '',
-    warrantyPeriod: '',
-    warrantyPeriodUnit: '',
-  })
+  const [newReceipt, setNewReceipt] = useState(blankReceipt)
 
   function handleReceiptChange(e) {
     const { name, value } = e.target
@@ -88,19 +90,18 @@ export default function AddReceiptForm({ modalState, close }) {
             newReceipt.warrantyPeriodUnit
           )
         : null
-    // console.log(newReceipt.expiryDate)
 
     if (image && newReceipt.name && newReceipt.price && newReceipt.store) {
       const formData = new FormData()
       formData.append('file', image)
       formData.append('upload_preset', cloudinaryPreset)
+      close(e, false)
       return uploadImageToCloudinary(formData).then((res) => {
-        console.log(res)
         const imageInfo = JSON.stringify(res)
-        console.log(imageInfo)
         setNewReceipt({
           ...newReceipt,
           image: imageInfo,
+          // categoryId: newReceipt.categoryType,
         })
       })
     }
@@ -108,9 +109,9 @@ export default function AddReceiptForm({ modalState, close }) {
 
   useEffect(() => {
     if (newReceipt.image) {
-      console.log(newReceipt)
-      console.log(newReceipt.image)
-      dispatch(createReceipt(newReceipt, token))
+      dispatch(createReceipt(newReceipt, token)).then(() =>
+        setNewReceipt(blankReceipt)
+      )
     }
   }, [newReceipt])
 
@@ -240,11 +241,11 @@ export default function AddReceiptForm({ modalState, close }) {
           label="Category"
           select
           name="category"
-          value={newReceipt.category}
+          value={newReceipt.categoryType}
           onChange={handleReceiptChange}
         >
           {categories.map((category) => (
-            <MenuItem key={category.categoryType} value={category.categoryType}>
+            <MenuItem key={category.categoryId} value={category.categoryId}>
               {category.categoryType}
             </MenuItem>
           ))}

@@ -22,7 +22,6 @@ export default function Main() {
 
   useEffect(() => {
     if (receipts) {
-      console.log(receipts)
       const storesList = receipts.map((receipt) => receipt?.store)
       setStores(storesList)
     }

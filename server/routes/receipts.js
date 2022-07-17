@@ -38,54 +38,87 @@ router.get('/', checkJwt, (req, res) => {
 // })
 
 // Add new receipt
-// ADD /api/v1/receipts
-router.post('/', checkJwt, (req, res) => {
+// POST /api/v1/receipts
+// router.post('/', checkJwt, (req, res) => {
+// const auth0Id = req.user?.sub
+// const receiptData = req.body
+
+// db.addReceipt(auth0Id, receiptData)
+// .then((ids) => {
+//   const newReceiptId = ids[0]
+//   db.addWarranty(receiptData, newReceiptId).then((idArr) => {
+//     // console.log('second promise', newReceiptId)
+//     db.getReceipt(newReceiptId).then((createdReceipt) => {
+//       // console.log('new receipt from db', '\n', createdReceipt)
+//       // const parsed = {
+//         //   ...createdReceipt,
+//         //   image: JSON.parse(createdReceipt.image),
+//         // }
+//         res.json(createdReceipt)
+//       })
+//     })
+//   })
+//   .catch((err) => {
+//     console.error(err.message)
+//     res.status(500).send('Server error')
+//   })
+
+// *** SECOND METHOD ***
+// POST /api/v1/receipts (async / await option)
+router.post('/', checkJwt, async (req, res) => {
   const auth0Id = req.user?.sub
-  const receiptData = req.body
-  db.addReceipt(auth0Id, receiptData)
-    .then((ids) => {
-      const newReceiptId = ids[0]
-      db.addWarranty(receiptData, newReceiptId).then((idArr) => {
-        // console.log('second promise', newReceiptId)
-        db.getReceipt(newReceiptId).then((createdReceipt) => {
-          // console.log('new receipt from db', '\n', createdReceipt)
-          // const parsed = {
-          //   ...createdReceipt,
-          //   image: JSON.parse(createdReceipt.image),
-          // }
-          res.json(createdReceipt)
-        })
-      })
-    })
-    .catch((err) => {
-      console.error(err.message)
-      res.status(500).send('Server error')
-    })
+  const receipt = req.body
+
+  try {
+    const [newReceiptId] = await db.addReceipt(auth0Id, receipt)
+    await db.addWarranty(receipt, newReceiptId)
+    const createdReceipt = await db.getReceipt(newReceiptId)
+    res.json(createdReceipt)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send('Server error')
+  }
 })
 
 // Update receipt
 // PATCH /api/v1/receipts
-router.patch('/', checkJwt, (req, res) => {
+// router.patch('/', checkJwt, (req, res) => {
+//   const updatedReceipt = req.body
+
+//   db.updateReceipt(updatedReceipt)
+//     .then(() => {
+//       return db.updateWarranty(updatedReceipt)
+//     })
+//     .then(() => {
+//       return db.getReceipt(updatedReceipt.id)
+//     })
+//     .then((receipt) => {
+//       // const parsed = {
+//       //   ...receipt,
+//       //   image: JSON.parse(receipt.image),
+//       // }
+//       res.json(receipt)
+//     })
+//     .catch((err) => {
+//       console.error(err.message)
+//       res.status(500).send('Server error')
+//     })
+// })
+
+// *** SECOND METHOD ***
+// PATCH /api/v1/receipts (async / await option)
+router.patch('/', checkJwt, async (req, res) => {
   const updatedReceipt = req.body
 
-  db.updateReceipt(updatedReceipt)
-    .then(() => {
-      return db.updateWarranty(updatedReceipt)
-    })
-    .then(() => {
-      return db.getReceipt(updatedReceipt.id)
-    })
-    .then((receipt) => {
-      // const parsed = {
-      //   ...receipt,
-      //   image: JSON.parse(receipt.image),
-      // }
-      res.json(receipt)
-    })
-    .catch((err) => {
-      console.error(err.message)
-      res.status(500).send('Server error')
-    })
+  try {
+    await db.updateReceipt(updatedReceipt)
+    await db.updateWarranty(updatedReceipt)
+    const patchedReceipt = await db.getReceipt(updatedReceipt.id)
+    res.json(patchedReceipt)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send('Server error')
+  }
 })
 
 // Delete receipt

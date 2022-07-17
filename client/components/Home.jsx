@@ -35,10 +35,13 @@ export default function Home() {
 
   return (
     <div className="app">
-      <Stack direction="row" justifyContent="center">
-        <Typography variant="h1">We keep your receipts for you</Typography>
-      </Stack>
       <IfNotAuthenticated>
+        {/* <Stack direction="row" justifyContent="center"> */}
+        <Typography variant="h1" color="primary" align="center">
+          We keep your receipts for you
+        </Typography>
+        {/* </Stack> */}
+
         <button>
           <a href="/" onClick={handleRegister}>
             Register

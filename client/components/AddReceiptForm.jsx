@@ -89,7 +89,6 @@ export default function AddReceiptForm({ modalState, close }) {
           )
         : null
     // console.log(newReceipt.expiryDate)
-
     if (image && newReceipt.name && newReceipt.price && newReceipt.store) {
       const formData = new FormData()
       formData.append('file', image)

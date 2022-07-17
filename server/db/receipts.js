@@ -47,7 +47,7 @@ function addReceipt(auth0_id, newReceipt, db = connection) {
 
 // Update receipt by id
 function updateReceipt(updatedReceipt, db = connection) {
-  return db('receipts').where(updatedReceipt.id).update(updatedReceipt)
+  return db('receipts').where({ id: updatedReceipt.id }).update(updatedReceipt)
 }
 
 // Delete receipt by id

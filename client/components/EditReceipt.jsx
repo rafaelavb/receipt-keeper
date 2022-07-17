@@ -50,8 +50,8 @@ export default function EditReceipt({
   const [name, setName] = useState(receipt.name)
   const [price, setPrice] = useState(receipt.price)
   const [note, setNote] = useState(receipt.note ? receipt.note : '')
-  const [category, setCategory] = useState(
-    receipt.category ? receipt.category : ''
+  const [categoryId, setCategory] = useState(
+    receipt.categoryId ? receipt.categoryId : 0
   )
   const [store, setStore] = useState(receipt.store)
   const [purchaseDate, setPurchaseDate] = useState(
@@ -310,7 +310,7 @@ export default function EditReceipt({
           </Grid>
         )}
 
-        {/* Add Button */}
+        {/* Edit Button */}
         <Button variant="contained" type="submit" onClick={handleSubmit}>
           Edit
         </Button>

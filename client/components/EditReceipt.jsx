@@ -50,8 +50,8 @@ export default function EditReceipt({
   const [name, setName] = useState(receipt.name)
   const [price, setPrice] = useState(receipt.price)
   const [note, setNote] = useState(receipt.note ? receipt.note : '')
-  const [categoryId, setCategory] = useState(
-    receipt.categoryId ? receipt.categoryId : 0
+  const [category, setCategory] = useState(
+    receipt.category ? receipt.category : ''
   )
   const [store, setStore] = useState(receipt.store)
   const [purchaseDate, setPurchaseDate] = useState(
@@ -98,9 +98,10 @@ export default function EditReceipt({
           purchaseDate,
           store,
           price,
-          category: category ? category : 'none',
+          // categoryId: category ? category : 'none',
           note: note ? note : 'none',
           expiryDate,
+          warrantyPeriod: warrantyPeriodUnit,
         }
       } else {
         const formData = new FormData()
@@ -115,9 +116,10 @@ export default function EditReceipt({
             purchaseDate,
             store,
             price,
-            category: category ? category : 'none',
+            // categoryId: category ? category : 'none',
             note: note ? note : 'none',
             expiryDate,
+            warrantyPeriod: warrantyPeriodUnit,
           }
         })
       }

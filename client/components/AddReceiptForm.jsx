@@ -98,10 +98,15 @@ export default function AddReceiptForm({ modalState, close }) {
       close(e, false)
       return uploadImageToCloudinary(formData).then((res) => {
         const imageInfo = JSON.stringify(res)
+        const { categoryId: actualCategoryId } = categories.find((category) => {
+          if (category.categoryType === newReceipt.categoryType) {
+            return category.categoryId
+          }
+        })
         setNewReceipt({
           ...newReceipt,
           image: imageInfo,
-          // categoryId: newReceipt.categoryType,
+          categoryId: actualCategoryId,
         })
       })
     }
@@ -109,10 +114,13 @@ export default function AddReceiptForm({ modalState, close }) {
 
   useEffect(() => {
     if (newReceipt.image) {
-      dispatch(createReceipt(newReceipt, token)).then(() =>
-        setNewReceipt(blankReceipt)
+      dispatch(createReceipt(newReceipt, token)).then(
+        () => setNewReceipt(blankReceipt),
+        setImage(null),
+        setWarrantyChecked(false)
       )
     }
+    return
   }, [newReceipt])
 
   return (
@@ -240,12 +248,12 @@ export default function AddReceiptForm({ modalState, close }) {
           id="category"
           label="Category"
           select
-          name="category"
+          name="categoryType"
           value={newReceipt.categoryType}
           onChange={handleReceiptChange}
         >
           {categories.map((category) => (
-            <MenuItem key={category.categoryId} value={category.categoryId}>
+            <MenuItem key={category.categoryType} value={category.categoryType}>
               {category.categoryType}
             </MenuItem>
           ))}

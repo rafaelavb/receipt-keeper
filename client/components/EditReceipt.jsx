@@ -87,9 +87,11 @@ export default function EditReceipt({
   function resetImage() {
     setImage(null)
   }
+
   useEffect(() => {
     setExpiryDate(calculateExpiryDate(purchaseDate, period, periodUnit))
   }, [purchaseDate, period, periodUnit])
+
   useEffect(() => {
     console.log(expiryDate)
   }, [expiryDate])

@@ -103,7 +103,7 @@ export default function EditReceipt({
         const updated = {
           id: receipt.id,
           name,
-          image,
+          image: JSON.stringify(receipt.image),
           purchaseDate,
           store,
           price,

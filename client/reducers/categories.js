@@ -1,4 +1,8 @@
-import { RECEIVE_STORES, REQUEST_STORES, STORES_ERROR } from '../actions'
+import {
+  REQUEST_CATEGORIES,
+  RECEIVE_CATEGORIES,
+  CATEGORIES_ERROR,
+} from '../actions'
 
 const initialState = {
   data: [],
@@ -6,25 +10,26 @@ const initialState = {
   error: null,
 }
 
-export default function storesReducer(state = initialState, action) {
-  const { type, payload, errorMessage } = action
+export default function categoriesReducer(state = initialState, action) {
+  const { type, payload, error } = action
+
   switch (type) {
-    case REQUEST_STORES:
+    case REQUEST_CATEGORIES:
       return {
         ...state,
         // loading: true,
       }
-    case RECEIVE_STORES:
+    case RECEIVE_CATEGORIES:
       return {
         ...state,
         data: payload,
         // loading: false,
       }
-    case STORES_ERROR:
+    case CATEGORIES_ERROR:
       return {
         ...state,
         // loading: false,
-        errorMessage: errorMessage,
+        error: error,
       }
     default:
       return state

@@ -1,6 +1,6 @@
 const connection = require('./connection')
 
-// shows all the receipts
+// Get all the receipts
 function getReceipts(auth0_id, db = connection) {
   return db('receipts')
     .join('users', 'receipts.auth0_id', 'users.auth0_id')
@@ -19,48 +19,40 @@ function getReceipts(auth0_id, db = connection) {
       'categories.id as catergoryId',
       'categories.type as categoryType',
       'warranties.id as warrantyId',
-      'warranties.expiry_date as expiryDate'
+      'warranties.expiry_date as expiryDate',
+      'warranties.period as warrantyPeriod',
+      'warranties.period_unit as warrantyPeriodUnit'
     )
     .where({ 'users.auth0_id': auth0_id })
 }
 
-// show a single receipt
-function getReceipt(id, db = connection) {
-  return db('receipts').select().where('id', id).first()
+// Get a single receipt by id
+function getReceipt(receiptId, db = connection) {
+  return db('receipts').select().where({ id: receiptId }).first()
 }
 
-// gets all stores from receipts in an array
-function getStores(auth0_id, db = connection) {
-  return db('receipts').select('store').where({ auth0_id })
-}
-
-// gets all types from categories
-function getTypes(auth0_id, db = connection) {
-  return db('categories').select('type').where({ auth0_id })
-}
-
-// add to a list of receipts
-function addReceipt(auth0_id, receipts, db = connection) {
-  const newReceipt = {
+// Add a receipt
+function addReceipt(auth0_id, newReceipt, db = connection) {
+  return db('receipts').insert({
     auth0_id: auth0_id,
-    name: receipts.name,
-    image: receipts.image,
-    purchase_date: receipts.purchaseDate,
-    store: receipts.store,
-    price: receipts.price,
-    note: receipts.note,
-  }
-  return db('receipts').insert(newReceipt)
+    name: newReceipt.name,
+    image: newReceipt.image,
+    purchase_date: newReceipt.purchaseDate,
+    store: newReceipt.store,
+    price: newReceipt.price,
+    category_id: newReceipt.catergoryId,
+    note: newReceipt.note,
+  })
 }
 
-// update receipt by id
-function updateReceipt(id, updatedReceipt, db = connection) {
-  return db('receipts').where('id', id).update(updatedReceipt)
+// Update receipt by id
+function updateReceipt(updatedReceipt, db = connection) {
+  return db('receipts').where(updatedReceipt.id).update(updatedReceipt)
 }
 
-// delete receipt by id
-function deleteReceipt(id, db = connection) {
-  return db('receipts').where('id', id).del()
+// Delete receipt by id
+function deleteReceipt(receipt, db = connection) {
+  return db('receipts').where(receipt.id).del()
 }
 
 module.exports = {
@@ -69,6 +61,4 @@ module.exports = {
   addReceipt,
   deleteReceipt,
   updateReceipt,
-  getStores,
-  getTypes,
 }

@@ -1,34 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, Modal, styled } from '@mui/material'
+import { Box, Button, Modal, styled, IconButton } from '@mui/material'
 import { Close } from '@mui/icons-material'
 
-export default function Preview({
-  previewMode,
-  setImagePreview,
-  image,
-  resetImage,
-}) {
-  const [preview, setPreview] = useState(null)
-  useEffect(() => {
-    if (image) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setPreview(reader.result)
-      }
-      reader.readAsDataURL(image)
-    }
-  }, [])
-
-  function handleReset(e) {
-    e.preventDefault()
-    resetImage()
-    setImagePreview(e)
-  }
-
+export default function ViewImage({ viewImageMode, setViewMode, image }) {
   return (
     <StyledModal
-      open={previewMode}
-      onClose={setImagePreview}
+      open={viewImageMode}
+      onClose={setViewMode}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -43,12 +21,11 @@ export default function Preview({
         p={3}
         borderRadius={5}
       >
-        <Button onClick={setImagePreview}>
+        <Button onClick={setViewMode}>
           <Close />
         </Button>
 
-        <img src={preview} />
-        <Button onClick={(e) => handleReset(e)}>Reset</Button>
+        <img src={image} />
       </Box>
     </StyledModal>
   )

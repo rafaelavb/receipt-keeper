@@ -39,11 +39,11 @@ export default function Home() {
       <IfNotAuthenticated>
         <Box p={5}>
           <Typography variant="h1" color="textSecondary" align="center">
-            "We keep your receipts safe for you"
+            We keep your receipts for when you need
           </Typography>
         </Box>
 
-        <Box p={3} textAlign="center">
+        <Box pd={3} textAlign="center">
           <button>
             <a href="/" onClick={handleRegister}>
               Register

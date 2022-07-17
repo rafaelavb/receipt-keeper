@@ -2,19 +2,8 @@ import React, { useState, useEffect } from 'react'
 import {
   Box,
   Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
   Modal,
-  OutlinedInput,
   styled,
-  TextField,
   Typography,
   Stack,
   List,
@@ -26,6 +15,7 @@ import { Close, ReceiptLong } from '@mui/icons-material'
 
 import ViewImage from './ViewImage'
 import EditReceipt from './EditReceipt'
+import { removeReceipt } from '../actions'
 
 export default function ViewReceipt({
   currentReceipt: receipt,
@@ -48,6 +38,8 @@ export default function ViewReceipt({
     e.preventDefault()
     setEditMode(bool)
   }
+
+  function handleDelete(e) {}
   return (
     <>
       <StyledModal
@@ -226,7 +218,9 @@ export default function ViewReceipt({
             </Button>
 
             {/* Del Button */}
-            <Button variant="contained">Del</Button>
+            <Button variant="contained" onClick={handleDelete}>
+              Del
+            </Button>
           </Stack>
         </Box>
       </StyledModal>
@@ -234,6 +228,7 @@ export default function ViewReceipt({
         currentReceipt={receipt}
         modalState={editMode}
         close={handleClose}
+        closeView={close}
       />
     </>
   )

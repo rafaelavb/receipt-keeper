@@ -1,5 +1,5 @@
 const request = require('supertest')
-const server = require('./server')
+const server = require('../../server')
 
 describe('GET /api/v1/1234', () => {
   it('returns 404 status', () => {

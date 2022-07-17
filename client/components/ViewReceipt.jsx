@@ -116,11 +116,7 @@ export default function ViewReceipt({
             <ViewImage
               viewImageMode={viewImage}
               setViewMode={setViewMode}
-              image={
-                typeof receipt.image === 'object'
-                  ? receipt.image.url
-                  : receipt.image
-              }
+              image={receipt.image.url}
             />
           </Box>
 

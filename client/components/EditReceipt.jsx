@@ -69,9 +69,7 @@ export default function EditReceipt({
   )
   const [period, setPeriod] = useState(receipt.warrantyPeriod)
   const [periodUnit, setPeriodUnit] = useState(receipt.warrantyPeriodUnit)
-  const [image, setImage] = useState(
-    typeof receipt.image === 'object' ? receipt.image.url : receipt.image
-  )
+  const [image, setImage] = useState(receipt.image.url)
   const [previewMode, setPreviewMode] = useState(false)
 
   function handleImageChange(e) {
@@ -85,8 +83,8 @@ export default function EditReceipt({
     setPreviewMode(!previewMode)
   }
 
-  function resetImage() {
-    setImage(null)
+  function changeImage(changedImage) {
+    setImage(changedImage)
   }
 
   useEffect(() => {
@@ -97,7 +95,7 @@ export default function EditReceipt({
     console.log(expiryDate)
   }, [expiryDate])
 
-  function handleSubmit(e) {
+  function handleEdit(e) {
     e.preventDefault()
 
     if (image && name && price && store) {
@@ -116,13 +114,16 @@ export default function EditReceipt({
           warrantyPeriod: period,
           warrantyPeriodUnit: periodUnit,
         }
-        dispatch(updateReceipt(updated, token))
+        dispatch(updateReceipt(updated, token)).then(() => {
+          close(e, false)
+          closeView(e, false)
+        })
       } else {
         const formData = new FormData()
         formData.append('file', image)
         formData.append('upload_preset', cloudinaryPreset)
         return uploadImageToCloudinary(formData).then((res) => {
-          console.log(res)
+          // console.log(res)
           const imageInfo = JSON.stringify(res)
           const updated = {
             id: receipt.id,
@@ -138,12 +139,13 @@ export default function EditReceipt({
             warrantyPeriod: period,
             warrantyPeriodUnit: periodUnit,
           }
-          dispatch(updateReceipt(updated, token))
+          dispatch(updateReceipt(updated, token)).then(() => {
+            close(e, false)
+            closeView(e, false)
+          })
         })
       }
     }
-    close(e, false)
-    closeView(e, false)
   }
 
   return (
@@ -203,7 +205,7 @@ export default function EditReceipt({
               previewMode={previewMode}
               setImagePreview={setImagePreview}
               image={image}
-              resetImage={resetImage}
+              changeImage={changeImage}
             />
           </IconButton>
         )}
@@ -333,7 +335,7 @@ export default function EditReceipt({
         )}
 
         {/* Edit Button */}
-        <Button variant="contained" type="submit" onClick={handleSubmit}>
+        <Button variant="contained" type="submit" onClick={handleEdit}>
           Edit
         </Button>
       </Box>

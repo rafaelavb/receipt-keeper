@@ -37,7 +37,7 @@ export default function Home() {
     <div className="app">
       <IfNotAuthenticated>
         {/* <Stack direction="row" justifyContent="center"> */}
-        <Typography variant="h1" color="primary" align="center">
+        <Typography variant="h1" color="black" align="center">
           We keep your receipts for you
         </Typography>
         {/* </Stack> */}

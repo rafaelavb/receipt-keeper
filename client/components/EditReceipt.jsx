@@ -45,6 +45,7 @@ export default function EditReceipt({
   currentReceipt: receipt,
   modalState,
   close,
+  closeView,
 }) {
   const token = useSelector((state) => state.loggedInUser.token)
   const dispatch = useDispatch()
@@ -142,6 +143,7 @@ export default function EditReceipt({
       }
     }
     close(e, false)
+    closeView(e, false)
   }
 
   return (

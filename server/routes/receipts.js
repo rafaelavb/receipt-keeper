@@ -8,7 +8,6 @@ const router = express.Router()
 // GET /api/v1/receipts
 router.get('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
-
   db.getReceipts(auth0Id)
     .then((receipts) => {
       res.json(receipts)
@@ -40,18 +39,20 @@ router.get('/', checkJwt, (req, res) => {
 router.post('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
   const receiptData = req.body
-
   db.addReceipt(auth0Id, receiptData)
     .then((ids) => {
       const newReceiptId = ids[0]
-      db.addWarranty(receiptData, newReceiptId)
-      return newReceiptId
-    })
-    .then((newReceiptId) => {
-      console.log('second promise', newReceiptId)
-      const createdReceipt = db.getReceipt(newReceiptId)
-      console.log('new receipt from db', '\n', createdReceipt)
-      res.json(createdReceipt)
+      db.addWarranty(receiptData, newReceiptId).then((idArr) => {
+        // console.log('second promise', newReceiptId)
+        db.getReceipt(newReceiptId).then((createdReceipt) => {
+          // console.log('new receipt from db', '\n', createdReceipt)
+          // const parsed = {
+          //   ...createdReceipt,
+          //   image: JSON.parse(createdReceipt.image),
+          // }
+          res.json(createdReceipt)
+        })
+      })
     })
     .catch((err) => {
       console.error(err.message)
@@ -72,7 +73,10 @@ router.patch('/', checkJwt, (req, res) => {
       return db.getReceipt(updatedReceipt.id)
     })
     .then((receipt) => {
-      console.log(receipt)
+      // const parsed = {
+      //   ...receipt,
+      //   image: JSON.parse(receipt.image),
+      // }
       res.json(receipt)
     })
     .catch((err) => {
@@ -83,12 +87,11 @@ router.patch('/', checkJwt, (req, res) => {
 
 // Delete receipt
 // DELETE /api/v1/receipts
-router.delete('/', checkJwt, (req, res) => {
-  const receipt = req.body
-
-  db.deleteReceipt(receipt)
-    .then(() => {
-      res.json()
+router.delete('/:id', checkJwt, (req, res) => {
+  const receiptId = req.params.id
+  db.deleteReceipt(receiptId)
+    .then((response) => {
+      res.send(receiptId)
     })
     .catch((err) => {
       console.error(err.message)

@@ -7,7 +7,8 @@ import { getUsername } from '../apis'
 
 import { IfNotAuthenticated } from './Authenticated'
 
-import { Stack, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
+import Box from '@mui/material/Box'
 
 export default function Home() {
   const { loginWithRedirect } = useAuth0()
@@ -36,17 +37,19 @@ export default function Home() {
   return (
     <div className="app">
       <IfNotAuthenticated>
-        {/* <Stack direction="row" justifyContent="center"> */}
-        <Typography variant="h1" color="black" align="center">
-          We keep your receipts for you
-        </Typography>
-        {/* </Stack> */}
+        <Box p={5}>
+          <Typography variant="h1" color="textSecondary" align="center">
+            "We keep your receipts safe for you"
+          </Typography>
+        </Box>
 
-        <button>
-          <a href="/" onClick={handleRegister}>
-            Register
-          </a>
-        </button>
+        <Box p={3} textAlign="center">
+          <button>
+            <a href="/" onClick={handleRegister}>
+              Register
+            </a>
+          </button>
+        </Box>
       </IfNotAuthenticated>
     </div>
   )

@@ -38,9 +38,9 @@ export default function receiptsReducer(state = initialState, action) {
     case UPDATE_RECEIPT:
       return {
         ...state,
-        data: state.data.map((receipt) => {
-          return receipt.id === payload.id ? payload : receipt
-        }),
+        data: state.data.map((receipt) =>
+          receipt.id === payload.id ? payload : receipt
+        ),
         // loading: false,
       }
     case DELETE_RECEIPT:

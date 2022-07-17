@@ -2,7 +2,6 @@ const connection = require('./connection')
 
 // Add warranty
 function addWarranty(receipt, newReceiptId, db = connection) {
-  console.log('db add warranty')
   return db('warranties').insert({
     expiry_date: receipt.expiryDate,
     period: receipt.warrantyPeriod,

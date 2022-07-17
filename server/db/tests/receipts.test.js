@@ -1,6 +1,6 @@
-const config = require('./knexfile')
+const config = require('../knexfile')
 const knex = require('knex')
-const { getReceipt /*getReceipts*/ } = require('./receipts')
+const { getReceipt /*getReceipts*/ } = require('../receipts')
 // const { test } = require('./knexfile')
 const testDb = knex(config.test)
 

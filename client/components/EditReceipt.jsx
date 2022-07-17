@@ -91,10 +91,6 @@ export default function EditReceipt({
     setExpiryDate(calculateExpiryDate(purchaseDate, period, periodUnit))
   }, [purchaseDate, period, periodUnit])
 
-  useEffect(() => {
-    console.log(expiryDate)
-  }, [expiryDate])
-
   function handleEdit(e) {
     e.preventDefault()
 

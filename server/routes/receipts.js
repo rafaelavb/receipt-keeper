@@ -10,7 +10,7 @@ router.get('/', checkJwt, (req, res) => {
   const auth0Id = req.user?.sub
   db.getReceipts(auth0Id)
     .then((receipts) => {
-      console.log(receipts)
+      // console.log(receipts)
       const parsed = receipts.map((receipt) => {
         return { ...receipt, image: JSON.parse(receipt.image) }
       })

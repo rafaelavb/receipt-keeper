@@ -7,6 +7,9 @@ import { getUsername } from '../apis'
 
 import { IfNotAuthenticated } from './Authenticated'
 
+import { Typography } from '@mui/material'
+import Box from '@mui/material/Box'
+
 export default function Home() {
   const { loginWithRedirect } = useAuth0()
   const navigate = useNavigate()
@@ -33,15 +36,20 @@ export default function Home() {
 
   return (
     <div className="app">
-      <Stack direction="row" justifyContent="center">
-        <h1>"We keep your receipts for you" </h1>
-      </Stack>
       <IfNotAuthenticated>
-        <button>
-          <a href="/" onClick={handleRegister}>
-            Register
-          </a>
-        </button>
+        <Box p={5}>
+          <Typography variant="h1" color="textSecondary" align="center">
+            We keep your receipts for when you need
+          </Typography>
+        </Box>
+
+        <Box pd={3} textAlign="center">
+          <button>
+            <a href="/" onClick={handleRegister}>
+              Register
+            </a>
+          </button>
+        </Box>
       </IfNotAuthenticated>
     </div>
   )

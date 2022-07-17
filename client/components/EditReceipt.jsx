@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
 import {
   Box,
   Button,
@@ -22,11 +24,9 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
 
 import EditPreview from './EditPreview'
-
 import { uploadImageToCloudinary } from '../apis'
-import { useSelector } from 'react-redux'
-
 import { calculateExpiryDate } from '../helperFunctions'
+import { updateReceipt } from '../actions'
 
 const cloudinaryPreset = 'receipts_keepers'
 
@@ -47,9 +47,12 @@ export default function EditReceipt({
   close,
 }) {
   const token = useSelector((state) => state.loggedInUser.token)
+  const dispatch = useDispatch()
   const [name, setName] = useState(receipt.name)
   const [price, setPrice] = useState(receipt.price)
-  const [note, setNote] = useState(receipt.note ? receipt.note : '')
+  const [note, setNote] = useState(
+    receipt.note && receipt.note ? receipt.note : ''
+  )
   const [category, setCategory] = useState(
     receipt.category ? receipt.category : ''
   )
@@ -59,6 +62,9 @@ export default function EditReceipt({
   )
   const [warrantyChecked, setWarrantyChecked] = useState(
     receipt.warrantyId ? true : false
+  )
+  const [expiryDate, setExpiryDate] = useState(
+    receipt.warrantyId ? receipt.expiryDate : ''
   )
   const [period, setPeriod] = useState(receipt.warrantyPeriod)
   const [periodUnit, setPeriodUnit] = useState(receipt.warrantyPeriodUnit)
@@ -81,28 +87,33 @@ export default function EditReceipt({
   function resetImage() {
     setImage(null)
   }
+  useEffect(() => {
+    setExpiryDate(calculateExpiryDate(purchaseDate, period, periodUnit))
+  }, [purchaseDate, period, periodUnit])
+  useEffect(() => {
+    console.log(expiryDate)
+  }, [expiryDate])
 
   function handleSubmit(e) {
     e.preventDefault()
-    const expiryDate =
-      warrantyChecked && purchaseDate && period && periodUnit
-        ? calculateExpiryDate(purchaseDate, period, periodUnit)
-        : null
-    console.log(expiryDate)
 
     if (image && name && price && store) {
       if (image === receipt.image || image === receipt.image.url) {
-        const newReceipt = {
+        const updated = {
+          id: receipt.id,
           name,
           image,
           purchaseDate,
           store,
           price,
           // categoryId: category ? category : 'none',
-          note: note ? note : 'none',
+          note: note && note !== 'none' ? note : '',
+          warrantyId: receipt.warrantyId,
           expiryDate,
-          warrantyPeriod: warrantyPeriodUnit,
+          warrantyPeriod: period,
+          warrantyPeriodUnit: periodUnit,
         }
+        dispatch(updateReceipt(updated, token))
       } else {
         const formData = new FormData()
         formData.append('file', image)
@@ -110,7 +121,8 @@ export default function EditReceipt({
         return uploadImageToCloudinary(formData).then((res) => {
           console.log(res)
           const imageInfo = JSON.stringify(res)
-          const newReceipt = {
+          const updated = {
+            id: receipt.id,
             name,
             image: imageInfo,
             purchaseDate,
@@ -118,12 +130,16 @@ export default function EditReceipt({
             price,
             // categoryId: category ? category : 'none',
             note: note ? note : 'none',
+            warrantyId: receipt.warrantyId,
             expiryDate,
-            warrantyPeriod: warrantyPeriodUnit,
+            warrantyPeriod: period,
+            warrantyPeriodUnit: periodUnit,
           }
+          dispatch(updateReceipt(updated, token))
         })
       }
     }
+    close(e, false)
   }
 
   return (

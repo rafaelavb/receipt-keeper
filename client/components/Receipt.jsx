@@ -41,7 +41,8 @@ export default function Receipt(props) {
               title={receipt.name}
               subheader={
                 <IconButton disabled>
-                  <CalendarMonth /> {receipt.purchaseDate}
+                  <CalendarMonth />{' '}
+                  {new Date(receipt.purchaseDate).toLocaleDateString('en-NZ')}
                 </IconButton>
               }
             />
@@ -62,7 +63,7 @@ export default function Receipt(props) {
             )}
 
             <CardContent height={'110px'}>
-              {receipt.note ? (
+              {receipt.note && receipt.note !== 'none' ? (
                 <Typography
                   variant="body2"
                   color="text.secondary"
@@ -79,7 +80,7 @@ export default function Receipt(props) {
                     Warranty expired on
                   </Typography>
                   <Typography variant="body1" color="text.primary">
-                    {receipt.expiryDate}
+                    {new Date(receipt.expiryDate).toLocaleDateString('en-NZ')}
                   </Typography>
                 </>
               ) : (

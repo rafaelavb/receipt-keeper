@@ -49,8 +49,12 @@ export default function Receipt(props) {
               title={receipt.name}
               subheader={
                 <IconButton disabled>
-                  <CalendarMonth />{' '}
-                  {new Date(receipt.purchaseDate).toLocaleDateString('en-NZ')}
+                  <CalendarMonth />
+                  {new Date(receipt.purchaseDate).toLocaleDateString('en-NZ', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })}
                 </IconButton>
               }
             />
@@ -94,7 +98,11 @@ export default function Receipt(props) {
                     color="text.primary"
                     sx={{ textDecoration: expired ? 'line-through' : 'none' }}
                   >
-                    {new Date(receipt.expiryDate).toLocaleDateString('en-NZ')}
+                    {new Date(receipt.expiryDate).toLocaleDateString('en-NZ', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    })}
                     &nbsp;
                     <span>{expired ? '(expired)' : ''}</span>
                   </Typography>

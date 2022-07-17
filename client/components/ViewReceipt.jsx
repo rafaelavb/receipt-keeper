@@ -147,7 +147,14 @@ export default function ViewReceipt({
                     component="div"
                     color="text.secondary"
                   >
-                    {new Date(receipt.purchaseDate).toLocaleDateString('en-NZ')}
+                    {new Date(receipt.purchaseDate).toLocaleDateString(
+                      'en-NZ',
+                      {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                      }
+                    )}
                   </Typography>
                 }
               />
@@ -166,7 +173,11 @@ export default function ViewReceipt({
                     {receipt.expiryDate
                       ? `Expired on ${new Date(
                           receipt.expiryDate
-                        ).toLocaleDateString('en-NZ')}`
+                        ).toLocaleDateString('en-NZ', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                        })}`
                       : 'No warranty'}
                   </Typography>
                 }

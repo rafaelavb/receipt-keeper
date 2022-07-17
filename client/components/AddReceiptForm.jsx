@@ -52,6 +52,7 @@ export default function AddReceiptForm({ modalState, close }) {
   const [previewMode, setPreviewMode] = useState(false)
   const dispatch = useDispatch()
   const [newReceipt, setNewReceipt] = useState(blankReceipt)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   function handleReceiptChange(e) {
     const { name, value } = e.target
@@ -92,6 +93,7 @@ export default function AddReceiptForm({ modalState, close }) {
         : null
     // console.log(newReceipt.expiryDate)
     if (image && newReceipt.name && newReceipt.price && newReceipt.store) {
+      setErrorMessage('')
       const formData = new FormData()
       formData.append('file', image)
       formData.append('upload_preset', cloudinaryPreset)
@@ -109,6 +111,10 @@ export default function AddReceiptForm({ modalState, close }) {
           categoryId: actualCategoryId,
         })
       })
+    } else {
+      setErrorMessage(
+        'You must add image of receipt and specify name, price, store to save your receipt'
+      )
     }
   }
 
@@ -319,6 +325,9 @@ export default function AddReceiptForm({ modalState, close }) {
             </Grid>
           </Grid>
         )}
+        <Box textAlign="center" color="primary">
+          {errorMessage}
+        </Box>
 
         {/* Add Button */}
         <Button variant="contained" type="submit" onClick={handleSubmit}>

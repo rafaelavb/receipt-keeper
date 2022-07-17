@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   Box,
   Button,
@@ -22,6 +23,8 @@ export default function ViewReceipt({
   modalState,
   close,
 }) {
+  const token = useSelector((state) => state.loggedInUser.token)
+  const dispatch = useDispatch()
   const [viewImage, setViewImage] = useState(false)
   function setViewMode(e) {
     e.preventDefault()
@@ -39,7 +42,10 @@ export default function ViewReceipt({
     setEditMode(bool)
   }
 
-  function handleDelete(e) {}
+  function handleDelete(e) {
+    dispatch(removeReceipt(receipt.id, token))
+    close(e, false)
+  }
   return (
     <>
       <StyledModal

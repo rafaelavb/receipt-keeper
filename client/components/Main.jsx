@@ -9,7 +9,7 @@ import { fetchReceipts, fetchCategories } from '../actions'
 
 export default function Main() {
   const token = useSelector((state) => state.loggedInUser.token)
-  const receipts = useSelector((state) => state.receipts?.data)
+  const receipts = useSelector((state) => state.receipts.data)
   const [stores, setStores] = useState([])
   const dispatch = useDispatch()
 
@@ -18,7 +18,7 @@ export default function Main() {
       dispatch(fetchReceipts(token))
       dispatch(fetchCategories(token))
     }
-  }, [token])
+  }, [token, receipts])
 
   useEffect(() => {
     if (receipts) {

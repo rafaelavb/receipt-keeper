@@ -36,8 +36,6 @@ export default function receiptsReducer(state = initialState, action) {
         // loading: false,
       }
     case UPDATE_RECEIPT:
-      console.log('state.data', state.data)
-      console.log('payload', payload)
       return {
         ...state,
         data: state.data.map((receipt) => {
@@ -48,7 +46,7 @@ export default function receiptsReducer(state = initialState, action) {
     case DELETE_RECEIPT:
       return {
         ...state,
-        data: [state.data.filter((receipt) => receipt !== payload)],
+        data: state.data.filter((receipt) => receipt.id !== payload),
         // loading: false,
       }
     case RECEIPTS_ERROR:

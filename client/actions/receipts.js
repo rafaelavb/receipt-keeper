@@ -63,18 +63,18 @@ export function updateReceipt(receipt, token) {
 }
 
 export const DELETE_RECEIPT = 'DELETE_RECEIPT'
-export function deleteReceipt(receipt) {
+export function deleteReceipt(receiptId) {
   return {
     type: DELETE_RECEIPT,
-    payload: receipt,
+    payload: receiptId,
   }
 }
 
-export function removeReceipt(receiptToDelete, token) {
+export function removeReceipt(receiptId, token) {
   return (dispatch) => {
     return api
-      .deleteReceipt(receiptToDelete, token)
-      .then((receiptToDelete) => dispatch(deleteReceipt(receiptToDelete)))
+      .deleteReceipt(receiptId, token)
+      .then((deletedId) => dispatch(deleteReceipt(deletedId)))
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }
 }

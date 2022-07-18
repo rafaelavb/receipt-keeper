@@ -95,11 +95,13 @@ export default function AddReceiptForm({ modalState, close }) {
 
     if (image && newReceipt.name && newReceipt.price && newReceipt.store) {
       setErrorMessage('')
-      const formData = new FormData()
-      formData.append('file', image)
-      formData.append('upload_preset', cloudinaryPreset)
-      close(e)
-      return uploadImageToCloudinary(formData).then((res) => {
+      // console.log(image)
+      // const formData = new FormData()
+      // formData.append('file', image)
+      // formData.append('upload_preset', cloudinaryPreset)
+      // close(e)
+
+      return uploadImageToCloudinary(image).then((res) => {
         const imageInfo = JSON.stringify(res)
         const { categoryId: actualCategoryId } = categories.find((category) => {
           if (category.categoryType === newReceipt.categoryType) {

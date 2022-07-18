@@ -1,16 +1,12 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-
 import { useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 import { getUsername } from '../apis'
-
 import { IfNotAuthenticated } from './Authenticated'
-
 import { Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 
 const theme = createTheme({
@@ -44,13 +40,14 @@ export default function Home() {
     })
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     if (loggedInUser.token) {
-      getUsername(loggedInUser.token).then((username) => {
-        if (username) {
-          navigate(`/receipts/${username}`)
-        }
-      })
+      try {
+        const username = await getUsername(loggedInUser.token)
+        username && navigate(`/receipts/${username}`)
+      } catch (err) {
+        console.error(err)
+      }
     }
   }, [loggedInUser])
 
@@ -80,9 +77,3 @@ export default function Home() {
     </div>
   )
 }
-
-/* <body>
-<div id="app"></div>
-<script src="/bundle.js"></script>
-<div><p>hello there how is it going</p></div>
-</body> */

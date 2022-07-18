@@ -67,10 +67,10 @@ export function deleteReceipt(receiptId) {
   }
 }
 
-export function removeReceipt(receiptId, token) {
+export function removeReceipt(receipt, token) {
   return (dispatch) => {
     return api
-      .deleteReceipt(receiptId, token)
+      .deleteReceipt(receipt, token)
       .then((deletedId) => dispatch(deleteReceipt(deletedId)))
       .catch((error) => dispatch(setReceiptsError(error.message)))
   }

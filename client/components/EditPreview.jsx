@@ -46,8 +46,10 @@ export default function EditPreview({
         <Button onClick={setImagePreview}>
           <Close />
         </Button>
-
-        <img src={typeof image === 'object' ? preview : image} />
+        <img
+          src={typeof image === 'object' ? preview : image}
+          alt="Your receipt"
+        />
         <Button onClick={(e) => handleReset(e)}>Reset</Button>
       </Box>
     </StyledModal>

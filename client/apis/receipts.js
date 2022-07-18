@@ -7,7 +7,6 @@ export function getReceipts(token) {
     .get(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
     .then((res) => res.body)
-    .catch((err) => console.error(err))
 }
 
 export function postReceipt(receipt, token) {
@@ -16,7 +15,6 @@ export function postReceipt(receipt, token) {
     .set('authorization', `Bearer ${token}`)
     .send(receipt)
     .then((res) => res.body)
-    .catch((err) => console.error(err))
 }
 
 export function patchReceipt(receipt, token) {
@@ -25,13 +23,12 @@ export function patchReceipt(receipt, token) {
     .set('authorization', `Bearer ${token}`)
     .send(receipt)
     .then((res) => res.body)
-    .catch((err) => console.error(err))
 }
 
-export function deleteReceipt(receiptId, token) {
+export function deleteReceipt(receipt, token) {
   return request
-    .delete(`${receiptsUrl}/${receiptId}`)
+    .delete(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
+    .send(receipt)
     .then((res) => res.body)
-    .catch((err) => console.error(err))
 }

@@ -16,9 +16,9 @@ export default function Main() {
   useEffect(() => {
     if (token) {
       dispatch(fetchReceipts(token))
-      dispatch(fetchCategories(token))
+      dispatch(fetchCategories())
     }
-  }, [token, receipts])
+  }, [token])
 
   useEffect(() => {
     if (receipts) {

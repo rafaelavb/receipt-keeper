@@ -30,15 +30,6 @@ import { updateReceipt } from '../actions'
 
 const cloudinaryPreset = 'receipts_keepers'
 
-const categories = [
-  'Books',
-  'Clothing',
-  'Electronics',
-  'Food',
-  'Homeware',
-  'Jewellery',
-]
-
 const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
 
 export default function EditReceipt({
@@ -48,14 +39,15 @@ export default function EditReceipt({
   closeView,
 }) {
   const token = useSelector((state) => state.loggedInUser.token)
+  const categories = useSelector((state) => state.categories?.data)
   const dispatch = useDispatch()
   const [name, setName] = useState(receipt.name)
   const [price, setPrice] = useState(receipt.price)
   const [note, setNote] = useState(
     receipt.note && receipt.note ? receipt.note : ''
   )
-  const [category, setCategory] = useState(
-    receipt.category ? receipt.category : ''
+  const [categoryType, setCategoryType] = useState(
+    receipt.categoryType ? receipt.categoryType : ''
   )
   const [store, setStore] = useState(receipt.store)
   const [purchaseDate, setPurchaseDate] = useState(
@@ -91,56 +83,57 @@ export default function EditReceipt({
     setExpiryDate(calculateExpiryDate(purchaseDate, period, periodUnit))
   }, [purchaseDate, period, periodUnit])
 
-  function handleEdit(e) {
+  async function handleEdit(e) {
     e.preventDefault()
-
     if (image && name && price && store) {
+      const { categoryId: actualCategoryId } = categories.find(
+        (category) => category.categoryType === categoryType
+      )
+      let updated
       if (image === receipt.image || image === receipt.image.url) {
-        const updated = {
+        updated = {
           id: receipt.id,
           name,
           image: JSON.stringify(receipt.image),
           purchaseDate,
           store,
           price,
-          // categoryId: category ? category : 'none',
-          note: note && note !== 'none' ? note : '',
+          categoryId: actualCategoryId,
+          note,
           warrantyId: receipt.warrantyId,
           expiryDate,
           warrantyPeriod: period,
           warrantyPeriodUnit: periodUnit,
         }
-        dispatch(updateReceipt(updated, token)).then(() => {
-          close(e, false)
-          closeView(e, false)
-        })
       } else {
         const formData = new FormData()
         formData.append('file', image)
         formData.append('upload_preset', cloudinaryPreset)
-        return uploadImageToCloudinary(formData).then((res) => {
-          // console.log(res)
-          const imageInfo = JSON.stringify(res)
-          const updated = {
-            id: receipt.id,
-            name,
-            image: imageInfo,
-            purchaseDate,
-            store,
-            price,
-            // categoryId: category ? category : 'none',
-            note: note ? note : 'none',
-            warrantyId: receipt.warrantyId,
-            expiryDate,
-            warrantyPeriod: period,
-            warrantyPeriodUnit: periodUnit,
-          }
-          dispatch(updateReceipt(updated, token)).then(() => {
-            close(e, false)
-            closeView(e, false)
-          })
-        })
+        const imageObj = await uploadImageToCloudinary(formData)
+        const imageInfo = JSON.stringify(imageObj)
+        updated = {
+          id: receipt.id,
+          name,
+          image: imageInfo,
+          purchaseDate,
+          store,
+          price,
+          categoryId: actualCategoryId,
+          note,
+          warrantyId: receipt.warrantyId,
+          expiryDate,
+          warrantyPeriod: period,
+          warrantyPeriodUnit: periodUnit,
+        }
       }
+      dispatch(updateReceipt(updated, token))
+        .then(() => {
+          close(e)
+          closeView(e)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }
   }
 
@@ -151,7 +144,7 @@ export default function EditReceipt({
       open={modalState}
       onClose={(e) => {
         setWarrantyChecked(false)
-        close(e, false)
+        close(e)
       }}
     >
       <Box
@@ -205,8 +198,6 @@ export default function EditReceipt({
             />
           </IconButton>
         )}
-
-        {/* Receipt Name */}
         <TextField
           required
           id="receipt-name"
@@ -215,8 +206,6 @@ export default function EditReceipt({
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-
-        {/* Price */}
         <FormControl fullWidth>
           <InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
           <OutlinedInput
@@ -230,8 +219,6 @@ export default function EditReceipt({
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
           />
         </FormControl>
-
-        {/* Purchase Date */}
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             required
@@ -247,23 +234,19 @@ export default function EditReceipt({
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
-
-        {/* Category */}
         <TextField
           id="category"
           label="Category"
           select
-          defaultValue={category}
-          onChange={(e) => setCategory(e.target.value)}
+          value={categoryType}
+          onChange={(e) => setCategoryType(e.target.value)}
         >
-          {categories.map((category) => (
-            <MenuItem key={category} value={category}>
-              {category}
+          {categories?.map((category) => (
+            <MenuItem key={category.categoryId} value={category.categoryType}>
+              {category.categoryType}
             </MenuItem>
           ))}
         </TextField>
-
-        {/* Store */}
         <TextField
           required
           id="receipt-store"
@@ -272,8 +255,6 @@ export default function EditReceipt({
           value={store}
           onChange={(e) => setStore(e.target.value)}
         />
-
-        {/* Note */}
         <TextField
           id="note"
           label="Note"
@@ -283,8 +264,6 @@ export default function EditReceipt({
           value={note}
           onChange={(e) => setNote(e.target.value)}
         />
-
-        {/* Warranty */}
         <FormGroup sx={{ alignItems: 'center' }}>
           <FormControlLabel
             control={
@@ -298,8 +277,6 @@ export default function EditReceipt({
             label="Warranty"
           />
         </FormGroup>
-
-        {/* Warranty Period */}
         {warrantyChecked && (
           <Grid container>
             <Grid item xs={8}>
@@ -329,8 +306,6 @@ export default function EditReceipt({
             </Grid>
           </Grid>
         )}
-
-        {/* Edit Button */}
         <Button variant="contained" type="submit" onClick={handleEdit}>
           Edit
         </Button>

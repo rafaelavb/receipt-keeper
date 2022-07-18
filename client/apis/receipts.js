@@ -25,9 +25,10 @@ export function patchReceipt(receipt, token) {
     .then((res) => res.body)
 }
 
-export function deleteReceipt(receiptId, token) {
+export function deleteReceipt(receipt, token) {
   return request
-    .delete(`${receiptsUrl}/${receiptId}`)
+    .delete(receiptsUrl)
     .set('authorization', `Bearer ${token}`)
+    .send(receipt)
     .then((res) => res.body)
 }

@@ -1,15 +1,11 @@
 const express = require('express')
-const checkJwt = require('../auth0')
 const db = require('../db/categories')
 
 const router = express.Router()
 
 module.exports = router
 
-// Get all predefined categories from database
-// GET api/v1/categories
-router.get('/', checkJwt, (req, res) => {
-  //why does this need a checkJWT?
+router.get('/', (req, res) => {
   db.getCategories()
     .then((categories) => {
       res.json(categories)

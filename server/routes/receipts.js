@@ -43,10 +43,11 @@ router.post('/', checkJwt, async (req, res) => {
 })
 
 router.patch('/', checkJwt, async (req, res) => {
+  const auth0Id = req.user?.sub
   const updatedReceipt = req.body
 
   try {
-    await db.updateReceipt(updatedReceipt)
+    await db.updateReceipt(auth0Id, updatedReceipt)
     await db.updateWarranty(updatedReceipt)
     const patchedReceipt = await db.getReceipt(updatedReceipt.id)
     const parsed = {
@@ -60,16 +61,18 @@ router.patch('/', checkJwt, async (req, res) => {
   }
 })
 
-router.delete('/:id', checkJwt, (req, res) => {
-  const receiptId = req.params.id
+router.delete('/', checkJwt, (req, res) => {
+  const auth0IdFromToken = req.user?.sub
+  const receipt = req.body
 
-  //this lets any user delete any receipt, you probably want to restrict this to only deleting receipts they own
-  db.deleteReceipt(receiptId)
-    .then(() => {
-      res.send(receiptId)
-    })
-    .catch((err) => {
-      console.error(err.message)
-      res.status(500).send('Server error')
-    })
+  if (auth0IdFromToken === receipt.auth0Id) {
+    db.deleteReceipt(auth0IdFromToken, receipt)
+      .then(() => {
+        res.json(receipt.id)
+      })
+      .catch((err) => {
+        console.error(err.message)
+        res.status(500).send('Server error')
+      })
+  }
 })

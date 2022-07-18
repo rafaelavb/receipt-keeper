@@ -30,15 +30,6 @@ import { updateReceipt } from '../actions'
 
 const cloudinaryPreset = 'receipts_keepers'
 
-const categories = [
-  'Books',
-  'Clothing',
-  'Electronics',
-  'Food',
-  'Homeware',
-  'Jewellery',
-]
-
 const periods = ['year(s)', 'month(s)', 'week(s)', 'day(s)']
 
 export default function EditReceipt({
@@ -48,13 +39,14 @@ export default function EditReceipt({
   closeView,
 }) {
   const token = useSelector((state) => state.loggedInUser.token)
+  const categories = useSelector((state) => state.categories?.data)
   const dispatch = useDispatch()
   const [name, setName] = useState(receipt.name)
   const [price, setPrice] = useState(receipt.price)
   const [note, setNote] = useState(
     receipt.note && receipt.note ? receipt.note : ''
   )
-  const [category, setCategory] = useState(
+  const [categoryType, setCategoryType] = useState(
     receipt.categoryType ? receipt.categoryType : ''
   )
   const [store, setStore] = useState(receipt.store)
@@ -94,58 +86,54 @@ export default function EditReceipt({
   async function handleEdit(e) {
     e.preventDefault()
     if (image && name && price && store) {
+      const { categoryId: actualCategoryId } = categories.find(
+        (category) => category.categoryType === categoryType
+      )
+      let updated
       if (image === receipt.image || image === receipt.image.url) {
-        const updated = {
+        updated = {
           id: receipt.id,
           name,
           image: JSON.stringify(receipt.image),
           purchaseDate,
           store,
           price,
-          // categoryId: category ? category : 'none',
-          note: note && note !== 'none' ? note : '',
+          categoryId: actualCategoryId,
+          note,
           warrantyId: receipt.warrantyId,
           expiryDate,
           warrantyPeriod: period,
           warrantyPeriodUnit: periodUnit,
         }
-        dispatch(updateReceipt(updated, token))
-          .then(() => {
-            close(e)
-            closeView(e)
-          })
-          .catch((err) => {
-            console.error(err)
-          })
       } else {
         const formData = new FormData()
         formData.append('file', image)
         formData.append('upload_preset', cloudinaryPreset)
         const imageObj = await uploadImageToCloudinary(formData)
         const imageInfo = JSON.stringify(imageObj)
-        const updated = {
+        updated = {
           id: receipt.id,
           name,
           image: imageInfo,
           purchaseDate,
           store,
           price,
-          // categoryId: category ? category : 'none',
-          note: note ? note : 'none',
+          categoryId: actualCategoryId,
+          note,
           warrantyId: receipt.warrantyId,
           expiryDate,
           warrantyPeriod: period,
           warrantyPeriodUnit: periodUnit,
         }
-        dispatch(updateReceipt(updated, token))
-          .then(() => {
-            close(e)
-            closeView(e)
-          })
-          .catch((err) => {
-            console.error(err)
-          })
       }
+      dispatch(updateReceipt(updated, token))
+        .then(() => {
+          close(e)
+          closeView(e)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }
   }
 
@@ -156,7 +144,7 @@ export default function EditReceipt({
       open={modalState}
       onClose={(e) => {
         setWarrantyChecked(false)
-        close(e, false)
+        close(e)
       }}
     >
       <Box
@@ -250,12 +238,12 @@ export default function EditReceipt({
           id="category"
           label="Category"
           select
-          defaultValue={category}
-          onChange={(e) => setCategory(e.target.value)}
+          value={categoryType}
+          onChange={(e) => setCategoryType(e.target.value)}
         >
-          {categories.map((category) => (
-            <MenuItem key={category} value={category}>
-              {category}
+          {categories?.map((category) => (
+            <MenuItem key={category.categoryId} value={category.categoryType}>
+              {category.categoryType}
             </MenuItem>
           ))}
         </TextField>

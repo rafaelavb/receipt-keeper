@@ -7,6 +7,7 @@ import Home from './Home'
 import Register from './Register'
 import Navbar from './Navbar'
 import Main from './Main'
+import ErrorPage from './ErrorPage'
 
 function App() {
   cacheUser(useAuth0)
@@ -44,11 +45,11 @@ function App() {
             }
           />
           <Route
-            path="/receipts/:username/:store"
+            path="*"
             element={
               <>
-                <Navbar />
-                <Main />
+                <Navbar home="home" />
+                <ErrorPage />
               </>
             }
           />

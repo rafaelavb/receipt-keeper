@@ -16,51 +16,60 @@ import request from 'superagent'
 
 export function uploadImageToCloudinary(image) {
   // console.log('api', image.name)
-  // const string = JSON.stringify(image.file)
+  const string = JSON.stringify(image)
   // console.log(string)
   return request
     .post('/api/v1/images')
-    .attach('file', image)
+    .send(string)
+    .set('accept', 'json')
     .then((res) => {
       console.log(res.body)
     })
 }
 
-export function uploadImageToCloudinary2(image) {
-  const cloudName = 'receipt-keepers'
-  const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
-  // const timestamp = Date.now() / 1000
-  const uploadPreset = 'receipts_keepers'
-  // const paramStr = `timestamp='${timestamp}'&upload_preset='${uploadPreset}"ZoD3Vr3GEPRLq3dZdZCaiJbuwCY`
-  // const signature = sha1(paramStr)
+// export function uploadImageToCloudinary(formData) {
+//   const cloudName = 'receipt-keepers'
+//   const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
+// const timestamp = Date.now() / 1000
+// const uploadPreset = 'receipts_keepers'
+// const paramStr = `timestamp='${timestamp}'&upload_preset='${uploadPreset}"ZoD3Vr3GEPRLq3dZdZCaiJbuwCY`
+// const signature = sha1(paramStr)
 
-  const params = {
-    api_key: '428255634267578',
-    // timestamp: timestamp,
-    upload_preset: uploadPreset,
-    // signature: signature,
-    // file: image,
-  }
-  let uploadRequest = request.post(url)
-  uploadRequest.attach('file', image)
-  Object.keys(params).forEach((key) => {
-    uploadRequest.field(key, params[key]) //field is specific to superagent
-    uploadRequest.end((err, resp) => {
-      //'end' sends the request
-      if (err) {
-        console.log(err, null)
-        return
-      }
-      console.log(resp.data)
-      // const url = resp.body.url
-      // const ind = url.indexOf('upload/')
-      // const newUrl =
-      //   url.slice(0, ind + 7) + 'w_300/e_cartoonify/' + url.slice(ind + 7)
-      // this.setState({
-      //   imageUrl: [...this.state.imageUrl, newUrl],
-    })
-  })
-}
+// const params = {
+//   api_key: '428255634267578',
+//   timestamp: timestamp,
+//   upload_preset: uploadPreset,
+//   signature: signature,
+//   file: image,
+// }
+// let uploadRequest = request.post(url)
+// uploadRequest.field(formData)
+// uploadRequest.end((err, resp) => {
+//   if (err) {
+//     console.log(err, null)
+//     return
+//   }
+//   console.log(resp.data)
+// })
+
+// Object.keys(params).forEach((key) => {
+//   uploadRequest.field(key, params[key]) //field is specific to superagent
+//   uploadRequest.end((err, resp) => {
+//     //'end' sends the request
+//     if (err) {
+//       console.log(err, null)
+//       return
+//     }
+//     console.log(resp.data)
+//     const url = resp.body.url
+//     const ind = url.indexOf('upload/')
+//     const newUrl =
+//       url.slice(0, ind + 7) + 'w_300/e_cartoonify/' + url.slice(ind + 7)
+//     this.setState({
+//       imageUrl: [...this.state.imageUrl, newUrl],
+//   })
+// })
+// }
 
 //   return Axios.post(image))
 //     .then((res) => {

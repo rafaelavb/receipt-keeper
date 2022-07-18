@@ -15,11 +15,11 @@ export function receiveCategories(categories) {
   }
 }
 
-export function fetchCategories(token) {
+export function fetchCategories() {
   return (dispatch) => {
     dispatch(requestCategories())
     return api
-      .getCategories(token)
+      .getCategories()
       .then((categories) => dispatch(receiveCategories(categories)))
       .catch((error) => dispatch(setCategoriesError(error.message)))
   }

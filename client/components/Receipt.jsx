@@ -16,7 +16,6 @@ export default function Receipt(props) {
   const [modalOpen, setModalOpen] = useState(false)
   const [expired, setExpired] = useState(false)
   useEffect(() => {
-    console.log(typeof receipt.expiryDate)
     if (receipt.expiryDate) {
       setExpired(new Date(receipt.expiryDate) < new Date())
     }
@@ -27,9 +26,9 @@ export default function Receipt(props) {
     setModalOpen(true)
   }
 
-  function handleClose(e, bool) {
+  function handleClose(e) {
     e.preventDefault()
-    setModalOpen(bool)
+    setModalOpen(false)
   }
   return (
     <>

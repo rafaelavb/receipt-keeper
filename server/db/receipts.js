@@ -1,6 +1,5 @@
 const connection = require('./connection')
 
-// Get all the receipts
 function getReceipts(auth0_id, db = connection) {
   return db('receipts')
     .join('users', 'receipts.auth0_id', 'users.auth0_id')
@@ -26,7 +25,6 @@ function getReceipts(auth0_id, db = connection) {
     .where({ 'users.auth0_id': auth0_id })
 }
 
-// Get a single receipt by id
 function getReceipt(receiptId, db = connection) {
   return db('receipts')
     .join('users', 'receipts.auth0_id', 'users.auth0_id')
@@ -53,7 +51,6 @@ function getReceipt(receiptId, db = connection) {
     .first()
 }
 
-// Add a receipt
 function addReceipt(auth0_id, newReceipt, db = connection) {
   return db('receipts').insert({
     auth0_id: auth0_id,
@@ -67,8 +64,8 @@ function addReceipt(auth0_id, newReceipt, db = connection) {
   })
 }
 
-// Update receipt by id
 function updateReceipt(
+  auth0Id,
   { id, name, image, purchaseDate, store, price, note, categoryId },
   db = connection
 ) {
@@ -82,12 +79,13 @@ function updateReceipt(
       category_id: categoryId,
       note,
     })
-    .where({ id })
+    .where({ auth0_id: auth0Id } && { id: id })
 }
 
-// Delete receipt by id
-function deleteReceipt(receiptId, db = connection) {
-  return db('receipts').del().where({ 'receipts.id': receiptId })
+function deleteReceipt(auth0Id, receipt, db = connection) {
+  return db('receipts')
+    .del()
+    .where({ auth0_id: auth0Id } && { id: receipt.id })
 }
 
 module.exports = {

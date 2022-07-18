@@ -20,19 +20,16 @@ export default function receiptsReducer(state = initialState, action) {
     case REQUEST_RECEIPTS:
       return {
         ...state,
-        // loading: true,
       }
     case RECEIVE_RECEIPTS:
       return {
         ...state,
         data: payload,
-        // loading: false,
       }
     case ADD_RECEIPT:
       return {
         ...state,
         data: [...state.data, payload],
-        // loading: false,
       }
     case UPDATE_RECEIPT:
       return {
@@ -40,18 +37,15 @@ export default function receiptsReducer(state = initialState, action) {
         data: state.data.map((receipt) =>
           receipt.id === payload.id ? payload : receipt
         ),
-        // loading: false,
       }
     case DELETE_RECEIPT:
       return {
         ...state,
         data: state.data.filter((receipt) => receipt.id !== payload),
-        // loading: false,
       }
     case RECEIPTS_ERROR:
       return {
         ...state,
-        // loading: false,
         error: error,
       }
     default:

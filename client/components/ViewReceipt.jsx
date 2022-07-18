@@ -43,7 +43,7 @@ export default function ViewReceipt({
   }
 
   function handleDelete(e) {
-    dispatch(removeReceipt(receipt.id, token))
+    dispatch(removeReceipt(receipt, token))
     close(e)
   }
   return (

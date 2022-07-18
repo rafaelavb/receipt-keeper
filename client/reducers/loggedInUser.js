@@ -12,8 +12,7 @@ export default function loggedInUserReducer(state = emptyUser, action) {
     case SET_LOGGED_IN_USER:
       return payload
     case CLEAR_LOGGED_IN_USER:
-      //shouldn't this return the emptyUser instead?
-      return state
+      return emptyUser
     default:
       return state
   }

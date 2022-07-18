@@ -44,7 +44,7 @@ export default function Navbar(props) {
   }
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{ height: '65px' }}>
       <StyledToolbar>
         <Typography
           variant="h6"

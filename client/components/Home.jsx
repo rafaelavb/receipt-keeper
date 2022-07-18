@@ -9,6 +9,28 @@ import { IfNotAuthenticated } from './Authenticated'
 
 import { Typography } from '@mui/material'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+
+const theme = createTheme({
+  typography: {
+    fontFamily: ['Arial', 'serif'].join(','),
+    // fontFamily: ['Arial', 'sans-serif'].join(','),
+    // fontFamily: ['Arial', 'monospace'].join(','),
+    // fontFamily: ['Arial', 'cursive'].join(','),
+    // fontFamily: ['Arial', 'fantasy'].join(','),
+    // fontFamily: ['Chilanka', 'cursive'].join(','),
+    // fontFamily: ['BlinkMacSystemFont', 'cursive'].join(','),
+    // fontFamily: ['Segoe UI', 'cursive'].join(','),
+    // fontFamily: ['-apple-system', 'monospace'].join(','),
+    // fontFamily: ['Helvetica Neue', 'fantasy'].join(','),
+    // fontFamily: ['Apple Color Emoji', 'cursive'].join(',')
+    // fontFamily: ['Segoe UI Emoji', 'cursive'].join(',')
+    // fontFamily: ['Segoe UI Symbol', 'cursive'].join(',')
+    // fontFamily: ['Roboto', 'cursive'].join(',')
+  },
+})
 
 export default function Home() {
   const { loginWithRedirect } = useAuth0()
@@ -35,18 +57,24 @@ export default function Home() {
   return (
     <div className="app">
       <IfNotAuthenticated>
-        <Box p={5}>
-          <Typography variant="h1" color="textSecondary" align="center">
-            We keep your receipts for when you need
-          </Typography>
-        </Box>
+        <ThemeProvider theme={theme}>
+          <Box p={5}>
+            <Typography variant="h2" color="textSecondary" align="center">
+              We keep your receipts for when you need them
+            </Typography>
+          </Box>
+        </ThemeProvider>
 
         <Box pd={3} textAlign="center">
-          <button>
-            <a href="/" onClick={handleRegister}>
+          <Button variant="contained">
+            <a
+              style={{ color: 'white', textDecoration: 'none' }}
+              href="/"
+              onClick={handleRegister}
+            >
               Register
             </a>
-          </button>
+          </Button>
         </Box>
       </IfNotAuthenticated>
     </div>

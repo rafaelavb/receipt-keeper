@@ -101,13 +101,15 @@ export default function AddReceiptForm({ modalState, close }) {
       formData.append('upload_preset', cloudinaryPreset)
       close(e)
 
-      return uploadImageToCloudinary(formData).then((res) => {
+      uploadImageToCloudinary(formData).then((res) => {
+        console.log(res)
         const imageInfo = JSON.stringify(res)
-        const { categoryId: actualCategoryId } = categories.find((category) => {
-          if (category.categoryType === newReceipt.categoryType) {
-            return category.categoryId
-          }
-        })
+        const { categoryId: actualCategoryId } = categories.find(
+          (category) => category.categoryType === newReceipt.categoryType
+          // if (category.categoryType === newReceipt.categoryType) {
+          //   return category.categoryId
+          // }
+        )
         setNewReceipt({
           ...newReceipt,
           image: imageInfo,

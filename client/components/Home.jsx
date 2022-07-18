@@ -80,9 +80,3 @@ export default function Home() {
     </div>
   )
 }
-
-/* <body>
-<div id="app"></div>
-<script src="/bundle.js"></script>
-<div><p>hello there how is it going</p></div>
-</body> */

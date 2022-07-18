@@ -1,30 +1,5 @@
 import React from 'react'
 
-// import Button from '@mui/material/Button'
-// import { Typography } from '@mui/material'
-// import Box from '@mui/material/Box'
-// import { ThemeProvider, createTheme } from '@mui/material/styles'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-
-// const theme = createTheme({
-//   typography: {
-//     // fontFamily: ['Arial', 'serif'].join(','),
-//     // fontFamily: ['Arial', 'sans-serif'].join(','),
-//     // fontFamily: ['Arial', 'monospace'].join(','),
-//     // fontFamily: ['Arial', 'cursive'].join(','),
-//     // fontFamily: ['Arial', 'fantasy'].join(','),
-//     // fontFamily: ['Chilanka', 'cursive'].join(','),
-//     // fontFamily: ['BlinkMacSystemFont', 'cursive'].join(','),
-//     // fontFamily: ['Segoe UI', 'cursive'].join(','),
-//     fontFamily: ['Chilanka', 'cursive'].join(','),
-//     // fontFamily: ['Helvetica Neue', 'fantasy'].join(','),
-//     // fontFamily: ['Apple Color Emoji', 'cursive'].join(',')
-//     // fontFamily: ['Segoe UI Emoji', 'cursive'].join(',')
-//     // fontFamily: ['Segoe UI Symbol', 'cursive'].join(',')
-//     // fontFamily: ['Roboto', 'cursive'].join(',')
-//   },
-// })
-
 export default function ErrorPage() {
   return (
     <div className="error-page">
@@ -342,34 +317,11 @@ export default function ErrorPage() {
       </div>
       <div className="text">
         <h1>404 Error</h1>
-        <h2>Couldn't launch :(</h2>
+        <h2>Couldn&apos;t launch :(</h2>
         <h3>
           Page Not Found - lets take you <a href="/">BACK</a>
         </h3>
       </div>
-      {/*   
-
-    //   <ThemeProvider theme={theme}>
-    //     <Box p={5}> */}
-      //{' '}
-      {/* <Typography variant="h2" color="textSecondary" align="center">
-    //         That page doesn&apos;t exist!
-    //       </Typography>
-    //       <br />
-    //       <Typography variant="h4" color="textSecondary" align="center">
-    //         Sorry, the page you were looking for could not be found
-    //       </Typography> */}
-      {/* //     </Box>
-    //   </ThemeProvider>
-
-    //   <Box pd={3} textAlign="center">
-    //     <Button variant="contained">
-    //       <a style={{ color: 'white', textDecoration: 'none' }} href="/">
-    //         Back to home
-    //       </a>
-    //     </Button>
-    //   </Box> */}
-      //{' '}
     </div>
   )
 }

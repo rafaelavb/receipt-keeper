@@ -33,10 +33,6 @@ export default function ViewReceipt({
   const [viewImage, setViewImage] = useState(false)
   const [openConfirm, setOpenConfirm] = useState(false)
 
-  function handleOpenConfirm(e) {
-    setOpenConfirm(true)
-  }
-
   function setViewMode(e) {
     e.preventDefault()
     setViewImage(!viewImage)
@@ -54,7 +50,7 @@ export default function ViewReceipt({
   }
 
   function handleDelete(e) {
-    dispatch(removeReceipt(receipt.id, token))
+    dispatch(removeReceipt(receipt, token))
     close(e)
   }
   return (
@@ -251,7 +247,7 @@ export default function ViewReceipt({
             <Button variant="contained" onClick={handleClickOpen}>
               Edit
             </Button>
-            <Button variant="contained" onClick={handleOpenConfirm}>
+            <Button variant="contained" onClick={() => setOpenConfirm(true)}>
               Delete
             </Button>
           </Stack>
@@ -276,7 +272,7 @@ export default function ViewReceipt({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={(e) => setOpenConfirm(false)}>Cancel</Button>
+          <Button onClick={() => setOpenConfirm(false)}>Cancel</Button>
           <Button onClick={handleDelete} autoFocus>
             Delete
           </Button>

@@ -61,18 +61,18 @@ router.patch('/', checkJwt, async (req, res) => {
   }
 })
 
-router.delete('/', checkJwt, (req, res) => {
+router.delete('/', checkJwt, async (req, res) => {
   const auth0IdFromToken = req.user?.sub
   const receipt = req.body
 
   if (auth0IdFromToken === receipt.auth0Id) {
-    db.deleteReceipt(auth0IdFromToken, receipt)
-      .then(() => {
-        res.json(receipt.id)
-      })
-      .catch((err) => {
-        console.error(err.message)
-        res.status(500).send('Server error')
-      })
+    try {
+      await db.deleteReceipt(auth0IdFromToken, receipt)
+      await db.deleteWarranty(receipt)
+      res.json(receipt.id)
+    } catch (err) {
+      console.error(err.message)
+      res.status(500).send('Server error')
+    }
   }
 })

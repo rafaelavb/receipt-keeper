@@ -24,8 +24,7 @@ export default function ViewImage({ viewImageMode, setViewMode, image }) {
         <Button onClick={setViewMode}>
           <Close />
         </Button>
-
-        <img src={image} />
+        <img src={image} alt="Receipt" />
       </Box>
     </StyledModal>
   )

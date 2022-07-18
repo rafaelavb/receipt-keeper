@@ -98,7 +98,7 @@ export default function AddReceiptForm({ modalState, close }) {
       const formData = new FormData()
       formData.append('file', image)
       formData.append('upload_preset', cloudinaryPreset)
-      close(e, false)
+      close(e)
       return uploadImageToCloudinary(formData).then((res) => {
         const imageInfo = JSON.stringify(res)
         const { categoryId: actualCategoryId } = categories.find((category) => {
@@ -121,13 +121,14 @@ export default function AddReceiptForm({ modalState, close }) {
 
   useEffect(() => {
     if (newReceipt.image) {
-      dispatch(createReceipt(newReceipt, token)).then(
-        () => setNewReceipt(blankReceipt),
-        setImage(null),
-        setWarrantyChecked(false)
-      )
+      dispatch(createReceipt(newReceipt, token))
+        .then(() => {
+          setNewReceipt(blankReceipt), setImage(null), setWarrantyChecked(false)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }
-    return
   }, [newReceipt])
 
   return (
@@ -137,7 +138,7 @@ export default function AddReceiptForm({ modalState, close }) {
       open={modalState}
       onClose={(e) => {
         setWarrantyChecked(false)
-        close(e, false)
+        close(e)
       }}
     >
       <Box
@@ -159,8 +160,6 @@ export default function AddReceiptForm({ modalState, close }) {
         <Typography variant="h6" color="primary" textAlign="center">
           New Receipt
         </Typography>
-
-        {/* Image */}
         {!image && (
           <IconButton
             color="primary"
@@ -193,8 +192,6 @@ export default function AddReceiptForm({ modalState, close }) {
             />
           </IconButton>
         )}
-
-        {/* Receipt Name */}
         <TextField
           required
           id="receipt-name"
@@ -204,8 +201,6 @@ export default function AddReceiptForm({ modalState, close }) {
           value={newReceipt.name}
           onChange={handleReceiptChange}
         />
-
-        {/* Price */}
         <FormControl fullWidth>
           <InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
           <OutlinedInput
@@ -220,8 +215,6 @@ export default function AddReceiptForm({ modalState, close }) {
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
           />
         </FormControl>
-
-        {/* Purchase Date */}
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             required
@@ -230,7 +223,6 @@ export default function AddReceiptForm({ modalState, close }) {
             openTo="year"
             views={['year', 'month', 'day']}
             inputFormat="dd/MM/yyyy"
-            // name="purchaseDate"
             value={purchaseDate}
             onChange={(newDate) => {
               setPurchaseDate(newDate)
@@ -238,8 +230,6 @@ export default function AddReceiptForm({ modalState, close }) {
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
-
-        {/* Store */}
         <TextField
           required
           id="receipt-store"
@@ -249,8 +239,6 @@ export default function AddReceiptForm({ modalState, close }) {
           value={newReceipt.store}
           onChange={handleReceiptChange}
         />
-
-        {/* Category */}
         <TextField
           id="category"
           label="Category"
@@ -265,8 +253,6 @@ export default function AddReceiptForm({ modalState, close }) {
             </MenuItem>
           ))}
         </TextField>
-
-        {/* Note */}
         <TextField
           id="note"
           label="Note"
@@ -277,8 +263,6 @@ export default function AddReceiptForm({ modalState, close }) {
           value={newReceipt.note}
           onChange={handleReceiptChange}
         />
-
-        {/* Warranty */}
         <FormGroup sx={{ alignItems: 'center' }}>
           <FormControlLabel
             control={
@@ -292,8 +276,6 @@ export default function AddReceiptForm({ modalState, close }) {
             label="Warranty"
           />
         </FormGroup>
-
-        {/* Warranty Period */}
         {warrantyChecked && (
           <Grid container>
             <Grid item xs={8}>
@@ -329,8 +311,6 @@ export default function AddReceiptForm({ modalState, close }) {
         <Box textAlign="center" color="primary">
           {errorMessage}
         </Box>
-
-        {/* Add Button */}
         <Button variant="contained" type="submit" onClick={handleSubmit}>
           Add
         </Button>

@@ -37,14 +37,14 @@ export default function ViewReceipt({
     setEditMode(true)
   }
 
-  function handleClose(e, bool) {
+  function handleClose(e) {
     e.preventDefault()
-    setEditMode(bool)
+    setEditMode(false)
   }
 
   function handleDelete(e) {
     dispatch(removeReceipt(receipt.id, token))
-    close(e, false)
+    close(e)
   }
   return (
     <>
@@ -52,9 +52,7 @@ export default function ViewReceipt({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         open={modalState}
-        onClose={(e) => {
-          close(e, false)
-        }}
+        onClose={(e) => close(e)}
       >
         <Box
           sx={{
@@ -91,11 +89,9 @@ export default function ViewReceipt({
                 height: '30px',
                 display: 'inline',
               }}
-              onClick={(e) => close(e, false)}
+              onClick={(e) => close(e)}
             />
           </Box>
-          {/* Receipt Name */}
-
           <Typography variant="h6" color="primary" sx={{ textAlign: 'center' }}>
             {receipt.name}
           </Typography>
@@ -225,12 +221,9 @@ export default function ViewReceipt({
             <Divider />
           </List>
           <Stack direction="row" justifyContent="space-around">
-            {/* Edit Button */}
             <Button variant="contained" onClick={handleClickOpen}>
               Edit
             </Button>
-
-            {/* Del Button */}
             <Button variant="contained" onClick={handleDelete}>
               Delete
             </Button>

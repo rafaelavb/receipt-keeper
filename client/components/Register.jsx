@@ -31,7 +31,7 @@ export default function Register() {
     })
   }, [loggedInUser, username])
 
-  async function handleRegister(e) {
+  async function handleRegister() {
     await addUser(form)
     navigate(`/receipts/${username}`)
   }

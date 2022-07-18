@@ -55,7 +55,7 @@ export default function EditReceipt({
     receipt.note && receipt.note ? receipt.note : ''
   )
   const [category, setCategory] = useState(
-    receipt.category ? receipt.category : ''
+    receipt.categoryType ? receipt.categoryType : ''
   )
   const [store, setStore] = useState(receipt.store)
   const [purchaseDate, setPurchaseDate] = useState(
@@ -91,9 +91,8 @@ export default function EditReceipt({
     setExpiryDate(calculateExpiryDate(purchaseDate, period, periodUnit))
   }, [purchaseDate, period, periodUnit])
 
-  function handleEdit(e) {
+  async function handleEdit(e) {
     e.preventDefault()
-
     if (image && name && price && store) {
       if (image === receipt.image || image === receipt.image.url) {
         const updated = {
@@ -110,36 +109,42 @@ export default function EditReceipt({
           warrantyPeriod: period,
           warrantyPeriodUnit: periodUnit,
         }
-        dispatch(updateReceipt(updated, token)).then(() => {
-          close(e, false)
-          closeView(e, false)
-        })
+        dispatch(updateReceipt(updated, token))
+          .then(() => {
+            close(e)
+            closeView(e)
+          })
+          .catch((err) => {
+            console.error(err)
+          })
       } else {
         const formData = new FormData()
         formData.append('file', image)
         formData.append('upload_preset', cloudinaryPreset)
-        return uploadImageToCloudinary(formData).then((res) => {
-          // console.log(res)
-          const imageInfo = JSON.stringify(res)
-          const updated = {
-            id: receipt.id,
-            name,
-            image: imageInfo,
-            purchaseDate,
-            store,
-            price,
-            // categoryId: category ? category : 'none',
-            note: note ? note : 'none',
-            warrantyId: receipt.warrantyId,
-            expiryDate,
-            warrantyPeriod: period,
-            warrantyPeriodUnit: periodUnit,
-          }
-          dispatch(updateReceipt(updated, token)).then(() => {
-            close(e, false)
-            closeView(e, false)
+        const imageObj = await uploadImageToCloudinary(formData)
+        const imageInfo = JSON.stringify(imageObj)
+        const updated = {
+          id: receipt.id,
+          name,
+          image: imageInfo,
+          purchaseDate,
+          store,
+          price,
+          // categoryId: category ? category : 'none',
+          note: note ? note : 'none',
+          warrantyId: receipt.warrantyId,
+          expiryDate,
+          warrantyPeriod: period,
+          warrantyPeriodUnit: periodUnit,
+        }
+        dispatch(updateReceipt(updated, token))
+          .then(() => {
+            close(e)
+            closeView(e)
           })
-        })
+          .catch((err) => {
+            console.error(err)
+          })
       }
     }
   }
@@ -205,8 +210,6 @@ export default function EditReceipt({
             />
           </IconButton>
         )}
-
-        {/* Receipt Name */}
         <TextField
           required
           id="receipt-name"
@@ -215,8 +218,6 @@ export default function EditReceipt({
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-
-        {/* Price */}
         <FormControl fullWidth>
           <InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
           <OutlinedInput
@@ -230,8 +231,6 @@ export default function EditReceipt({
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
           />
         </FormControl>
-
-        {/* Purchase Date */}
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             required
@@ -247,8 +246,6 @@ export default function EditReceipt({
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
-
-        {/* Category */}
         <TextField
           id="category"
           label="Category"
@@ -262,8 +259,6 @@ export default function EditReceipt({
             </MenuItem>
           ))}
         </TextField>
-
-        {/* Store */}
         <TextField
           required
           id="receipt-store"
@@ -272,8 +267,6 @@ export default function EditReceipt({
           value={store}
           onChange={(e) => setStore(e.target.value)}
         />
-
-        {/* Note */}
         <TextField
           id="note"
           label="Note"
@@ -283,8 +276,6 @@ export default function EditReceipt({
           value={note}
           onChange={(e) => setNote(e.target.value)}
         />
-
-        {/* Warranty */}
         <FormGroup sx={{ alignItems: 'center' }}>
           <FormControlLabel
             control={
@@ -298,8 +289,6 @@ export default function EditReceipt({
             label="Warranty"
           />
         </FormGroup>
-
-        {/* Warranty Period */}
         {warrantyChecked && (
           <Grid container>
             <Grid item xs={8}>
@@ -329,8 +318,6 @@ export default function EditReceipt({
             </Grid>
           </Grid>
         )}
-
-        {/* Edit Button */}
         <Button variant="contained" type="submit" onClick={handleEdit}>
           Edit
         </Button>

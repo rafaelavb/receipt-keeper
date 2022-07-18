@@ -17,9 +17,9 @@ function updateWarranty(
 ) {
   return db('warranties')
     .update({
-      expiry_date: expiryDate,
-      period: warrantyPeriod,
-      period_unit: warrantyPeriodUnit,
+      expiry_date: expiryDate ? expiryDate : null,
+      period: warrantyPeriod ? warrantyPeriod : null,
+      period_unit: warrantyPeriodUnit ? warrantyPeriodUnit : null,
     })
     .where({ id: warrantyId })
 }

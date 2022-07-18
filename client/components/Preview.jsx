@@ -46,8 +46,7 @@ export default function Preview({
         <Button onClick={setImagePreview}>
           <Close />
         </Button>
-
-        <img src={preview} />
+        <img src={preview} alt="Preview of receipt" />
         <Button onClick={(e) => handleReset(e)}>Reset</Button>
       </Box>
     </StyledModal>

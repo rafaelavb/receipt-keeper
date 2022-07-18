@@ -8,8 +8,7 @@ import {
   IconButton,
   Box,
 } from '@mui/material'
-import React, { useState } from 'react'
-import { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import ViewReceipt from './ViewReceipt'
 
 export default function Receipt(props) {
@@ -17,6 +16,7 @@ export default function Receipt(props) {
   const [modalOpen, setModalOpen] = useState(false)
   const [expired, setExpired] = useState(false)
   useEffect(() => {
+    console.log(typeof receipt.expiryDate)
     if (receipt.expiryDate) {
       setExpired(new Date(receipt.expiryDate) < new Date())
     }

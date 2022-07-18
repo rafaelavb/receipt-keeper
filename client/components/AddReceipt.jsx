@@ -12,9 +12,9 @@ export default function AddReceipt() {
     setModalOpen(true)
   }
 
-  function handleClose(e, bool) {
+  function handleClose(e) {
     e.preventDefault()
-    setModalOpen(bool)
+    setModalOpen(false)
   }
 
   return (

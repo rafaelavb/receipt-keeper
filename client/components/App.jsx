@@ -1,13 +1,13 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
+import { cacheUser } from '../auth0-utils'
 
 import Home from './Home'
 import Register from './Register'
 import Navbar from './Navbar'
 import Main from './Main'
 import ErrorPage from './ErrorPage'
-import { cacheUser } from '../auth0-utils'
 
 function App() {
   cacheUser(useAuth0)

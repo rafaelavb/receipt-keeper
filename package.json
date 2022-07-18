@@ -50,6 +50,7 @@
     "express-jwt-authz": "^2.4.1",
     "jwks-rsa": "^2.1.4",
     "knex": "^2.1.0",
+    "nock": "^13.2.8",
     "pg": "^8.7.1",
     "sqlite3": "^5.0.8",
     "superagent": "^8.0.0"

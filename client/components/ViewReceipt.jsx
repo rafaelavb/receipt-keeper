@@ -179,6 +179,22 @@ export default function ViewReceipt({
                 }
               />
             </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                primary="Category"
+                secondary={
+                  <Typography
+                    sx={{ paddingLeft: '20px', paddingTop: '10px' }}
+                    variant="body1"
+                    component="div"
+                    color="text.secondary"
+                  >
+                    {receipt.categoryType}
+                  </Typography>
+                }
+              />
+            </ListItem>
+            <Divider />
             <Divider />
             <ListItem alignItems="flex-start">
               <ListItemText

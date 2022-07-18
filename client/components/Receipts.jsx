@@ -11,7 +11,14 @@ export default function Receipts() {
   const receipts = useSelector((state) => state.receipts.data)
 
   return (
-    <Box flex={5}>
+    <Box
+      flex={5}
+      sx={{
+        '&::-webkit-scrollbar': {
+          display: 'none',
+        },
+      }}
+    >
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         margin={{ xs: 0, sm: 4 }}
@@ -19,6 +26,11 @@ export default function Receipts() {
         textAlign="center"
         flexWrap="wrap"
         gap={3}
+        sx={{
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        }}
       >
         {!store &&
           receipts?.map((receipt, index) => {

@@ -9,6 +9,7 @@ module.exports = router
 // Get all predefined categories from database
 // GET api/v1/categories
 router.get('/', checkJwt, (req, res) => {
+  //why does this need a checkJWT?
   db.getCategories()
     .then((categories) => {
       res.json(categories)

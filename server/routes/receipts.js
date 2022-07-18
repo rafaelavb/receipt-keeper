@@ -25,6 +25,8 @@ router.get('/', checkJwt, (req, res) => {
     })
 })
 
+// JV - remove commented out code
+
 // *** DON'T NEED ***
 // Get single receipt by ID
 // GET /api/v1/receipts
@@ -138,6 +140,7 @@ router.patch('/', checkJwt, async (req, res) => {
 router.delete('/:id', checkJwt, (req, res) => {
   const receiptId = req.params.id
 
+  //this lets any user delete any receipt, you probably want to restrict this to only deleting receipts they own
   db.deleteReceipt(receiptId)
     .then(() => {
       res.send(receiptId)

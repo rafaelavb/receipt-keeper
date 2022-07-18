@@ -12,7 +12,7 @@ const initialState = {
   // loading: false,
   error: null,
 }
-
+//remove commented out code
 export default function receiptsReducer(state = initialState, action) {
   const { type, payload, error } = action
 

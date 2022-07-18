@@ -1,5 +1,6 @@
 import Axios from 'axios'
 
+//axios is fine but I would use it or superagent, not both
 const cloudinaryUploadEndpoint =
   'https://api.cloudinary.com/v1_1/receipt-keepers/image/upload'
 

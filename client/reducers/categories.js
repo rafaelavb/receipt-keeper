@@ -10,6 +10,8 @@ const initialState = {
   error: null,
 }
 
+//if you don't want the loading state, then delete it instead of commenting it out
+
 export default function categoriesReducer(state = initialState, action) {
   const { type, payload, error } = action
 

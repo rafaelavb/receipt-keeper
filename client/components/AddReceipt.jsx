@@ -12,6 +12,8 @@ export default function AddReceipt() {
     setModalOpen(true)
   }
 
+  //AddReceiptForm always calls this function with bool as false
+  //looks like that argument is not needed any more and you can just hard code it to false on line 19
   function handleClose(e, bool) {
     e.preventDefault()
     setModalOpen(bool)

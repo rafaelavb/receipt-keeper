@@ -1,6 +1,6 @@
 const config = require('../knexfile')
 const knex = require('knex')
-const { getReceipt /*getReceipts*/ } = require('../receipts')
+const { getReceipt, addReceipt /*getReceipts*/ } = require('../receipts')
 // const { test } = require('./knexfile')
 const testDb = knex(config.test)
 
@@ -32,3 +32,30 @@ describe('getReceiptById', () => {
 //     )
 //   })
 // })
+
+describe('addReceipt', () => {
+  it('posts a single receipt to the db', () => {
+    const testReceipt = {
+      auth0_id: 'auth0|62d1e54bb624cf5ad8865601',
+      name: 'Groceries',
+      image: 'anImage.jpeg',
+      purchase_date: '12 - 07 - 2022',
+      store: 'Countdown',
+      price: '234.56',
+      category_id: 'Food',
+      note: 'Food is expensive',
+    }
+    expect.assertions(3)
+    return addReceipt(testReceipt, testDb).then(() => {
+      // eslint-disable-next-line promise/no-nesting
+      return testDb('receipts')
+        .select()
+        .then((receipt) => {
+          const newestReceipt = receipt[receipt.length - 1]
+          expect(newestReceipt.auth0_id).toBe('auth0|62d1e54bb624cf5ad8865601')
+          expect(newestReceipt.image).toBe('anImage.jpeg')
+          expect(newestReceipt.name).toBe('Groceries')
+        })
+    })
+  })
+})

@@ -5,8 +5,8 @@ const db = require('../../db/receipts')
 import { objReceipts } from '../../../tests/fake-data'
 const checkJwt = require('../../auth0')
 
-jest.mock('../db/receipts')
-jest.mock('../auth0')
+jest.mock('../../db/receipts')
+jest.mock('../../auth0')
 
 beforeAll(() => {
   jest.spyOn(console, 'error')

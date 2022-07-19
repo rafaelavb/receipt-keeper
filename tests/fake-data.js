@@ -15,8 +15,8 @@ export const objReceipts = [
 export const fakeClientReceipts = [
   {
     id: 1,
-    auth0Id: 'auth0|something',
-    username: 'Raf',
+    auth0Id: 'auth0|random',
+    username: 'Lauren',
     name: 'Drill',
     image: JSON.stringify({
       url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051820/eitbxs4xkecu9xgf9zaf.jpg',
@@ -57,7 +57,7 @@ export const fakeClientReceipts = [
   },
   {
     id: 3,
-    auth0Id: 'auth0|someone',
+    auth0Id: 'auth0|random',
     username: 'Lauren',
     name: 'Microwave',
     image: JSON.stringify({
@@ -78,8 +78,8 @@ export const fakeClientReceipts = [
   },
   {
     id: 4,
-    auth0Id: 'auth0|somebody',
-    username: 'Adam',
+    auth0Id: 'auth0|random',
+    username: 'Lauren',
     name: 'Computer',
     image: JSON.stringify({
       url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
@@ -120,7 +120,7 @@ export const fakePostReceiptWithWarranty = {
   warrantyPeriodUnit: 'week(s)',
 }
 
-export const fakeCreatedReceiptWithWarranty = {
+export const fakeReceipt = {
   id: 5,
   auth0Id: 'auth0|someperson',
   username: 'Random User',
@@ -141,6 +141,8 @@ export const fakeCreatedReceiptWithWarranty = {
   warrantyPeriod: 1,
   warrantyPeriodUnit: 'week(s)',
 }
+
+export const fakeCreatedReceiptWithWarranty = fakeReceipt
 
 export const fakePostReceiptWithNoWarranty = {
   auth0Id: 'auth0|someperson',
@@ -183,28 +185,6 @@ export const fakeCreatedReceiptWithNoWarranty = {
   expiryDate: null,
   warrantyPeriod: null,
   warrantyPeriodUnit: null,
-}
-
-export const fakeReceipt = {
-  id: 5,
-  auth0Id: 'auth0|someperson',
-  username: 'Random User',
-  name: 'Macbook Pro',
-  image: JSON.stringify({
-    url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
-    public_id: 'dnoaqqf0j3qptepmxosq',
-    signature: '37880eb90ac016aaf94af30d47bd407807ff673d',
-  }),
-  purchaseDate: '18/05/2022',
-  store: 'Apple',
-  price: 3500,
-  categoryId: 4,
-  categoryType: 'PC',
-  note: 'My new Mac Pro',
-  warrantyId: 4,
-  expiryDate: '25/05/2022',
-  warrantyPeriod: 1,
-  warrantyPeriodUnit: 'week(s)',
 }
 
 export const fakePatchReceipt = {

@@ -1,16 +1,13 @@
-import categoriesReducer from '../categories'
-import { fetchCategories } from '../../actions/categories'
-import { categories } from '../../../tests/fake-data'
+// import categoriesReducer from '../categories'
+// import { fetchCategories } from '../../actions/categories'
+// import { categories } from '../../../tests/fake-data'
 
+// describe('categories reducer'),
+//   () => {
+//     const categories = {
+//       id: 1,
+//       type: 'Appliances',
+//     }
 
-describe('categories reducer'), () => {
-  const categories = {
-    id: 1,
-    type: 'Appliances',
-  
-  }
-
-  test('it should return a category by id'), () => {
-    
-  })
-}
+//     test.todo('it should return a category by id', () => {})
+//   }

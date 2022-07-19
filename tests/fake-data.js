@@ -23,6 +23,8 @@ export const categories = {
   type: 'Appliances',
 }
 
+export const reducerErrorMessage = 'error'
+
 export const fakeClientReceipts = [
   {
     id: 1,
@@ -109,3 +111,135 @@ export const fakeClientReceipts = [
     warrantyPeriodUnit: 'year(s)',
   },
 ]
+
+export const fakePostReceiptWithWarranty = {
+  auth0_id: 'auth0|someperson',
+  username: 'Random User',
+  name: 'Macbook Pro',
+  image: JSON.stringify({
+    url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
+    public_id: 'dnoaqqf0j3qptepmxosq',
+    signature: '37880eb90ac016aaf94af30d47bd407807ff673d',
+  }),
+  purchaseDate: '18/05/2022',
+  store: 'Apple',
+  price: 3500,
+  categoryId: 4,
+  categoryType: 'PC',
+  note: 'My new Mac Pro',
+  warrantyId: 4,
+  expiryDate: '25/05/2022',
+  warrantyPeriod: 1,
+  warrantyPeriodUnit: 'week(s)',
+}
+
+export const fakeCreatedReceiptWithWarranty = {
+  id: 4,
+  auth0_id: 'auth0|someperson',
+  username: 'Random User',
+  name: 'Macbook Pro',
+  image: JSON.stringify({
+    url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
+    public_id: 'dnoaqqf0j3qptepmxosq',
+    signature: '37880eb90ac016aaf94af30d47bd407807ff673d',
+  }),
+  purchaseDate: '18/05/2022',
+  store: 'Apple',
+  price: 3500,
+  categoryId: 4,
+  categoryType: 'PC',
+  note: 'My new Mac Pro',
+  warrantyId: 4,
+  expiryDate: '25/05/2022',
+  warrantyPeriod: 1,
+  warrantyPeriodUnit: 'week(s)',
+}
+
+export const fakePostReceiptWithNoWarranty = {
+  auth0_id: 'auth0|someperson',
+  username: 'Random User',
+  name: 'Macbook Pro',
+  image: JSON.stringify({
+    url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
+    public_id: 'dnoaqqf0j3qptepmxosq',
+    signature: '37880eb90ac016aaf94af30d47bd407807ff673d',
+  }),
+  purchaseDate: '18/05/2022',
+  store: 'Apple',
+  price: 3500,
+  categoryId: 4,
+  categoryType: 'PC',
+  note: 'My new Mac Pro',
+  warrantyId: 5,
+  expiryDate: null,
+  warrantyPeriod: null,
+  warrantyPeriodUnit: null,
+}
+
+export const fakeCreatedReceiptWithNoWarranty = {
+  id: 5,
+  auth0_id: 'auth0|someperson',
+  username: 'Random User',
+  name: 'Macbook Pro',
+  image: JSON.stringify({
+    url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
+    public_id: 'dnoaqqf0j3qptepmxosq',
+    signature: '37880eb90ac016aaf94af30d47bd407807ff673d',
+  }),
+  purchaseDate: '18/05/2022',
+  store: 'Apple',
+  price: 3500,
+  categoryId: 4,
+  categoryType: 'PC',
+  note: 'My new Mac Pro',
+  warrantyId: 5,
+  expiryDate: null,
+  warrantyPeriod: null,
+  warrantyPeriodUnit: null,
+}
+
+export const fakeReceipt = {
+  id: 4,
+  auth0_id: 'auth0|someperson',
+  username: 'Random User',
+  name: 'Macbook Pro',
+  image: JSON.stringify({
+    url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
+    public_id: 'dnoaqqf0j3qptepmxosq',
+    signature: '37880eb90ac016aaf94af30d47bd407807ff673d',
+  }),
+  purchaseDate: '18/05/2022',
+  store: 'Apple',
+  price: 3500,
+  categoryId: 4,
+  categoryType: 'PC',
+  note: 'My new Mac Pro',
+  warrantyId: 4,
+  expiryDate: '25/05/2022',
+  warrantyPeriod: 1,
+  warrantyPeriodUnit: 'week(s)',
+}
+
+export const fakePatchReceipt = {
+  id: 4,
+  auth0_id: 'auth0|someperson',
+  username: 'Random User',
+  name: 'Macbook Pro Max',
+  image: JSON.stringify({
+    url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
+    public_id: 'dnoaqqf0j3qptepmxosq',
+    signature: '37880eb90ac016aaf94af30d47bd407807ff673d',
+  }),
+  purchaseDate: '18/05/2022',
+  store: 'Apple',
+  price: 5000,
+  categoryId: 4,
+  categoryType: 'PC',
+  note: 'My new Mac Pro Max',
+  warrantyId: 4,
+  expiryDate: '18/05/2023',
+  warrantyPeriod: 1,
+  warrantyPeriodUnit: 'year(s)',
+}
+
+export const fakePatchedReceipt = fakePatchReceipt

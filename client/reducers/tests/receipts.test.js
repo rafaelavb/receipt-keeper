@@ -4,9 +4,22 @@ import {
   receiveReceipts,
   deleteReceipt,
   addReceipt,
-  // setReceiptsError,
+  updateReceipt,
+  setReceiptsError,
+  updateReceiptAction,
 } from '../../actions/receipts'
-import { objReceipts, fakeClientReceipts } from '../../../tests/fake-data'
+import {
+  objReceipts,
+  fakeClientReceipts,
+  reducerErrorMessage,
+  fakePatchedReceipt,
+} from '../../../tests/fake-data'
+
+// const mockDispatch = jest.fn()
+// jest.mock('react-redux', () => ({
+//   useSelector: jest.fn(),
+//   useDispatch: () => mockDispatch,
+// }))
 
 describe('receipts reducer', () => {
   const emptyReceipt = {
@@ -25,57 +38,80 @@ describe('receipts reducer', () => {
     const newState = receiptsReducer(emptyReceipt, action)
     expect(newState.store).toBe('Smiths City')
   })
-  test('receiveReceipts', () => {
-    const action = receiveReceipts(objReceipts)
-    const newState = receiptsReducer({ data: [], error: null }, action)
 
-    expect(newState.data).toEqual(objReceipts)
+  test('case RECEIVE_RECEIPTS should set state.data to be the receipts', () => {
+    const initialState = {
+      data: [],
+      error: null,
+    }
+
+    const action = {
+      type: 'RECEIVE_RECEIPTS',
+      payload: fakeClientReceipts,
+    }
+
+    const newState = receiptsReducer(initialState, action)
+
+    expect(newState.data).toEqual(fakeClientReceipts)
     expect(newState.error).toBeNull()
   })
-  test('deleteReceipt', () => {
-    const initialState = {
-      data: fakeClientReceipts, // [{} , {} , {}]
-      error: null,
-    }
-    // delete receipt 1
-    const action = deleteReceipt(1)
-    const newState = receiptsReducer(initialState, action)
-    // before
-    // start with 4 objects
-    expect(initialState.data).toHaveLength(4)
-    // where the first one has an id of 1
-    expect(initialState.data[0].id).toBe(1)
-    // after
-    // assert that I can't find receipt with id 1
-    expect(newState.data.find((receipt) => receipt.id === 1)).toBeUndefined()
-    // expect there only to be 3 receipts
-    expect(newState.data).toHaveLength(3)
-    // expect the first one to have an id of 2
-    expect(newState.data[0].id).toBe(2)
-  })
 
-  test('addReceipt', () => {
+  test('case ADD_RECEIPT should add a receipt to state.data', () => {
     const initialState = {
-      data: fakeClientReceipts, // [{} , {} , {}]
+      data: fakeClientReceipts,
       error: null,
     }
-    const action = addReceipt(5)
+    const action = {
+      type: 'ADD_RECEIPT',
+      payload: fakeClientReceipts,
+    }
+
     const newState = receiptsReducer(initialState, action)
     expect(initialState.data).toHaveLength(4)
     expect(newState.data).toHaveLength(5)
-    expect(newState.data[4]).toBe(5)
   })
 
-  //   test('setReceiptsError', () => {
-  //     const initialState = {
-  //       data: fakeClientReceipts, // [{} , {} , {}]
-  //       error: null,
-  //     }
-  //     const action = setReceiptsError('error')
-  //     const newState = receiptsReducer(initialState, action)
-  //     expect(initialState.data).toHaveLength(4)
+  test('case DELETE_RECEIPT should remove a receipt from state.data', () => {
+    const initialState = {
+      data: fakeClientReceipts,
+      error: null,
+    }
+    // const action = deleteReceipt(1)
+    const action = { type: 'DELETE_RECEIPT', payload: 1 }
 
-  //     expect(newState.data).toHaveLength(5)
-  //     expect(newState.data[4]).toBe(5)
-  //   })
+    const newState = receiptsReducer(initialState, action)
+    expect(initialState.data).toHaveLength(4)
+    expect(initialState.data[0].id).toBe(1)
+    expect(newState.data.find((receipt) => receipt.id === 1)).toBeUndefined()
+    expect(newState.data).toHaveLength(3)
+    expect(newState.data[0].id).toBe(2)
+  })
+
+  test('case UPDATE_RECEIPT should update the receipt based on id', () => {
+    const initialState = {
+      data: fakeClientReceipts,
+      error: null,
+    }
+
+    const updateAction = {
+      type: 'UPDATE_RECEIPT',
+      payload: fakePatchedReceipt,
+    }
+    const newState = receiptsReducer(initialState, updateAction)
+
+    expect(newState.data[3]).toEqual(fakePatchedReceipt)
+  })
+
+  test('case RECEIPTS_ERROR should return error message as state.error', () => {
+    const initialState = {
+      data: [],
+      error: null,
+    }
+
+    const action = setReceiptsError(reducerErrorMessage)
+    const newState = receiptsReducer(initialState, action)
+
+    expect(initialState.data).toEqual([])
+    expect(newState.error).toEqual(reducerErrorMessage)
+  })
 })

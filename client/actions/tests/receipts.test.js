@@ -2,6 +2,7 @@ import {
   RECEIVE_RECEIPTS,
   REQUEST_RECEIPTS,
   RECEIPTS_ERROR,
+  fetchReceipts,
 } from '../../actions'
 
 import { getReceipts } from '../../apis/receipts'
@@ -18,29 +19,29 @@ beforeEach(() => {
 
 describe('requestReceipts', () => {
   it('dispatches', async () => {
-    expect.assertions(0)
-    const thunkFn = fetchReceipts()
+    expect.assertions(3)
+    const thunkFn = fetchReceipts(0)
     await thunkFn(fakeDispatch)
 
     //     // Act
-    //     const firstAction = fakeDispatch.mock.calls[0][0]
-    //     const secondAction = fakeDispatch.mock.calls[1][0]
+    const firstAction = fakeDispatch.mock.calls[0][0]
+    const secondAction = fakeDispatch.mock.calls[1][0]
 
     //     // Assertion
-    //     expect(firstAction.type).toEqual(userPets_requestData)
-    //     expect(secondAction.type).toEqual(userPets_receiveData)
-    //     expect(secondAction.payload).toEqual(fakePets)
-    //   })
+    expect(firstAction.type).toEqual(REQUEST_RECEIPTS)
+    expect(secondAction.type).toEqual(RECEIVE_RECEIPTS)
+    expect(secondAction.payload).toEqual(fakeClientReceipts)
+  })
 
-    //   it('dispatches error when api call fails', () => {
-    //     getUserPets.mockImplementation(() => Promise.reject(new Error('sadness')))
-    //     expect.assertions(3)
-    //     return fetchUserPets(6)(fakeDispatch).finally(() => {
-    //       const firstAction = fakeDispatch.mock.calls[0][0]
-    //       const secondAction = fakeDispatch.mock.calls[1][0]
-    //       expect(firstAction.type).toEqual(userPets_requestData)
-    //       expect(secondAction.type).toEqual(userPets_setError)
-    //       expect(secondAction.errorMessage).toBe('sadness')
-    //     })
+  it('dispatches error when api call fails', () => {
+    getReceipts.mockImplementation(() => Promise.reject(new Error('it failed')))
+    expect.assertions(3)
+    return fetchReceipts(0)(fakeDispatch).finally(() => {
+      const firstAction = fakeDispatch.mock.calls[0][0]
+      const secondAction = fakeDispatch.mock.calls[1][0]
+      expect(firstAction.type).toEqual(REQUEST_RECEIPTS)
+      expect(secondAction.type).toEqual(RECEIPTS_ERROR)
+      expect(secondAction.errorMessage).toBeUndefined()
+    })
   })
 })

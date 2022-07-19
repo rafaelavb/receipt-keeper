@@ -51,6 +51,7 @@ export default function ViewReceipt({
 
   function handleDelete(e) {
     dispatch(removeReceipt(receipt, token))
+    setOpenConfirm(false)
     close(e)
   }
   return (
@@ -67,7 +68,6 @@ export default function ViewReceipt({
             '& > :not(style)': { my: 0.5, width: '100%' },
             width: { xs: '250px', sm: '400px', md: '400px' },
             height: { xs: '500px', sm: '600px', md: '600px' },
-            position: 'relative',
             overflow: 'auto',
             '&::-webkit-scrollbar': {
               display: 'none',
@@ -79,7 +79,6 @@ export default function ViewReceipt({
         >
           <Box
             color="primary"
-            component="div"
             sx={{
               position: 'fixed',
               width: '30px',
@@ -103,6 +102,7 @@ export default function ViewReceipt({
             <Typography
               variant="h6"
               color="primary"
+              component="div"
               sx={{
                 textAlign: 'center',
                 display: 'block',
@@ -145,8 +145,8 @@ export default function ViewReceipt({
                   <Typography
                     sx={{ paddingLeft: '20px', paddingTop: '10px' }}
                     variant="body1"
-                    component="div"
                     color="text.secondary"
+                    component="div"
                   >
                     $ {receipt.price}
                   </Typography>
@@ -161,8 +161,8 @@ export default function ViewReceipt({
                   <Typography
                     sx={{ paddingLeft: '20px', paddingTop: '10px' }}
                     variant="body1"
-                    component="div"
                     color="text.secondary"
+                    component="div"
                   >
                     {new Date(receipt.purchaseDate).toLocaleDateString(
                       'en-NZ',
@@ -184,8 +184,8 @@ export default function ViewReceipt({
                   <Typography
                     sx={{ paddingLeft: '20px', paddingTop: '10px' }}
                     variant="body1"
-                    component="div"
                     color="text.secondary"
+                    component="div"
                   >
                     {receipt.expiryDate
                       ? `Expired on ${new Date(
@@ -209,8 +209,8 @@ export default function ViewReceipt({
                   <Typography
                     sx={{ paddingLeft: '20px', paddingTop: '10px' }}
                     variant="body1"
-                    component="div"
                     color="text.secondary"
+                    component="div"
                   >
                     {receipt.categoryType}
                   </Typography>
@@ -225,8 +225,8 @@ export default function ViewReceipt({
                   <Typography
                     sx={{ paddingLeft: '20px', paddingTop: '10px' }}
                     variant="body1"
-                    component="div"
                     color="text.secondary"
+                    component="div"
                   >
                     {receipt.store}
                   </Typography>
@@ -234,14 +234,11 @@ export default function ViewReceipt({
               />
             </ListItem>
             <Divider />
-            <ListItem
-              alignItems="flex-start"
-              sx={{ display: 'block', maxHeight: '120px' }}
-            >
+            <ListItem alignItems="flex-start" sx={{ maxHeight: '120px' }}>
               <ListItemText
                 primary="Note"
                 secondary={
-                  <Box
+                  <Typography
                     sx={{
                       paddingLeft: '20px',
                       paddingTop: '10px',
@@ -250,11 +247,10 @@ export default function ViewReceipt({
                       textOverflow: 'ellipsis',
                     }}
                     variant="body1"
-                    component="div"
                     color="text.secondary"
                   >
                     {receipt.note ? receipt.note : ''}
-                  </Box>
+                  </Typography>
                 }
               />
             </ListItem>

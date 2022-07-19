@@ -35,6 +35,7 @@ export default function Receipt(props) {
       {receipt && (
         <>
           <Card
+            role="receiptCard"
             sx={{
               width: 300,
               textAlign: 'center',
@@ -43,6 +44,7 @@ export default function Receipt(props) {
               opacity: expired ? '0.7' : '1',
             }}
             onClick={handleClickOpen}
+            aria-labelledby="receipt-card"
           >
             <CardHeader
               sx={{ width: '250px', marginLeft: 'auto', marginRight: 'auto' }}
@@ -68,7 +70,10 @@ export default function Receipt(props) {
                 </IconButton>
               }
             />
-            <CardContent>
+            <CardContent
+              role="display-store"
+              aria-describedBy="card-display-store"
+            >
               <Typography>{receipt.store}</Typography>
               <Typography>$ {receipt.price}</Typography>
             </CardContent>

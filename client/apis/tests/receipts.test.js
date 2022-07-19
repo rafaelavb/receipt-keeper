@@ -16,12 +16,12 @@ import {
   fakeReceipt,
 } from '../../../tests/fake-data'
 
-const localHostUrl = 'http://localhost'
+const localHost = 'http://localhost'
 const receiptsUrl = '/api/v1/receipts'
 
 describe('getReceipts', () => {
-  it('sends GET request to server and returns a list of receipts', () => {
-    const scope = nock(localHostUrl)
+  it('returns a list of receipts', () => {
+    const scope = nock(localHost)
       .get(receiptsUrl)
       .reply(200, fakeClientReceipts)
 
@@ -33,8 +33,8 @@ describe('getReceipts', () => {
     })
   })
 
-  it('logs the error message when the request failed', () => {
-    const scope = nock(localHostUrl).get(receiptsUrl).reply(500, {})
+  it('throws an error when the request failed', () => {
+    const scope = nock(localHost).get(receiptsUrl).reply(500, {})
 
     expect.assertions(4)
 
@@ -52,10 +52,9 @@ describe('getReceipts', () => {
   })
 })
 
-// ** TO DO **
 describe('postReceipt', () => {
   it('returns a receipt with warranty', () => {
-    const scope = nock(localHostUrl)
+    const scope = nock(localHost)
       .post(receiptsUrl, fakePostReceiptWithWarranty)
       .reply(201, fakeCreatedReceiptWithWarranty)
 
@@ -69,7 +68,7 @@ describe('postReceipt', () => {
   })
 
   it('returns a receipt with no warranty', () => {
-    const scope = nock(localHostUrl)
+    const scope = nock(localHost)
       .post(receiptsUrl, fakePostReceiptWithNoWarranty)
       .reply(201, fakeCreatedReceiptWithNoWarranty)
 
@@ -83,8 +82,8 @@ describe('postReceipt', () => {
     )
   })
 
-  it('logs the error message when the request failed', () => {
-    const scope = nock(localHostUrl).post(receiptsUrl).reply(500, {})
+  it('throws an error when the request failed', () => {
+    const scope = nock(localHost).post(receiptsUrl).reply(500, {})
 
     expect.assertions(3)
 
@@ -103,7 +102,7 @@ describe('postReceipt', () => {
 
 describe('patchReceipt', () => {
   it('returns a patched/updated receipt', () => {
-    const scope = nock(localHostUrl)
+    const scope = nock(localHost)
       .patch(receiptsUrl, fakePatchReceipt)
       .reply(201, fakePatchedReceipt)
 
@@ -115,8 +114,8 @@ describe('patchReceipt', () => {
     })
   })
 
-  it('logs the error message when the request failed', () => {
-    const scope = nock(localHostUrl)
+  it('throws an error when the request failed', () => {
+    const scope = nock(localHost)
       .patch(receiptsUrl, fakePatchReceipt)
       .reply(500, {})
 
@@ -137,7 +136,7 @@ describe('patchReceipt', () => {
 
 describe('deleteReceipt', () => {
   it('deletes a receipt', () => {
-    const scope = nock(localHostUrl)
+    const scope = nock(localHost)
       .delete(receiptsUrl, fakeReceipt, 'fakeToken')
       .reply(201, fakeReceipt.id)
 
@@ -150,7 +149,7 @@ describe('deleteReceipt', () => {
   })
 
   it('throws an error when the request failed', () => {
-    const scope = nock(localHostUrl)
+    const scope = nock(localHost)
       .delete(receiptsUrl, fakeReceipt)
       .reply(500, {})
 

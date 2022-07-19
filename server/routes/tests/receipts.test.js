@@ -13,23 +13,24 @@ jest.mock('../../db/')
 jest.mock('../../auth0')
 
 beforeAll(() => {
-  jest.spyOn(console, 'error')
-  console.error.mockImplementation(() => {})
+  // jest.clearAllMocks()
+  // jest.spyOn(console, 'error')
+  // console.error.mockImplementation(() => {})
   checkJwt.mockImplementation((req, res, next) => {
     req.user = { sub: fakeClientReceipts.auth0Id }
     next()
   })
 })
 
-afterAll(() => {
-  console.error.mockRestore()
-  jest.restoreAllMocks()
-})
+// afterEach(() => {
+// console.error.mockRestore()
+//   jest.restoreAllMocks()
+// })
 
 const receiptsUrl = '/api/v1/receipts'
 
 describe('GET /api/v1/receipts', () => {
-  it.skip('returns all receipts from the db', () => {
+  it('returns all receipts from the db', () => {
     const expected = fakeClientReceipts.map((receipt) => ({
       ...receipt,
       image: JSON.parse(receipt.image),
@@ -46,7 +47,7 @@ describe('GET /api/v1/receipts', () => {
       })
   })
 
-  it.skip("should return status 500 and error when database doesn't work", () => {
+  it("returns status 500 and error when database doesn't work", () => {
     db.getReceipts.mockImplementation(() => Promise.reject(new Error()))
 
     expect.assertions(2)
@@ -61,29 +62,56 @@ describe('GET /api/v1/receipts', () => {
 })
 
 describe('POST /api/v1/receipts', () => {
-  it.skip('should add a new receipt with warranty', () => {
-    const parsedClientReceipts = fakeClientReceipts.map((receipt) => ({
-      ...receipt,
-      image: JSON.parse(receipt.image),
-    }))
-
-    const parsedCreatedReceipt = {
+  it('adds a new receipt with warranty', async () => {
+    const expected = {
       ...fakeCreatedReceiptWithWarranty,
       image: JSON.parse(fakeCreatedReceiptWithWarranty.image),
     }
-    console.log(fakeCreatedReceiptWithWarranty)
+    db.addReceipt.mockReturnValue(
+      Promise.resolve([fakeCreatedReceiptWithWarranty.id])
+    )
+    db.addWarranty.mockReturnValue(
+      Promise.resolve([fakeCreatedReceiptWithWarranty.warrantyId])
+    )
+    db.getReceipt.mockReturnValue(
+      Promise.resolve(fakeCreatedReceiptWithWarranty)
+    )
 
-    const expected = { ...parsedClientReceipts, parsedCreatedReceipt }
-
-    expect.assertions(1)
+    expect.assertions(2)
 
     return request(server)
       .post(receiptsUrl)
-      .send(fakePostReceiptWithWarranty)
+      .send(fakeCreatedReceiptWithWarranty)
       .then((res) => {
-        // console.log(res.body)
-        // expect(res.status).toBe(201)
+        expect(res.status).toBe(200)
         expect(res.body).toEqual(expected)
+      })
+  })
+
+  it('returns status 500 and error when database function fails', () => {
+    // *** CASE 1: db.addReceipt fails ***
+    db.addReceipt.mockImplementation(() => Promise.reject(new Error()))
+
+    // *** CASE 2: db.addWarranty fails ***
+    // db.addReceipt.mockReturnValue(
+    //   Promise.resolve([fakeCreatedReceiptWithWarranty.id])
+    // )
+    // db.addWarranty.mockImplementation(() => Promise.reject(new Error()))
+
+    // *** CASE 3: db.getReceipt fails ***
+    // db.addReceipt.mockReturnValue(
+    //   Promise.resolve([fakeCreatedReceiptWithWarranty.id])
+    // )
+    // db.addWarranty.mockReturnValue(
+    //   Promise.resolve([fakeCreatedReceiptWithWarranty.warrantyId])
+    // )
+    // db.getReceipt.mockImplementation(() => Promise.reject(new Error()))
+
+    return request(server)
+      .post(receiptsUrl)
+      .then((res) => {
+        expect(res.status).toBe(500)
+        expect(res.text).toBe('Server Error')
       })
   })
 })

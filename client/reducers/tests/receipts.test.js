@@ -1,5 +1,4 @@
 import receiptsReducer from '../receipts'
-import { setReceiptsError } from '../../actions/receipts'
 import {
   fakeClientReceipts,
   reducerErrorMessage,

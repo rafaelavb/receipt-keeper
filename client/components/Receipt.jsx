@@ -45,7 +45,18 @@ export default function Receipt(props) {
             onClick={handleClickOpen}
           >
             <CardHeader
-              title={receipt.name}
+              sx={{ width: '250px', marginLeft: 'auto', marginRight: 'auto' }}
+              title={
+                <Box
+                  sx={{
+                    width: '250px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {receipt.name}
+                </Box>
+              }
               subheader={
                 <IconButton disabled>
                   <CalendarMonth />
@@ -75,7 +86,14 @@ export default function Receipt(props) {
               </Box>
             )}
 
-            <CardContent height={'110px'}>
+            <CardContent
+              sx={{
+                width: '250px',
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            >
               {receipt.note && receipt.note !== 'none' ? (
                 <Box
                   component="div"
@@ -84,9 +102,10 @@ export default function Receipt(props) {
                   sx={{
                     fontStyle: 'italic',
                     height: '20px',
-                    width: '100%',
-                    textOverflow: 'ellipsis',
+                    width: '250px',
                     overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   {`"${receipt.note}"`}

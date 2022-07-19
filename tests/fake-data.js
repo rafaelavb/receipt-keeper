@@ -18,10 +18,28 @@ export const newUser = {
   username: 'Random17',
 }
 
-export const categories = {
-  id: 1,
-  type: 'Appliances',
-}
+export const fakeCategories = [
+  {
+    categoryId: 1,
+    categoryType: 'Software',
+  },
+  {
+    categoryId: 2,
+    categoryType: 'Hardware',
+  },
+  {
+    categoryId: 3,
+    categoryType: 'Cookware',
+  },
+  {
+    categoryId: 4,
+    categoryType: 'Homeware',
+  },
+  {
+    categoryId: 5,
+    categoryType: 'Whiteware',
+  },
+]
 
 export const reducerErrorMessage = 'error'
 

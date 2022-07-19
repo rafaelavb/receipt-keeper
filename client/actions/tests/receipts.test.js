@@ -34,7 +34,7 @@ describe('requestReceipts', () => {
   })
 
   it('dispatches error when api call fails', () => {
-    getReceipts.mockImplementation(() => Promise.reject(new Error('it failed')))
+    getReceipts.mockImplementation(() => Promise.reject(new Error('uh oh!')))
     expect.assertions(3)
     return fetchReceipts(0)(fakeDispatch).finally(() => {
       const firstAction = fakeDispatch.mock.calls[0][0]

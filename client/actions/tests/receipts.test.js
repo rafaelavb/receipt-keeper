@@ -41,7 +41,7 @@ describe('requestReceipts', () => {
       const secondAction = fakeDispatch.mock.calls[1][0]
       expect(firstAction.type).toEqual(REQUEST_RECEIPTS)
       expect(secondAction.type).toEqual(RECEIPTS_ERROR)
-      expect(secondAction.errorMessage).toBeUndefined()
+      expect(secondAction.error).toContain('uh oh!')
     })
   })
 })

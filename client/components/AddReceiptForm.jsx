@@ -121,7 +121,10 @@ export default function AddReceiptForm({ modalState, close }) {
     if (newReceipt.image) {
       dispatch(createReceipt(newReceipt, token))
         .then(() => {
-          setNewReceipt(blankReceipt), setImage(null), setWarrantyChecked(false)
+          setNewReceipt(blankReceipt),
+            setImage(null),
+            setWarrantyChecked(false),
+            setPurchaseDate(new Date())
         })
         .catch((err) => {
           console.error(err)

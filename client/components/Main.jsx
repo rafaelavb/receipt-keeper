@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Stack } from '@mui/material'
 
+import AddReceipt from './AddReceipt'
+
 import Sidebar from './Sidebar'
 import Receipts from './Receipts'
 import StoresButton from './StoresButton'
@@ -28,16 +30,17 @@ export default function Main() {
   }, [receipts])
 
   return (
-    <Box>
+    <>
       {stores && (
-        <>
+        <div>
           <StoresButton stores={stores} />
           <Stack direction="row">
             <Sidebar stores={stores} />
             <Receipts />
           </Stack>
-        </>
+        </div>
       )}
-    </Box>
+      <AddReceipt />
+    </>
   )
 }

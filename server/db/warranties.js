@@ -24,7 +24,12 @@ function updateWarranty(
     .where({ id: warrantyId })
 }
 
+function deleteWarranty(receipt, db = connection) {
+  return db('warranties').del().where({ id: receipt.warrantyId })
+}
+
 module.exports = {
   addWarranty,
   updateWarranty,
+  deleteWarranty,
 }

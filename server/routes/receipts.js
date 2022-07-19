@@ -38,7 +38,7 @@ router.post('/', checkJwt, async (req, res) => {
     res.json(parsed)
   } catch (err) {
     console.error(err.message)
-    res.status(500).send('Server error')
+    res.status(500).send('Server Error')
   }
 })
 
@@ -57,7 +57,7 @@ router.patch('/', checkJwt, async (req, res) => {
     res.json(parsed)
   } catch (err) {
     console.error(err.message)
-    res.status(500).send('Server error')
+    res.status(500).send('Server Error')
   }
 })
 
@@ -72,7 +72,7 @@ router.delete('/', checkJwt, async (req, res) => {
       res.json(receipt.id)
     } catch (err) {
       console.error(err.message)
-      res.status(500).send('Server error')
+      res.status(500).send('Server Error')
     }
   }
 })

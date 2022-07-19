@@ -23,7 +23,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { PhotoCamera, ReceiptLong } from '@mui/icons-material'
 
 import { uploadImageToCloudinary } from '../apis'
-const cloudinaryPreset = 'receipts_keepers'
 
 import Preview from './Preview'
 import { calculateExpiryDate } from '../helperFunctions'
@@ -95,26 +94,21 @@ export default function AddReceiptForm({ modalState, close }) {
 
     if (image && newReceipt.name && newReceipt.price && newReceipt.store) {
       setErrorMessage('')
-      console.log(image)
       const formData = new FormData()
       formData.append('file', image)
-      formData.append('upload_preset', cloudinaryPreset)
-      close(e)
 
-      uploadImageToCloudinary(formData).then((res) => {
-        console.log(res)
+      return uploadImageToCloudinary(formData).then((res) => {
         const imageInfo = JSON.stringify(res)
-        const { categoryId: actualCategoryId } = categories.find(
+        const selected = categories.find(
           (category) => category.categoryType === newReceipt.categoryType
-          // if (category.categoryType === newReceipt.categoryType) {
-          //   return category.categoryId
-          // }
         )
+        const actualCategoryId = selected ? selected.categoryId : 0
         setNewReceipt({
           ...newReceipt,
           image: imageInfo,
           categoryId: actualCategoryId,
         })
+        close(e)
       })
     } else {
       setErrorMessage(

@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
-const request = require('superagent')
+const dataReader = require('express-fileupload')
+
 const categoriesRoutes = require('./routes/categories')
 const receiptsRoutes = require('./routes/receipts')
 const usersRoutes = require('./routes/users')
@@ -11,6 +12,7 @@ const server = express()
 
 server.use(express.json())
 server.use(express.static(path.join(__dirname, 'public')))
+server.use(dataReader())
 
 // server.use('/api/v1/', homeRoutes)
 server.use('/api/v1/categories', categoriesRoutes)

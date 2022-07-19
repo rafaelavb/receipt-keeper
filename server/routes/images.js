@@ -1,40 +1,27 @@
 const express = require('express')
 const router = express.Router()
-const request = require('superagent')
-const sha1 = require('sha1')
+const dotenv = require('dotenv')
+dotenv.config()
+const cloudinary = require('cloudinary').v2
+console.log(cloudinary.config().cloud_name)
 
 router.post('/', (req, res) => {
-  console.log('here')
-  const data = req
-  console.log(data)
+  const image = req.files.file.data
+    .toString('base64')
+    .replace(/(\r\n|\n|\r)/gm, '')
 
-  // const cloudName = 'receipt-keepers'
-  // const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
-  // const timestamp = Date.now() / 1000
-  // const uploadPreset = 'receipts_keepers'
-  // const paramStr = `timestamp='${timestamp}'&upload_preset='${uploadPreset}"ZoD3Vr3GEPRLq3dZdZCaiJbuwCY`
-  // const signature = sha1(paramStr)
-
-  // const params = {
-  //   api_key: '428255634267578',
-  //   timestamp: timestamp,
-  //   upload_preset: uploadPreset,
-  //   signature: signature,
-  //   // file: image,
-  // }
-  // let uploadRequest = request.post(url)
-  // uploadRequest.attach('file', image)
-  // Object.keys(params).forEach((key) => {
-  //   uploadRequest.field(key, params[key]) //field is specific to superagent
-  //   uploadRequest.end((err, resp) => {
-  //     //'end' sends the request
-  //     if (err) {
-  //       // console.log(err, null)
-  //       return
-  //     }
-  //     // console.log(resp.body)
-  //   })
-  // })
+  const cloudinaryPreset = process.env.CLOUDINARY_PRESET
+  cloudinary.uploader
+    .upload(`data:image/jpeg;base64,${image}`, {
+      upload_preset: cloudinaryPreset,
+    })
+    .then((result) => {
+      const { url, public_id, signature } = result
+      res.send({ url, public_id, signature })
+    })
+    .catch((err) => {
+      res.send(err)
+    })
 })
 
 module.exports = router

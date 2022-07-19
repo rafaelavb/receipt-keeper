@@ -54,13 +54,17 @@ export default function EditReceipt({
     new Date(receipt.purchaseDate)
   )
   const [warrantyChecked, setWarrantyChecked] = useState(
-    receipt.warrantyId ? true : false
+    receipt.expiryDate ? true : false
   )
   const [expiryDate, setExpiryDate] = useState(
     receipt.warrantyId ? receipt.expiryDate : ''
   )
-  const [period, setPeriod] = useState(receipt.warrantyPeriod)
-  const [periodUnit, setPeriodUnit] = useState(receipt.warrantyPeriodUnit)
+  const [period, setPeriod] = useState(
+    receipt.warrantyPeriod ? receipt.warrantyPeriod : ''
+  )
+  const [periodUnit, setPeriodUnit] = useState(
+    receipt.warrantyPeriodUnit ? receipt.warrantyPeriodUni : ''
+  )
   const [image, setImage] = useState(receipt.image.url)
   const [previewMode, setPreviewMode] = useState(false)
 

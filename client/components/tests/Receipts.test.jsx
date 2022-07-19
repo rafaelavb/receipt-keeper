@@ -43,7 +43,7 @@ describe('<Receipts /> renders users receipts', () => {
     jest.mock('react-router-dom', () => ({
       ...jest.requireActual('react-router-dom'),
       useParams: () => ({
-        store: null,
+        store: 'Harvey Norman',
       }),
     }))
     render(
@@ -51,10 +51,11 @@ describe('<Receipts /> renders users receipts', () => {
         <Receipts />
       </Provider>
     )
-    screen.debug()
+    const cards = screen.getAllByRole('receiptCard')
+    expect(cards.length).toStrictEqual(fakeClientReceipts.length)
   })
 
-  it.only('renders all receipts the user has ONLY for selected store)', () => {
+  it('renders all receipts the user has ONLY for selected store)', () => {
     jest.mock('react-router-dom', () => ({
       ...jest.requireActual('react-router-dom'),
       useParams: () => ({
@@ -66,6 +67,6 @@ describe('<Receipts /> renders users receipts', () => {
         <Receipts />
       </Provider>
     )
-    screen.getByRole()
+    screen.debug()
   })
 })

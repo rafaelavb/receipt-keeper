@@ -15,7 +15,7 @@ export const objReceipts = [
 export const fakeClientReceipts = [
   {
     id: 1,
-    auth0_id: 'auth0|something',
+    auth0Id: 'auth0|something',
     username: 'Raf',
     name: 'Drill',
     image: JSON.stringify({
@@ -36,7 +36,7 @@ export const fakeClientReceipts = [
   },
   {
     id: 2,
-    auth0_id: 'auth0|random',
+    auth0Id: 'auth0|random',
     username: 'Louis',
     name: 'TV',
     image: JSON.stringify({
@@ -57,7 +57,7 @@ export const fakeClientReceipts = [
   },
   {
     id: 3,
-    auth0_id: 'auth0|someone',
+    auth0Id: 'auth0|someone',
     username: 'Lauren',
     name: 'Microwave',
     image: JSON.stringify({
@@ -78,7 +78,7 @@ export const fakeClientReceipts = [
   },
   {
     id: 4,
-    auth0_id: 'auth0|somebody',
+    auth0Id: 'auth0|somebody',
     username: 'Adam',
     name: 'Computer',
     image: JSON.stringify({
@@ -100,7 +100,7 @@ export const fakeClientReceipts = [
 ]
 
 export const fakePostReceiptWithWarranty = {
-  auth0_id: 'auth0|someperson',
+  auth0Id: 'auth0|someperson',
   username: 'Random User',
   name: 'Macbook Pro',
   image: JSON.stringify({
@@ -121,8 +121,8 @@ export const fakePostReceiptWithWarranty = {
 }
 
 export const fakeCreatedReceiptWithWarranty = {
-  id: 4,
-  auth0_id: 'auth0|someperson',
+  id: 5,
+  auth0Id: 'auth0|someperson',
   username: 'Random User',
   name: 'Macbook Pro',
   image: JSON.stringify({
@@ -143,7 +143,7 @@ export const fakeCreatedReceiptWithWarranty = {
 }
 
 export const fakePostReceiptWithNoWarranty = {
-  auth0_id: 'auth0|someperson',
+  auth0Id: 'auth0|someperson',
   username: 'Random User',
   name: 'Macbook Pro',
   image: JSON.stringify({
@@ -164,8 +164,8 @@ export const fakePostReceiptWithNoWarranty = {
 }
 
 export const fakeCreatedReceiptWithNoWarranty = {
-  id: 5,
-  auth0_id: 'auth0|someperson',
+  id: 6,
+  auth0Id: 'auth0|someperson',
   username: 'Random User',
   name: 'Macbook Pro',
   image: JSON.stringify({
@@ -186,8 +186,8 @@ export const fakeCreatedReceiptWithNoWarranty = {
 }
 
 export const fakeReceipt = {
-  id: 4,
-  auth0_id: 'auth0|someperson',
+  id: 5,
+  auth0Id: 'auth0|someperson',
   username: 'Random User',
   name: 'Macbook Pro',
   image: JSON.stringify({
@@ -208,8 +208,8 @@ export const fakeReceipt = {
 }
 
 export const fakePatchReceipt = {
-  id: 4,
-  auth0_id: 'auth0|someperson',
+  id: 5,
+  auth0Id: 'auth0|someperson',
   username: 'Random User',
   name: 'Macbook Pro Max',
   image: JSON.stringify({

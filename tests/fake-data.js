@@ -84,7 +84,7 @@ export const fakeClientReceipts = [
     categoryId: 2,
     categoryType: 'Appliance',
     note: 'Expensive microwave',
-    warrantyId: null,
+    warrantyId: 3,
     expiryDate: null,
     warrantyPeriod: null,
     warrantyPeriodUnit: null,
@@ -128,7 +128,7 @@ export const fakeReceipt = {
   categoryId: 4,
   categoryType: 'PC',
   note: 'My new Mac Pro',
-  warrantyId: 4,
+  warrantyId: 5,
   expiryDate: '25/05/2022',
   warrantyPeriod: 1,
   warrantyPeriodUnit: 'week(s)',
@@ -149,15 +149,15 @@ export const fakePostReceiptWithWarranty = {
   categoryId: 4,
   categoryType: 'PC',
   note: 'My new Mac Pro',
-  warrantyId: 4,
+  warrantyId: 5,
   expiryDate: '25/05/2022',
   warrantyPeriod: 1,
   warrantyPeriodUnit: 'week(s)',
 }
 
 export const fakeCreatedReceiptWithWarranty = {
-  ...fakePostReceiptWithWarranty,
   id: 5,
+  ...fakePostReceiptWithWarranty,
 }
 
 export const fakePostReceiptWithNoWarranty = {
@@ -182,8 +182,8 @@ export const fakePostReceiptWithNoWarranty = {
 }
 
 export const fakeCreatedReceiptWithNoWarranty = {
-  ...fakePostReceiptWithNoWarranty,
   id: 6,
+  ...fakePostReceiptWithNoWarranty,
 }
 
 export const fakePatchReceipt = {

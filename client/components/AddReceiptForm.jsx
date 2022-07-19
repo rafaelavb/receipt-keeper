@@ -258,7 +258,7 @@ export default function AddReceiptForm({ modalState, close }) {
           id="note"
           label="Note"
           multiline
-          rows={2}
+          rows={4}
           placeholder="Enter your note here..."
           name="note"
           value={newReceipt.note}

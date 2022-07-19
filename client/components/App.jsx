@@ -45,6 +45,15 @@ function App() {
             }
           />
           <Route
+            path="/receipts/:username/:store"
+            element={
+              <>
+                <Navbar />
+                <Main />
+              </>
+            }
+          />
+          <Route
             path="*"
             element={
               <>

@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 import { Box, Stack } from '@mui/material'
 
 import Receipt from './Receipt'
-import AddReceipt from './AddReceipt'
 
 export default function Receipts() {
   const { store } = useParams()
@@ -45,7 +44,6 @@ export default function Receipts() {
             )
           })}
       </Stack>
-      <AddReceipt />
     </Box>
   )
 }

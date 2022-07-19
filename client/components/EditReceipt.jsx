@@ -265,7 +265,7 @@ export default function EditReceipt({
           id="note"
           label="Note"
           multiline
-          rows={2}
+          rows={4}
           placeholder="Enter your note here..."
           value={note}
           onChange={(e) => setNote(e.target.value)}

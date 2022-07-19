@@ -12,6 +12,17 @@ export const objReceipts = [
   },
 ]
 
+export const newUser = {
+  auth0_id: 'auth0|62d1e54bb624cf5ad8865601',
+  email: 'random17@gmail.com',
+  username: 'Random17',
+}
+
+export const categories = {
+  id: 1,
+  type: 'Appliances',
+}
+
 export const fakeClientReceipts = [
   {
     id: 1,

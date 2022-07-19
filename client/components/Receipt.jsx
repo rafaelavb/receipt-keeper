@@ -70,11 +70,13 @@ export default function Receipt(props) {
                 </IconButton>
               }
             />
-            <CardContent
-              role="display-store"
-              aria-describedBy="card-display-store"
-            >
-              <Typography>{receipt.store}</Typography>
+            <CardContent>
+              <Typography
+                role="display-store"
+                aria-describedBy="card-display-store"
+              >
+                {receipt.store}
+              </Typography>
               <Typography>$ {receipt.price}</Typography>
             </CardContent>
 

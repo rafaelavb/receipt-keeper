@@ -2,9 +2,10 @@ import React from 'react'
 import '@testing-library/react'
 import '@testing-library/jest-dom'
 
-import { screen, render } from '@testing-library/react'
-
+import { screen, render, within } from '@testing-library/react'
 import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { useAuth0 } from '@auth0/auth0-react'
 
 import Receipts from '../Receipts'
 
@@ -24,6 +25,11 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest.fn(),
+}))
+
 describe('<Receipts /> renders users receipts', () => {
   const fakeStore = {
     subscribe: jest.fn(),
@@ -39,34 +45,43 @@ describe('<Receipts /> renders users receipts', () => {
     })),
   }
 
-  it('renders all receipts the user has for all stores )', () => {
-    jest.mock('react-router-dom', () => ({
-      ...jest.requireActual('react-router-dom'),
-      useParams: () => ({
-        store: 'Harvey Norman',
-      }),
-    }))
+  it("renders all stores' receipts the user has", () => {
+    const storeParam = null
+    useParams.mockReturnValue({ store: storeParam })
+
     render(
       <Provider store={fakeStore}>
         <Receipts />
       </Provider>
     )
+
     const cards = screen.getAllByRole('receiptCard')
     expect(cards.length).toStrictEqual(fakeClientReceipts.length)
   })
 
-  it('renders all receipts the user has ONLY for selected store)', () => {
-    jest.mock('react-router-dom', () => ({
-      ...jest.requireActual('react-router-dom'),
-      useParams: () => ({
-        store: 'Harvey Norman',
-      }),
-    }))
+  it("renders the selected store's receipts the user has", () => {
+    const storeParam = 'Harvey Norman'
+    useParams.mockReturnValue({ store: storeParam })
+
+    const expectedCardLength = fakeClientReceipts.filter(
+      (fakeReceipt) => fakeReceipt.store === storeParam
+    ).length
+
     render(
       <Provider store={fakeStore}>
         <Receipts />
       </Provider>
     )
-    screen.debug()
+
+    const cards = screen.getAllByRole('receiptCard')
+
+    expect.assertions(cards.length + 1)
+
+    expect(cards.length).toStrictEqual(expectedCardLength)
+
+    cards.map((card) => {
+      const receiptStore = within(card).getByRole('display-store')
+      expect(receiptStore.textContent).toContain(storeParam)
+    })
   })
 })

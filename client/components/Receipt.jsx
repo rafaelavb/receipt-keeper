@@ -43,6 +43,7 @@ export default function Receipt(props) {
               opacity: expired ? '0.7' : '1',
             }}
             onClick={handleClickOpen}
+            aria-labelledby="receipt-card"
           >
             <CardHeader
               sx={{ width: '250px', marginLeft: 'auto', marginRight: 'auto' }}

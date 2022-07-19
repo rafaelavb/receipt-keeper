@@ -15,6 +15,7 @@ test('case REQUEST_RECEIPTS should request receipts', () => {
   }
 
   const newState = receiptsReducer(initialState, action)
+
   expect(newState).toEqual(initialState)
   expect(newState.error).toBeNull()
 })
@@ -47,6 +48,7 @@ test('case ADD_RECEIPT should add a receipt to state.data', () => {
   }
 
   const newState = receiptsReducer(initialState, action)
+
   expect(initialState.data).toHaveLength(4)
   expect(newState.data).toHaveLength(5)
 })

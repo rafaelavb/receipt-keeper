@@ -99,18 +99,23 @@ export default function ViewReceipt({
               onClick={(e) => close(e)}
             />
           </Box>
-          <Typography
-            variant="h6"
-            color="primary"
-            sx={{
-              textAlign: 'center',
-              display: 'block',
-              overflow: 'hidden',
-              maxWidth: '80%',
-            }}
-          >
-            {receipt.name}
-          </Typography>
+          <Box textAlign="center">
+            <Typography
+              variant="h6"
+              color="primary"
+              sx={{
+                textAlign: 'center',
+                display: 'block',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                width: '300px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            >
+              {receipt.name}
+            </Typography>
+          </Box>
 
           <Box
             color="primary"
@@ -212,7 +217,6 @@ export default function ViewReceipt({
                 }
               />
             </ListItem>
-            <Divider />
             <Divider />
             <ListItem alignItems="flex-start">
               <ListItemText

@@ -90,9 +90,11 @@ export default function EditReceipt({
   async function handleEdit(e) {
     e.preventDefault()
     if (image && name && price && store) {
-      const { categoryId: actualCategoryId } = categories.find(
+      const selected = categories.find(
         (category) => category.categoryType === categoryType
       )
+      const actualCategoryId = selected ? selected.categoryId : 0
+
       let updated
       if (image === receipt.image || image === receipt.image.url) {
         updated = {

@@ -77,14 +77,20 @@ export default function Receipt(props) {
 
             <CardContent height={'110px'}>
               {receipt.note && receipt.note !== 'none' ? (
-                <Typography
+                <Box
+                  component="div"
                   variant="body2"
                   color="text.secondary"
-                  sx={{ fontStyle: 'italic' }}
-                  height="20px"
+                  sx={{
+                    fontStyle: 'italic',
+                    height: '20px',
+                    width: '100%',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                  }}
                 >
                   {`"${receipt.note}"`}
-                </Typography>
+                </Box>
               ) : null}
 
               {receipt.expiryDate ? (

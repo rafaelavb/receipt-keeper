@@ -61,7 +61,7 @@ describe('postReceipt', () => {
     expect.assertions(3)
 
     return postReceipt(fakePostReceiptWithWarranty, 'fakeToken').then((res) => {
-      expect(res.id).toBe(4)
+      expect(res.id).toBe(fakeCreatedReceiptWithWarranty.id)
       expect(res).toEqual(fakeCreatedReceiptWithWarranty)
       expect(scope.isDone()).toBe(true)
     })

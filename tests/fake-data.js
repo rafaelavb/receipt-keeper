@@ -50,7 +50,7 @@ export const fakeClientReceipts = [
   {
     id: 2,
     auth0Id: 'auth0|random',
-    username: 'Louis',
+    username: 'Lauren',
     name: 'TV',
     image: JSON.stringify({
       url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
@@ -112,31 +112,10 @@ export const fakeClientReceipts = [
   },
 ]
 
-export const fakePostReceiptWithWarranty = {
-  auth0Id: 'auth0|someperson',
-  username: 'Random User',
-  name: 'Macbook Pro',
-  image: JSON.stringify({
-    url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
-    public_id: 'dnoaqqf0j3qptepmxosq',
-    signature: '37880eb90ac016aaf94af30d47bd407807ff673d',
-  }),
-  purchaseDate: '18/05/2022',
-  store: 'Apple',
-  price: 3500,
-  categoryId: 4,
-  categoryType: 'PC',
-  note: 'My new Mac Pro',
-  warrantyId: 4,
-  expiryDate: '25/05/2022',
-  warrantyPeriod: 1,
-  warrantyPeriodUnit: 'week(s)',
-}
-
 export const fakeReceipt = {
   id: 5,
-  auth0Id: 'auth0|someperson',
-  username: 'Random User',
+  auth0Id: 'auth0|random',
+  username: 'Lauren',
   name: 'Macbook Pro',
   image: JSON.stringify({
     url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
@@ -155,11 +134,35 @@ export const fakeReceipt = {
   warrantyPeriodUnit: 'week(s)',
 }
 
-export const fakeCreatedReceiptWithWarranty = fakeReceipt
+export const fakePostReceiptWithWarranty = {
+  auth0Id: 'auth0|random',
+  username: 'Lauren',
+  name: 'Macbook Pro',
+  image: JSON.stringify({
+    url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
+    public_id: 'dnoaqqf0j3qptepmxosq',
+    signature: '37880eb90ac016aaf94af30d47bd407807ff673d',
+  }),
+  purchaseDate: '18/05/2022',
+  store: 'Apple',
+  price: 3500,
+  categoryId: 4,
+  categoryType: 'PC',
+  note: 'My new Mac Pro',
+  warrantyId: 4,
+  expiryDate: '25/05/2022',
+  warrantyPeriod: 1,
+  warrantyPeriodUnit: 'week(s)',
+}
+
+export const fakeCreatedReceiptWithWarranty = {
+  ...fakePostReceiptWithWarranty,
+  id: 5,
+}
 
 export const fakePostReceiptWithNoWarranty = {
-  auth0Id: 'auth0|someperson',
-  username: 'Random User',
+  auth0Id: 'auth0|random',
+  username: 'Lauren',
   name: 'Macbook Pro',
   image: JSON.stringify({
     url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
@@ -179,31 +182,14 @@ export const fakePostReceiptWithNoWarranty = {
 }
 
 export const fakeCreatedReceiptWithNoWarranty = {
+  ...fakePostReceiptWithNoWarranty,
   id: 6,
-  auth0Id: 'auth0|someperson',
-  username: 'Random User',
-  name: 'Macbook Pro',
-  image: JSON.stringify({
-    url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',
-    public_id: 'dnoaqqf0j3qptepmxosq',
-    signature: '37880eb90ac016aaf94af30d47bd407807ff673d',
-  }),
-  purchaseDate: '18/05/2022',
-  store: 'Apple',
-  price: 3500,
-  categoryId: 4,
-  categoryType: 'PC',
-  note: 'My new Mac Pro',
-  warrantyId: 5,
-  expiryDate: null,
-  warrantyPeriod: null,
-  warrantyPeriodUnit: null,
 }
 
 export const fakePatchReceipt = {
-  id: 5,
-  auth0Id: 'auth0|someperson',
-  username: 'Random User',
+  id: 4,
+  auth0Id: 'auth0|random',
+  username: 'Lauren',
   name: 'Macbook Pro Max',
   image: JSON.stringify({
     url: 'http://res.cloudinary.com/receipt-keepers/image/upload/v1658051941/dnoaqqf0j3qptepmxosq.webp',

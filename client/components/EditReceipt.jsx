@@ -54,13 +54,17 @@ export default function EditReceipt({
     new Date(receipt.purchaseDate)
   )
   const [warrantyChecked, setWarrantyChecked] = useState(
-    receipt.warrantyId ? true : false
+    receipt.expiryDate ? true : false
   )
   const [expiryDate, setExpiryDate] = useState(
     receipt.warrantyId ? receipt.expiryDate : ''
   )
-  const [period, setPeriod] = useState(receipt.warrantyPeriod)
-  const [periodUnit, setPeriodUnit] = useState(receipt.warrantyPeriodUnit)
+  const [period, setPeriod] = useState(
+    receipt.warrantyPeriod ? receipt.warrantyPeriod : ''
+  )
+  const [periodUnit, setPeriodUnit] = useState(
+    receipt.warrantyPeriodUnit ? receipt.warrantyPeriodUni : ''
+  )
   const [image, setImage] = useState(receipt.image.url)
   const [previewMode, setPreviewMode] = useState(false)
 
@@ -86,9 +90,11 @@ export default function EditReceipt({
   async function handleEdit(e) {
     e.preventDefault()
     if (image && name && price && store) {
-      const { categoryId: actualCategoryId } = categories.find(
+      const selected = categories.find(
         (category) => category.categoryType === categoryType
       )
+      const actualCategoryId = selected ? selected.categoryId : 0
+
       let updated
       if (image === receipt.image || image === receipt.image.url) {
         updated = {

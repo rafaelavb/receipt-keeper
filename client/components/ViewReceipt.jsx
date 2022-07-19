@@ -99,7 +99,16 @@ export default function ViewReceipt({
               onClick={(e) => close(e)}
             />
           </Box>
-          <Typography variant="h6" color="primary" sx={{ textAlign: 'center' }}>
+          <Typography
+            variant="h6"
+            color="primary"
+            sx={{
+              textAlign: 'center',
+              display: 'block',
+              overflow: 'hidden',
+              maxWidth: '80%',
+            }}
+          >
             {receipt.name}
           </Typography>
 
@@ -186,6 +195,8 @@ export default function ViewReceipt({
                 }
               />
             </ListItem>
+            <Divider />
+
             <ListItem alignItems="flex-start">
               <ListItemText
                 primary="Category"
@@ -221,23 +232,25 @@ export default function ViewReceipt({
             <Divider />
             <ListItem
               alignItems="flex-start"
-              sx={{ display: 'block', height: '100px' }}
+              sx={{ display: 'block', maxHeight: '120px' }}
             >
               <ListItemText
                 primary="Note"
                 secondary={
-                  <Typography
+                  <Box
                     sx={{
                       paddingLeft: '20px',
                       paddingTop: '10px',
+                      height: '65px',
                       overflow: 'auto',
+                      textOverflow: 'ellipsis',
                     }}
                     variant="body1"
                     component="div"
                     color="text.secondary"
                   >
                     {receipt.note ? receipt.note : ''}
-                  </Typography>
+                  </Box>
                 }
               />
             </ListItem>

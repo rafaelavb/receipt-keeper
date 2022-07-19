@@ -24,6 +24,6 @@ exports.seed = async function (knex) {
     { id: 15, type: 'Music & instruments' },
     { id: 15, type: 'Pets & animals' },
     { id: 15, type: 'Sports' },
-    { id: 15, type: 'Toys & models' },
+    { id: 16, type: 'Toys & models' },
   ])
 }

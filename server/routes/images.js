@@ -4,8 +4,6 @@ const dotenv = require('dotenv')
 dotenv.config()
 const cloudinary = require('cloudinary').v2
 
-console.log(cloudinary.config().cloud_name)
-
 router.post('/', (req, res) => {
   const image = req.files.file.data
     .toString('base64')

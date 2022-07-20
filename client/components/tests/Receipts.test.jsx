@@ -2,10 +2,9 @@
  * @jest-environment jsdom
  */
 import React from 'react'
-import '@testing-library/react'
+import { screen, render, within } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
-import { screen, render, within } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -59,7 +58,7 @@ describe('<Receipts /> renders users receipts', () => {
     )
 
     const cards = screen.getAllByRole('receiptCard')
-    expect(cards.length).toStrictEqual(fakeClientReceipts.length)
+    expect(cards).toHaveLength(fakeClientReceipts.length)
   })
 
   it("renders the selected store's receipts the user has", () => {
@@ -80,7 +79,7 @@ describe('<Receipts /> renders users receipts', () => {
 
     expect.assertions(cards.length + 1)
 
-    expect(cards.length).toStrictEqual(expectedCardLength)
+    expect(cards).toHaveLength(expectedCardLength)
 
     cards.map((card) => {
       const receiptStore = within(card).getByRole('display-store')

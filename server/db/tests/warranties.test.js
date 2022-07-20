@@ -98,11 +98,14 @@ describe('updateWarranty', () => {
 
 describe('deleteWarranty', () => {
   it('deletes a warranty record by warranty ID', async () => {
-    expect.assertions(1)
+    expect.assertions(4)
 
     await db.deleteWarranty(fakeReceiptToDelete, testDb)
     const actual = await testDb('warranties').select()
 
     expect(actual).toHaveLength(3)
+    expect(actual[0].id).toBe(1)
+    expect(actual[1].id).toBe(3)
+    expect(actual[2].id).toBe(4)
   })
 })

@@ -6,6 +6,7 @@ const db = require('../receipts')
 const {
   fakePostReceiptWithWarranty,
   fakePatchReceipt,
+  fakePatchedReceipt,
 } = require('../../../tests/fake-data')
 
 beforeAll(() => {
@@ -66,9 +67,9 @@ describe('addReceipt', () => {
 
             expect(receipts).toHaveLength(5)
             expect(actual.auth0_id).toBe('auth0|random')
-            expect(actual.name).toBe(fakePostReceiptWithWarranty.name)
-            expect(actual.image).toBe(fakePostReceiptWithWarranty.image)
-            expect(actual.purchase_date).toBe(
+            expect(actual.name).toEqual(fakePostReceiptWithWarranty.name)
+            expect(actual.image).toEqual(fakePostReceiptWithWarranty.image)
+            expect(actual.purchase_date).toEqual(
               fakePostReceiptWithWarranty.purchaseDate
             )
           })
@@ -76,7 +77,6 @@ describe('addReceipt', () => {
   })
 })
 
-// *** TO DO ***
 describe('updateReceipt', () => {
   it('update a receipt by user ID (auth0Id) and receipt ID', () => {
     // expect.assertions(1)
@@ -84,14 +84,25 @@ describe('updateReceipt', () => {
     return db
       .updateReceipt('auth0|random', fakePatchReceipt, testDb)
       .then(() => {
+        // eslint-disable-next-line promise/no-nesting
         return testDb('receipts')
           .select()
           .where({ id: fakePatchReceipt.id })
+          .first()
           .then((receipt) => {
             const actual = receipt
+
+            expect(actual.name).toEqual(fakePatchedReceipt.name)
+            expect(actual.store).toEqual(fakePatchedReceipt.store)
+            expect(actual.purchase_date).toEqual(
+              fakePatchedReceipt.purchaseDate
+            )
+            expect(actual.price).toEqual(fakePatchedReceipt.price)
+            expect(actual.note).toEqual(fakePatchedReceipt.note)
           })
       })
   })
 })
 
+// *** TO DO ***
 describe('deleteReceipt', () => {})

@@ -155,7 +155,7 @@ export const fakeReceipt = {
   store: 'Apple',
   price: 3500,
   categoryId: 4,
-  categoryType: 'PC',
+  categoryType: 'Spyware',
   note: 'My new Mac Pro',
   warrantyId: 5,
   expiryDate: '25/05/2022',
@@ -176,9 +176,8 @@ export const fakePostReceiptWithWarranty = {
   store: 'Apple',
   price: 3500,
   categoryId: 4,
-  categoryType: 'PC',
+  categoryType: 'Spyware',
   note: 'My new Mac Pro',
-  warrantyId: 5,
   expiryDate: '25/05/2022',
   warrantyPeriod: 1,
   warrantyPeriodUnit: 'week(s)',
@@ -186,6 +185,7 @@ export const fakePostReceiptWithWarranty = {
 
 export const fakeCreatedReceiptWithWarranty = {
   id: 5,
+  warrantyId: 5,
   ...fakePostReceiptWithWarranty,
 }
 
@@ -202,9 +202,8 @@ export const fakePostReceiptWithNoWarranty = {
   store: 'Apple',
   price: 3500,
   categoryId: 4,
-  categoryType: 'PC',
+  categoryType: 'Spyware',
   note: 'My new Mac Pro',
-  warrantyId: 5,
   expiryDate: null,
   warrantyPeriod: null,
   warrantyPeriodUnit: null,
@@ -212,6 +211,7 @@ export const fakePostReceiptWithNoWarranty = {
 
 export const fakeCreatedReceiptWithNoWarranty = {
   id: 6,
+  warrantyId: 6,
   ...fakePostReceiptWithNoWarranty,
 }
 
@@ -229,7 +229,7 @@ export const fakePatchReceipt = {
   store: 'Apple',
   price: 5000,
   categoryId: 4,
-  categoryType: 'PC',
+  categoryType: 'Spyware',
   note: 'My new Mac Pro Max',
   warrantyId: 4,
   expiryDate: '18/05/2023',
@@ -237,7 +237,7 @@ export const fakePatchReceipt = {
   warrantyPeriodUnit: 'year(s)',
 }
 
-const fakePatchedReceipt = fakePatchReceipt
+export const fakePatchedReceipt = fakePatchReceipt
 
 export function FakeLinkedPage() {
   const { store } = useParams()

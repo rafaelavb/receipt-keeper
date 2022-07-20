@@ -36,6 +36,7 @@ describe('<Navbar home="home"/>', () => {
     expect(spyLogin).toHaveBeenCalled()
   })
 })
+
 describe('<Navbar />', () => {
   it('has Log Out button when logged-in user click the Menu Icon', async () => {
     useAuth0.mockReturnValue({

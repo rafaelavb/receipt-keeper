@@ -1,3 +1,6 @@
+import React from 'react'
+import { useParams } from 'react-router-dom'
+
 export const objReceipts = [
   {
     id: 1,
@@ -208,4 +211,9 @@ export const fakePatchReceipt = {
   warrantyPeriodUnit: 'year(s)',
 }
 
-export const fakePatchedReceipt = fakePatchReceipt
+const fakePatchedReceipt = fakePatchReceipt
+
+export function FakeLinkedPage() {
+  const { store } = useParams()
+  return <div>{store}</div>
+}

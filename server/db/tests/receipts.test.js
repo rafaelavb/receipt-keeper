@@ -3,6 +3,10 @@ const knex = require('knex')
 const testDb = knex(config.test)
 
 const db = require('../receipts')
+const {
+  fakePostReceiptWithWarranty,
+  fakePatchReceipt,
+} = require('../../../tests/fake-data')
 
 beforeAll(() => {
   return testDb.migrate.latest()
@@ -17,7 +21,7 @@ afterAll(() => {
 })
 
 describe('getReceipts', () => {
-  it('returns a list of receipts based on auth0Id', () => {
+  it('returns a list of receipts by user ID (auth0Id)', () => {
     expect.assertions(8)
 
     return db.getReceipts('auth0|random', testDb).then((actual) => {
@@ -33,9 +37,9 @@ describe('getReceipts', () => {
   })
 })
 
-describe('getReceiptById', () => {
-  it('returns a single receipt by id', () => {
-    // expect.assertions(2)
+describe('getReceipt', () => {
+  it('returns a single receipt by receipt ID', () => {
+    expect.assertions(5)
 
     return db.getReceipt(3, testDb).then((actual) => {
       expect(actual.id).toBe(3)
@@ -47,40 +51,47 @@ describe('getReceiptById', () => {
   })
 })
 
-// describe('getAnAuth0Id', () => {
-//   it('returns all receipts from an auth user', () => {
-//     expect.assertions(1)
-//     return getReceipts('auth0|62ce51224e478f1e65cfb444', testDb).then(
-//       (receipts) => {
-//         expect(receipts).toBeNull()
-//       }
-//     )
-//   })
-// })
-
 describe('addReceipt', () => {
-  it.skip('posts a single receipt to the db', () => {
-    const testReceipt = {
-      auth0_id: 'auth0|62d1e54bb624cf5ad8865601',
-      name: 'Groceries',
-      image: 'anImage.jpeg',
-      purchase_date: '12 - 07 - 2022',
-      store: 'Countdown',
-      price: '234.56',
-      category_id: 'Food',
-      note: 'Food is expensive',
-    }
-    expect.assertions(3)
-    return addReceipt(testReceipt, testDb).then(() => {
-      // eslint-disable-next-line promise/no-nesting
-      return testDb('receipts')
-        .select()
-        .then((receipt) => {
-          const newestReceipt = receipt[receipt.length - 1]
-          expect(newestReceipt.auth0_id).toBe('auth0|62d1e54bb624cf5ad8865601')
-          expect(newestReceipt.image).toBe('anImage.jpeg')
-          expect(newestReceipt.name).toBe('Groceries')
-        })
-    })
+  it('posts a single receipt to the db', () => {
+    expect.assertions(5)
+
+    return db
+      .addReceipt('auth0|random', fakePostReceiptWithWarranty, testDb)
+      .then(() => {
+        // eslint-disable-next-line promise/no-nesting
+        return testDb('receipts')
+          .select()
+          .then((receipts) => {
+            const actual = receipts[receipts.length - 1]
+
+            expect(receipts).toHaveLength(5)
+            expect(actual.auth0_id).toBe('auth0|random')
+            expect(actual.name).toBe(fakePostReceiptWithWarranty.name)
+            expect(actual.image).toBe(fakePostReceiptWithWarranty.image)
+            expect(actual.purchase_date).toBe(
+              fakePostReceiptWithWarranty.purchaseDate
+            )
+          })
+      })
   })
 })
+
+// *** TO DO ***
+describe('updateReceipt', () => {
+  it('update a receipt by user ID (auth0Id) and receipt ID', () => {
+    // expect.assertions(1)
+
+    return db
+      .updateReceipt('auth0|random', fakePatchReceipt, testDb)
+      .then(() => {
+        return testDb('receipts')
+          .select()
+          .where({ id: fakePatchReceipt.id })
+          .then((receipt) => {
+            const actual = receipt
+          })
+      })
+  })
+})
+
+describe('deleteReceipt', () => {})

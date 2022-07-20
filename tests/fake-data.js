@@ -21,6 +21,35 @@ export const newUser = {
   username: 'Random17',
 }
 
+export const fakeUsersList = [
+  {
+    auth0_id: 'auth0|someone',
+    email: 'someone@gmail.com',
+    username: 'Louis',
+  },
+  {
+    auth0_id: 'auth0|random',
+    email: 'random@hotmail.com',
+    username: 'Lauren',
+  },
+  {
+    auth0_id: 'auth0|somebody',
+    email: 'somebody@yahoo.com',
+    username: 'Raf',
+  },
+  {
+    auth0_id: 'auth0|someperson',
+    email: 'someperson@msn.com',
+    username: 'Adam',
+  },
+]
+
+export const fakePostUser = {
+  auth0_id: 'auth0|keeper',
+  email: 'receipt_keeper@gmail.com',
+  username: 'Keeper',
+}
+
 export const fakeCategories = [
   {
     categoryId: 1,

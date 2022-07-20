@@ -3,46 +3,62 @@ const server = require('../../server')
 const db = require('../../db/')
 const checkJwt = require('../../auth0')
 
+import { fakePostUser, fakeUsersList } from '../../../tests/fake-data'
+
 jest.mock('../../db/')
 jest.mock('../../auth0')
 
 beforeAll(() => {
   checkJwt.mockImplementation((req, res, next) => {
-    req.user = { sub: 'auth0|random' }
+    req.user = { sub: fakeUsersList[1].auth0_id }
     next()
   })
 })
 
 const usersUrl = '/api/v1/users'
 
-describe('GET /username', () => {
-  it.skip('returns the username based on auth0 ID', async () => {
-       
-    
+describe('GET /api/v1/users/username', () => {
+  it('returns the username based on auth0 ID', async () => {
+    db.getUsername.mockReturnValue(Promise.resolve(fakeUsersList[1].auth0_id))
+
+    expect.assertions(2)
+    const response = await request(server).get(`${usersUrl}/username`)
+    const actual = response.body
+
+    expect(response.status).toBe(200)
+    expect(actual).toEqual(fakeUsersList[1].auth0_id)
+  })
+
+  it('returns status 500 and error when database function fails', async () => {
+    db.getUsername.mockImplementation(() => Promise.reject(new Error()))
+
+    expect.assertions(2)
+    const response = await request(server).get(`${usersUrl}/username`)
+
+    expect(response.status).toBe(500)
+    expect(response.text).toBe('Server Error')
+  })
+})
+
+describe('POST /api/v1/users', () => {
+  it('adds a new user to the database', async () => {
+    db.createUser.mockReturnValue(
+      Promise.resolve([...fakeUsersList, fakePostUser])
+    )
+
     expect.assertions(1)
+    const response = await request(server).post(usersUrl).send(fakePostUser)
 
-    // it('returns all receipts from the db', () => {
-    //   db.getReceipts.mockReturnValue(Promise.resolve(fakeClientReceipts))
-    //   const expected = fakeClientReceipts.map((receipt) => ({
-    //     ...receipt,
-    //     image: JSON.parse(receipt.image),
-    //   }))
+    expect(response.status).toBe(201)
+  })
 
-    //   expect.assertions(2)
+  it('returns status 500 and error when database function fails', async () => {
+    db.createUser.mockImplementation(() => Promise.reject(new Error()))
 
-    //   return request(server)
-    //     .get(receiptsUrl)
-    //     .then((res) => {
-    //       expect(res.status).toBe(200)
-    //       expect(res.body).toEqual(expected)
-    //     })
+    expect.assertions(2)
+    const response = await request(server).post(usersUrl)
 
-    // try {
-    //   const username = await db.getUsername(auth0Id)
-    //   res.json(username)
-    // } catch (err) {
-    //   console.log(err)
-    //   res.status(500).send(err.message)
-    // }
+    expect(response.status).toBe(500)
+    expect(response.text).toBe('Server Error')
   })
 })

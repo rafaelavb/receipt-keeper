@@ -54,9 +54,14 @@ export default function Receipts() {
       display="block"
       position="absolute"
       top="calc(50%)"
-      left="calc(50% - 80px)"
-      sx={{ fontSize: '2rem' }}
-      color="primary"
+      sx={{
+        fontSize: {
+          xs: '1rem',
+          sm: '2rem',
+        },
+        left: { xs: 'calc(50% - 70px)', sm: 'calc(50% - 80px)' },
+      }}
+      color="text.secondary"
     >
       Add your first receipt
     </Box>

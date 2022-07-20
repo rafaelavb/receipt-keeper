@@ -1,5 +1,5 @@
 const express = require('express')
-const db = require('../db/categories')
+const db = require('../db')
 
 const router = express.Router()
 
@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
       res.json(categories)
     })
     .catch((err) => {
-      console.error(err.message)
-      res.status(500).send('Server error')
+      console.error(err)
+      res.status(500).send('Server Error')
     })
 })

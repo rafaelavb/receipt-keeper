@@ -44,7 +44,7 @@ export default function Home() {
         <ThemeProvider theme={theme}>
           <Box p={5}>
             <Typography variant="h2" color="textSecondary" align="center">
-              We keep your receipts for when you need them
+              We keep receipts for when you need
             </Typography>
           </Box>
         </ThemeProvider>

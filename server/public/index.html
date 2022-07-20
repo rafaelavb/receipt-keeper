@@ -4,11 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-
-
   <title>Receipt Keeper</title>
-
   <link rel="stylesheet" href="/styles.css" />
   <style>
     html {
@@ -26,7 +22,6 @@
       height: 100%;
     }
 
-
     .error-page {
       min-height: calc(100% - 65px);
       background: #000000;
@@ -34,7 +29,6 @@
       color: #E0E0E0;
       font-family: 'Fira Mono', monospace;
     }
-
 
     .error-page h1 {
       font-size: 2.5rem;
@@ -48,13 +42,10 @@
     .error-page svg {
       width: clamp(300px, 70%, 600px);
       height: 500px;
-
     }
 
     #rocket {
-
       transform: translateY(750px);
-
       animation: launch 2s ease-out forwards;
     }
 
@@ -74,7 +65,6 @@
     }
 
     @keyframes twinkling {
-
       from {
         transform: scale(0);
       }
@@ -105,9 +95,6 @@
       text-decoration: none;
     }
 
-
-
-
     .app {
       background-image: url('src/assets/receipt.jpg');
       min-height: calc(100% - 65px);
@@ -116,13 +103,9 @@
       margin: 0
     }
   </style>
-
 </head>
-
 <body>
   <div id="app"></div>
   <script src="/bundle.js"></script>
-
 </body>
-
 </html>

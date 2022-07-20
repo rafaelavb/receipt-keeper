@@ -63,7 +63,7 @@ export default function Receipts() {
       }}
       color="text.secondary"
     >
-      Add your first receipt
+      Please add your first receipt.
     </Box>
   )
 }

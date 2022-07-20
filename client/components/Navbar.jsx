@@ -29,8 +29,8 @@ export default function Navbar(props) {
   }
 
   function handleLogout(e) {
-    e.preventDefault()
-    logout().then((res) => handleCloseUserMenu())
+    logout()
+    handleCloseUserMenu()
   }
 
   async function handleLogin(e) {
@@ -76,7 +76,9 @@ export default function Navbar(props) {
           onClose={handleCloseUserMenu}
         >
           <IfAuthenticated>
-            <MenuItem onClick={handleLogout}>Log out</MenuItem>
+            <MenuItem className="here444" onClick={handleLogout}>
+              Log out
+            </MenuItem>
           </IfAuthenticated>
           <IfNotAuthenticated>
             <MenuItem onClick={handleLogin}>Log In</MenuItem>

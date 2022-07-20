@@ -239,6 +239,8 @@ export const fakePatchReceipt = {
 
 export const fakePatchedReceipt = fakePatchReceipt
 
+export const fakeReceiptToDelete = fakeClientReceipts[1]
+
 export function FakeLinkedPage() {
   const { store } = useParams()
   return <div>{store}</div>

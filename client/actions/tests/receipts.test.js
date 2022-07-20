@@ -7,10 +7,16 @@ import {
   fetchReceipts,
   updateReceipt,
   createReceipt,
-  addReceipt,
+  DELETE_RECEIPT,
+  removeReceipt,
 } from '../../actions'
 
-import { getReceipts, patchReceipt, postReceipt } from '../../apis/receipts'
+import {
+  deleteReceipt,
+  getReceipts,
+  patchReceipt,
+  postReceipt,
+} from '../../apis/receipts'
 import { fakeClientReceipts } from '../../../tests/fake-data'
 
 jest.mock('../../apis/receipts')
@@ -115,7 +121,41 @@ describe('addReceipt', () => {
     expect.assertions(2)
     return createReceipt({})(fakeDispatch).finally(() => {
       const firstAction = fakeDispatch.mock.calls[0][0]
-      console.log(firstAction.type)
+      expect(firstAction.type).toEqual(RECEIPTS_ERROR)
+      expect(firstAction.error).toContain('uh oh!')
+    })
+  })
+})
+
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
+describe('deleteReceipt', () => {
+  it('dispatches', async () => {
+    expect.assertions(2)
+    fakeClientReceipts.pop()
+    deleteReceipt.mockReturnValue(Promise.resolve(fakeClientReceipts))
+    const thunkFn = removeReceipt()
+    await thunkFn(fakeDispatch)
+
+    //     // Act
+    const firstAction = fakeDispatch.mock.calls[0][0]
+    console.log(`im the first action`, firstAction)
+    // const secondAction = fakeDispatch.mock.calls[0][1]
+
+    // Assertion
+
+    expect(firstAction.type).toEqual(DELETE_RECEIPT)
+    console.log(firstAction.type)
+    expect(firstAction.payload).toHaveLength(3)
+  })
+
+  it('dispatches error when api call fails', () => {
+    deleteReceipt.mockImplementation(() => Promise.reject(new Error('uh oh!')))
+    expect.assertions(2)
+    return removeReceipt()(fakeDispatch).finally(() => {
+      const firstAction = fakeDispatch.mock.calls[0][0]
       expect(firstAction.type).toEqual(RECEIPTS_ERROR)
       expect(firstAction.error).toContain('uh oh!')
     })

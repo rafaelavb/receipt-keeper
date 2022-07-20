@@ -12,19 +12,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles'
 const theme = createTheme({
   typography: {
     fontFamily: ['Arial', 'serif'].join(','),
-    // fontFamily: ['Arial', 'sans-serif'].join(','),
-    // fontFamily: ['Arial', 'monospace'].join(','),
-    // fontFamily: ['Arial', 'cursive'].join(','),
-    // fontFamily: ['Arial', 'fantasy'].join(','),
-    // fontFamily: ['Chilanka', 'cursive'].join(','),
-    // fontFamily: ['BlinkMacSystemFont', 'cursive'].join(','),
-    // fontFamily: ['Segoe UI', 'cursive'].join(','),
-    // fontFamily: ['-apple-system', 'monospace'].join(','),
-    // fontFamily: ['Helvetica Neue', 'fantasy'].join(','),
-    // fontFamily: ['Apple Color Emoji', 'cursive'].join(',')
-    // fontFamily: ['Segoe UI Emoji', 'cursive'].join(',')
-    // fontFamily: ['Segoe UI Symbol', 'cursive'].join(',')
-    // fontFamily: ['Roboto', 'cursive'].join(',')
   },
 })
 

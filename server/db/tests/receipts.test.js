@@ -91,11 +91,14 @@ describe('updateReceipt', () => {
 
 describe('deleteReceipt', () => {
   it('deletes a receipt by user ID (auth0 ID) and receipt ID', async () => {
-    expect.assertions(1)
+    expect.assertions(4)
 
     await db.deleteReceipt('auth0|random', fakeReceiptToDelete, testDb)
     const actual = await testDb('receipts').select()
 
     expect(actual).toHaveLength(3)
+    expect(actual[0].id).toBe(1)
+    expect(actual[1].id).toBe(3)
+    expect(actual[2].id).toBe(4)
   })
 })

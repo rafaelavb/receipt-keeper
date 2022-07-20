@@ -16,7 +16,7 @@ export default function Receipt(props) {
   const [modalOpen, setModalOpen] = useState(false)
   const [expired, setExpired] = useState(false)
   useEffect(() => {
-    if (receipt.expiryDate) {
+    if (receipt.expiryDate && receipt.expiryDate !== '0') {
       setExpired(new Date(receipt.expiryDate) < new Date())
     }
   }, [receipt.expiryDate])

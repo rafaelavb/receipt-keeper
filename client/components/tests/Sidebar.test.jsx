@@ -4,11 +4,11 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+import userEvent from '@testing-library/user-event'
 
 import { MemoryRouter, Routes, Route, useParams } from 'react-router-dom'
 
 import { fakeClientReceipts, FakeLinkedPage } from '../../../tests/fake-data'
-import userEvent from '@testing-library/user-event'
 import Sidebar from '../Sidebar'
 
 jest.mock('react-router-dom', () => ({
@@ -45,7 +45,7 @@ describe('<Sidebar />', () => {
     const storeButtons = screen.getAllByRole('button')
     expect.assertions(2)
     expect(storeButtons[0].textContent).toMatch(/all stores/gi)
-    expect(storeButtons.length).toStrictEqual(uniqueStores.length + 1)
+    expect(storeButtons).toHaveLength(uniqueStores.length + 1)
   })
 
   it("should link to '/receipts/:username/:store' Route when user clicks the store button", async () => {
@@ -70,4 +70,4 @@ describe('<Sidebar />', () => {
       fakeReceiptsStores[testingStoreIndex]
     )
   })
-})
+}, 15000)

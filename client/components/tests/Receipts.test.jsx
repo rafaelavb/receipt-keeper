@@ -7,25 +7,10 @@ import '@testing-library/jest-dom'
 
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { useAuth0 } from '@auth0/auth0-react'
 
 import Receipts from '../Receipts'
 
 import { fakeClientReceipts } from '../../../tests/fake-data'
-
-beforeAll(() => {
-  jest.spyOn(console, 'error')
-  console.error.mockImplementation(() => {})
-})
-
-afterAll(() => {
-  console.error.mockRestore()
-  jest.restoreAllMocks()
-})
-
-afterEach(() => {
-  jest.clearAllMocks()
-})
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -86,4 +71,4 @@ describe('<Receipts /> renders users receipts', () => {
       expect(receiptStore.textContent).toContain(storeParam)
     })
   })
-})
+}, 15000)

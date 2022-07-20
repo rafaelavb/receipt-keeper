@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import React from 'react'
-import { screen, render, fireEvent } from '@testing-library/react'
+import { screen, render } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -58,4 +58,4 @@ describe('<Navbar />', () => {
     await userEvent.click(menuItems[0])
     expect(spyLogout).toHaveBeenCalled()
   })
-})
+}, 15000)

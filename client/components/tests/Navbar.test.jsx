@@ -19,7 +19,7 @@ const spyLogout = jest.fn()
 const spyLogin = jest.fn()
 
 describe('<Navbar home="home"/>', () => {
-  it('has Log In button when not-logged-in user click the Menu Icon', async () => {
+  it('has working Log In button when not-logged-in user click the Menu Icon', async () => {
     useAuth0.mockReturnValue({
       isAuthenticated: false,
       loginWithRedirect: spyLogin,
@@ -40,7 +40,7 @@ describe('<Navbar home="home"/>', () => {
 })
 
 describe('<Navbar />', () => {
-  it('has Log Out button when logged-in user click the Menu Icon', async () => {
+  it('has working Log Out button when logged-in user click the Menu Icon', async () => {
     useAuth0.mockReturnValue({
       isAuthenticated: true,
       logout: spyLogout,

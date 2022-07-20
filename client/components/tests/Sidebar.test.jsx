@@ -1,7 +1,6 @@
 /**
  * @jest-environment jsdom
  */
-
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
@@ -44,11 +43,31 @@ describe('<Sidebar />', () => {
       </MemoryRouter>
     )
     const storeButtons = screen.getAllByRole('button')
-    expect(storeButtons).toHaveLength(uniqueStores.length + 1)
-    // await userEvent.click(storeButtons[testingStoreIndex + 1])
-    // const linkedPage = screen.getAllByRole()
-    // expect(linkedPage.textContent).toContain(
-    //   fakeReceiptsStores[testingStoreIndex]
-    // )
+    expect.assertions(2)
+    expect(storeButtons[0].textContent).toMatch(/all stores/gi)
+    expect(storeButtons.length).toStrictEqual(uniqueStores.length + 1)
+  })
+
+  it("should link to '/receipts/:username/:store' Route when user clicks the store button", async () => {
+    render(
+      <MemoryRouter initialEntries={['/receipts/:username']}>
+        <Routes>
+          <Route
+            path="/receipts/:username"
+            element={<Sidebar stores={fakeReceiptsStores} />}
+          />
+          <Route
+            path="/receipts/:username/:store"
+            element={<FakeLinkedPage />}
+          />
+        </Routes>
+      </MemoryRouter>
+    )
+    const storeButtons = screen.getAllByRole('button')
+    const buttonToBeClicked = storeButtons[testingStoreIndex + 1]
+    await userEvent.click(buttonToBeClicked)
+    expect(document.body.innerHTML).toContain(
+      fakeReceiptsStores[testingStoreIndex]
+    )
   })
 })

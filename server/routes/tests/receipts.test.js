@@ -1,7 +1,6 @@
 const request = require('supertest')
 const server = require('../../server')
 const db = require('../../db/')
-
 const checkJwt = require('../../auth0')
 import {
   fakeClientReceipts,

@@ -1,6 +1,6 @@
 const connection = require('./connection')
 
-function getReceipts(auth0_id, db = connection) {
+function getReceipts(auth0Id, db = connection) {
   return db('receipts')
     .join('users', 'receipts.auth0_id', 'users.auth0_id')
     .join('categories', 'receipts.category_id', 'categories.id')
@@ -22,7 +22,7 @@ function getReceipts(auth0_id, db = connection) {
       'warranties.period as warrantyPeriod',
       'warranties.period_unit as warrantyPeriodUnit'
     )
-    .where({ 'users.auth0_id': auth0_id })
+    .where({ 'users.auth0_id': auth0Id })
 }
 
 function getReceipt(receiptId, db = connection) {
@@ -51,9 +51,9 @@ function getReceipt(receiptId, db = connection) {
     .first()
 }
 
-function addReceipt(auth0_id, newReceipt, db = connection) {
+function addReceipt(auth0Id, newReceipt, db = connection) {
   return db('receipts').insert({
-    auth0_id: auth0_id,
+    auth0_id: auth0Id,
     name: newReceipt.name,
     image: newReceipt.image,
     purchase_date: newReceipt.purchaseDate,

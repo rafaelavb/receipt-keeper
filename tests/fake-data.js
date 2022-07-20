@@ -21,10 +21,36 @@ export const newUser = {
   username: 'Random17',
 }
 
-export const categories = {
-  id: 1,
-  type: 'Appliances',
-}
+export const fakeCategories = [
+  {
+    categoryId: 1,
+    categoryType: 'Software',
+  },
+  {
+    categoryId: 2,
+    categoryType: 'Hardware',
+  },
+  {
+    categoryId: 3,
+    categoryType: 'Firmware',
+  },
+  {
+    categoryId: 4,
+    categoryType: 'Spyware',
+  },
+  {
+    categoryId: 5,
+    categoryType: 'Cookware',
+  },
+  {
+    categoryId: 6,
+    categoryType: 'Homeware',
+  },
+  {
+    categoryId: 7,
+    categoryType: 'Whiteware',
+  },
+]
 
 export const reducerErrorMessage = 'error'
 
@@ -43,7 +69,7 @@ export const fakeClientReceipts = [
     store: 'Bunnings',
     price: 1200,
     categoryId: 1,
-    categoryType: 'Tools',
+    categoryType: 'Software',
     note: 'Powerful drill',
     warrantyId: 1,
     expiryDate: '10/10/2021',
@@ -64,7 +90,7 @@ export const fakeClientReceipts = [
     store: 'Harvey Norman',
     price: 2300,
     categoryId: 3,
-    categoryType: 'Electronics',
+    categoryType: 'Firmware',
     note: 'Cheap TV',
     warrantyId: 2,
     expiryDate: '08/07/2022',
@@ -85,7 +111,7 @@ export const fakeClientReceipts = [
     store: 'Noel Leeming',
     price: 3400,
     categoryId: 2,
-    categoryType: 'Appliance',
+    categoryType: 'Hardware',
     note: 'Expensive microwave',
     warrantyId: 3,
     expiryDate: null,
@@ -106,7 +132,7 @@ export const fakeClientReceipts = [
     store: 'PB Tech',
     price: 4500,
     categoryId: 4,
-    categoryType: 'PC',
+    categoryType: 'Spyware',
     note: 'Gaming computer',
     warrantyId: 4,
     expiryDate: '25/03/2023',

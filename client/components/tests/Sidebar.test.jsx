@@ -1,11 +1,14 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from 'react'
-import '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
 import { MemoryRouter, Routes, Route, useParams } from 'react-router-dom'
 
 import { fakeClientReceipts, FakeLinkedPage } from '../../../tests/fake-data'
-import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Sidebar from '../Sidebar'
 
@@ -41,7 +44,7 @@ describe('<Sidebar />', () => {
       </MemoryRouter>
     )
     const storeButtons = screen.getAllByRole('button')
-    expect(storeButtons.length).toStrictEqual(uniqueStores.length + 1)
+    expect(storeButtons).toHaveLength(uniqueStores.length + 1)
     // await userEvent.click(storeButtons[testingStoreIndex + 1])
     // const linkedPage = screen.getAllByRole()
     // expect(linkedPage.textContent).toContain(

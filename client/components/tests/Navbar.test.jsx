@@ -1,7 +1,9 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react'
-import '@testing-library/react'
-import '@testing-library/jest-dom'
 import { screen, render, fireEvent } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import { useAuth0 } from '@auth0/auth0-react'
 

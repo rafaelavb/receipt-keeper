@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Box, Stack } from '@mui/material'
@@ -9,7 +9,10 @@ export default function Receipts() {
   const { store } = useParams()
   const receipts = useSelector((state) => state.receipts.data)
 
-  return (
+  useEffect(() => {
+    console.log(receipts)
+  }, [receipts])
+  return receipts.length !== 0 ? (
     <Box
       flex={5}
       sx={{
@@ -44,6 +47,18 @@ export default function Receipts() {
             )
           })}
       </Stack>
+    </Box>
+  ) : (
+    <Box
+      flex={5}
+      display="block"
+      position="absolute"
+      top="calc(50%)"
+      left="calc(50% - 80px)"
+      sx={{ fontSize: '2rem' }}
+      color="primary"
+    >
+      Add your first receipt
     </Box>
   )
 }

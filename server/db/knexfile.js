@@ -16,7 +16,7 @@ module.exports = {
     },
     useNullAsDefault: true,
     seeds: {
-      directory: path.join(__dirname, 'seeds'),
+      directory: path.join(__dirname, 'test-seeds'),
     },
     migrations: {
       directory: path.join(__dirname, 'migrations'),

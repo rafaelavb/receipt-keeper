@@ -98,8 +98,6 @@
     "semi": false,
     "singleQuote": true
   },
-  "browserslist": "> 2%, not dead",
-  "jest": {
-    "testEnvironment": "jsdom"
-  }
+  "browserslist": "> 2%, not dead"
+
 }

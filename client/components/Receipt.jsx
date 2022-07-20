@@ -44,9 +44,10 @@ export default function Receipt(props) {
               opacity: expired ? '0.7' : '1',
             }}
             onClick={handleClickOpen}
-            aria-labelledby="receipt-card"
           >
             <CardHeader
+              role="display-receipt-name"
+              aria-describedby="card-display-receipt-name"
               sx={{ width: '250px', marginLeft: 'auto', marginRight: 'auto' }}
               title={
                 <Box
@@ -60,7 +61,11 @@ export default function Receipt(props) {
                 </Box>
               }
               subheader={
-                <IconButton disabled>
+                <IconButton
+                  disabled
+                  role="display-receipt-purchaseDate"
+                  aria-describedby="card-display-receipt-purchaseDate"
+                >
                   <CalendarMonth />
                   {new Date(receipt.purchaseDate).toLocaleDateString('en-NZ', {
                     day: '2-digit',
@@ -73,11 +78,16 @@ export default function Receipt(props) {
             <CardContent>
               <Typography
                 role="display-store"
-                aria-describedBy="card-display-store"
+                aria-describedby="card-display-store"
               >
                 {receipt.store}
               </Typography>
-              <Typography>$ {receipt.price}</Typography>
+              <Typography
+                role="display-price"
+                aria-describedby="card-display-price"
+              >
+                $ {receipt.price}
+              </Typography>
             </CardContent>
 
             {receipt.image ? (
@@ -103,6 +113,8 @@ export default function Receipt(props) {
             >
               {receipt.note && receipt.note !== 'none' ? (
                 <Box
+                  role="display-note"
+                  aria-describedby="card-display-note"
                   component="div"
                   variant="body2"
                   color="text.secondary"
@@ -118,31 +130,38 @@ export default function Receipt(props) {
                   {`"${receipt.note}"`}
                 </Box>
               ) : null}
-
-              {receipt.expiryDate ? (
-                <>
+              <Box
+                role="display-warranty"
+                aria-describedby="card-display-warranty"
+              >
+                {receipt.expiryDate ? (
+                  <>
+                    <Typography variant="body1" color="text.primary">
+                      Warranty expired on
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ textDecoration: expired ? 'line-through' : 'none' }}
+                    >
+                      {new Date(receipt.expiryDate).toLocaleDateString(
+                        'en-NZ',
+                        {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                        }
+                      )}
+                      &nbsp;
+                      <span>{expired ? '(expired)' : ''}</span>
+                    </Typography>
+                  </>
+                ) : (
                   <Typography variant="body1" color="text.primary">
-                    Warranty expired on
+                    No Warranty
                   </Typography>
-                  <Typography
-                    variant="body1"
-                    color="text.primary"
-                    sx={{ textDecoration: expired ? 'line-through' : 'none' }}
-                  >
-                    {new Date(receipt.expiryDate).toLocaleDateString('en-NZ', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                    })}
-                    &nbsp;
-                    <span>{expired ? '(expired)' : ''}</span>
-                  </Typography>
-                </>
-              ) : (
-                <Typography variant="body1" color="text.primary">
-                  No Warranty
-                </Typography>
-              )}
+                )}
+              </Box>
             </CardContent>
           </Card>
           <ViewReceipt

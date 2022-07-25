@@ -25,7 +25,7 @@ function getReceipts(auth0Id, db = connection) {
     .where({ 'users.auth0_id': auth0Id })
 }
 
-function getReceipt(receiptId, db = connection) {
+async function getReceipt(receiptId, db = connection) {
   return db('receipts')
     .join('users', 'receipts.auth0_id', 'users.auth0_id')
     .join('categories', 'receipts.category_id', 'categories.id')
@@ -63,7 +63,7 @@ function addReceipt(auth0Id, newReceipt, db = connection) {
       category_id: newReceipt.categoryId,
       note: newReceipt.note,
     },
-    ['id']
+    'id'
   )
 }
 

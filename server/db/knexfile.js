@@ -1,12 +1,27 @@
 const path = require('path')
 
 module.exports = {
+  // development: {
+  //   client: 'sqlite3',
+  //   connection: {
+  //     filename: path.join(__dirname, 'dev.sqlite3'),
+  //   },
+  //   useNullAsDefault: true,
+  // },
+
   development: {
-    client: 'sqlite3',
+    client: 'postgresql',
     connection: {
-      filename: path.join(__dirname, 'dev.sqlite3'),
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
     },
-    useNullAsDefault: true,
+    pool: {
+      min: 2,
+      max: 10,
+    },
+    migrations: {
+      tableName: 'knex_migrations',
+    },
   },
 
   test: {

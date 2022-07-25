@@ -1,8 +1,8 @@
 const express = require('express')
-const db = require('../db/users')
+const db = require('../db/')
+const checkJwt = require('../auth0')
 
 const router = express.Router()
-const checkJwt = require('../auth0')
 module.exports = router
 
 router.get('/username', checkJwt, async (req, res) => {
@@ -15,7 +15,6 @@ router.get('/username', checkJwt, async (req, res) => {
   }
 })
 
-// POST /api/v1/users
 router.post('/', async (req, res) => {
   const newUser = req.body
   const { auth0Id, email, username } = newUser

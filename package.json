@@ -9,10 +9,10 @@
     "keeper"
   ],
   "scripts": {
-    "start": "node server",
+    "start": "nodemon server",
     "test": "jest",
     "test:watch": "jest --noStackTrace --watchAll",
-    "dev": "run-p dev:client dev:server",
+    "dev": "run-p dev:client dev:server webpack --mode=production",
     "dev:client": "npm run webpack -- --watch",
     "dev:server": "nodemon --watch server server/index.js",
     "build": "run-p build:client build:server",
@@ -54,7 +54,7 @@
     "jwks-rsa": "^2.1.4",
     "knex": "^2.1.0",
     "nock": "^13.2.8",
-    "pg": "^8.7.1",
+    "pg": "^8.7.3",
     "sqlite3": "^5.0.8",
     "superagent": "^8.0.0"
   },
@@ -98,5 +98,8 @@
     "semi": false,
     "singleQuote": true
   },
-  "browserslist": "> 2%, not dead"
+  "browserslist": "> 2%, not dead",
+  "engines": {
+    "node": "16.15.0"
+  }
 }

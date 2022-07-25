@@ -52,16 +52,19 @@ function getReceipt(receiptId, db = connection) {
 }
 
 function addReceipt(auth0Id, newReceipt, db = connection) {
-  return db('receipts').insert({
-    auth0_id: auth0Id,
-    name: newReceipt.name,
-    image: newReceipt.image,
-    purchase_date: newReceipt.purchaseDate,
-    store: newReceipt.store,
-    price: newReceipt.price,
-    category_id: newReceipt.categoryId,
-    note: newReceipt.note,
-  })
+  return db('receipts').insert(
+    {
+      auth0_id: auth0Id,
+      name: newReceipt.name,
+      image: newReceipt.image,
+      purchase_date: newReceipt.purchaseDate,
+      store: newReceipt.store,
+      price: newReceipt.price,
+      category_id: newReceipt.categoryId,
+      note: newReceipt.note,
+    },
+    'id'
+  )
 }
 
 function updateReceipt(

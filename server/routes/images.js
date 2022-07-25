@@ -1,7 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const dotenv = require('dotenv')
-dotenv.config()
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  const envConfig = require('dotenv').config()
+  if (envConfig.error) throw envConfig.error
+}
+
+// const dotenv = require('dotenv')
+// dotenv.config()
 const cloudinary = require('cloudinary').v2
 
 router.post('/', (req, res) => {

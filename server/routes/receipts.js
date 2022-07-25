@@ -27,7 +27,7 @@ router.post('/', checkJwt, async (req, res) => {
   const receipt = req.body
 
   try {
-    const [newReceiptId] = await db.addReceipt(auth0Id, receipt)
+    const newReceiptId = await db.addReceipt(auth0Id, receipt)
     await db.addWarranty(receipt, newReceiptId)
     const createdReceipt = await db.getReceipt(newReceiptId)
     const parsed = {

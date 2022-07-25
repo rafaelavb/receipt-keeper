@@ -4,14 +4,14 @@
  */
 exports.up = function (knex) {
   return knex.schema.createTable('receipts', (table) => {
-    table.increments('id').primary()
-    table.string('auth0_id').references('users.auth0_id')
+    table.increments('id')
+    table.string('auth0_id')
     table.string('name')
     table.string('image')
     table.date('purchase_date')
     table.string('store')
     table.decimal('price')
-    table.integer('category_id').references('categories.id')
+    table.integer('category_id')
     table.text('note')
   })
 }

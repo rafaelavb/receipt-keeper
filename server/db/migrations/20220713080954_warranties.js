@@ -4,11 +4,11 @@
  */
 exports.up = function (knex) {
   return knex.schema.createTable('warranties', (table) => {
-    table.increments('id').primary()
+    table.increments('id')
     table.date('expiry_date')
     table.integer('period')
     table.string('period_unit')
-    table.integer('receipt_id').references('receipts.id')
+    table.integer('receipt_id')
   })
 }
 

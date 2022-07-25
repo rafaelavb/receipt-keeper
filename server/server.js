@@ -2,6 +2,11 @@ const express = require('express')
 const path = require('path')
 const dataReader = require('express-fileupload')
 
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  const envConfig = require('dotenv').config()
+  if (envConfig.error) throw envConfig.error
+
 const categoriesRoutes = require('./routes/categories')
 const receiptsRoutes = require('./routes/receipts')
 const usersRoutes = require('./routes/users')

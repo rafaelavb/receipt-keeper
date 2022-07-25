@@ -9,13 +9,13 @@
     "keeper"
   ],
   "scripts": {
-    "start": "nodemon server",
+    "start": "node server",
     "test": "jest",
     "test:watch": "jest --noStackTrace --watchAll",
-    "dev": "run-p dev:client dev:server webpack --mode=production",
+    "dev": "run-p dev:client dev:server",
     "dev:client": "npm run webpack -- --watch",
-    "dev:server": "nodemon --watch server server/index.js",
-    "build": "run-p build:client build:server",
+    "dev:server": "nodemon --watch server ./server/index.js",
+    "build": "run-p build:client build:server && webpack --mode=production",
     "build:client": "npm run webpack -- --mode production",
     "build:server": "npm run knex -- migrate:latest",
     "lint": "eslint --ext .js,.jsx .",
@@ -100,6 +100,6 @@
   },
   "browserslist": "> 2%, not dead",
   "engines": {
-    "node": "16.15.0"
+    "node": "16.x"
   }
 }

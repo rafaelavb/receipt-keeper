@@ -17,8 +17,7 @@ router.get('/', checkJwt, (req, res) => {
       }))
       res.json(parsed)
     })
-    .catch((err) => {
-      console.error(err)
+    .catch(() => {
       res.status(500).send('Server Error')
     })
 })
@@ -37,7 +36,6 @@ router.post('/', checkJwt, async (req, res) => {
     }
     res.json(parsed)
   } catch (err) {
-    console.error(err.message)
     res.status(500).send('Server Error')
   }
 })
@@ -56,7 +54,6 @@ router.patch('/', checkJwt, async (req, res) => {
     }
     res.json(parsed)
   } catch (err) {
-    console.error(err.message)
     res.status(500).send('Server Error')
   }
 })
@@ -71,7 +68,6 @@ router.delete('/', checkJwt, async (req, res) => {
       await db.deleteWarranty(receipt)
       res.json(receipt.id)
     } catch (err) {
-      console.error(err.message)
       res.status(500).send('Server Error')
     }
   }

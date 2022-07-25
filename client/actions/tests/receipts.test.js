@@ -83,7 +83,7 @@ describe('patchReceipts', () => {
     expect.assertions(2)
     return updateReceipt()(fakeDispatch).finally(() => {
       const firstAction = fakeDispatch.mock.calls[0][0]
-      console.log(`firstAction`, firstAction)
+
       expect(firstAction.type).toEqual(RECEIPTS_ERROR)
       expect(firstAction.error).toContain('uh oh!')
     })

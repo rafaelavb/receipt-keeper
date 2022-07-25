@@ -16,7 +16,7 @@ export default function Receipt(props) {
   const [modalOpen, setModalOpen] = useState(false)
   const [expired, setExpired] = useState(false)
   useEffect(() => {
-    if (receipt.expiryDate) {
+    if (receipt.expiryDate && receipt.expiryDate !== '0') {
       setExpired(new Date(receipt.expiryDate) < new Date())
     }
   }, [receipt.expiryDate])
@@ -41,7 +41,9 @@ export default function Receipt(props) {
               textAlign: 'center',
               marginLeft: { xs: 'auto', sm: '50px' },
               marginRight: { xs: 'auto', sm: '50px' },
-              opacity: expired ? '0.7' : '1',
+              opacity: expired ? '0.65' : '1',
+              boxShadow:
+                '5px 5px 5px 1px rgb(0 0 0 / 20%), 5px 5px 5px 5px rgb(0 0 0 / 14%), 5px 5px 5px 5px rgb(0 0 0 / 12%)',
             }}
             onClick={handleClickOpen}
           >

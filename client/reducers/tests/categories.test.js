@@ -1,5 +1,5 @@
 import categoriesReducer from '../categories'
-import { reducerErrorMessage, categories } from '../../../tests/fake-data'
+import { reducerErrorMessage, fakeCategories } from '../../../tests/fake-data'
 
 test('case REQUEST_CATEGORIES should request categories', () => {
   const initialState = {
@@ -24,12 +24,12 @@ test('case RECEIVE_CATEGORIES should receive categories', () => {
 
   const action = {
     type: 'RECEIVE_CATEGORIES',
-    payload: categories,
+    payload: fakeCategories,
   }
 
   const newState = categoriesReducer(initialState, action)
 
-  expect(newState.data).toEqual(categories)
+  expect(newState.data).toEqual(fakeCategories)
   expect(newState.error).toBeNull()
 })
 

@@ -2,12 +2,11 @@
  * @jest-environment jsdom
  */
 import React from 'react'
-import '@testing-library/react'
+import { screen, render } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
 import Receipt from '../Receipt'
-import { fakeReceipt, fakeClientReceipts } from '../../../tests/fake-data'
-import { screen, render } from '@testing-library/react'
+import { fakeReceipt } from '../../../tests/fake-data'
 import { Provider } from 'react-redux'
 
 describe('<Receipt />', () => {
@@ -64,28 +63,4 @@ describe('<Receipt />', () => {
       ? expect(receiptWarranty.textContent).toContain('expired')
       : expect(receiptWarranty.textContent).not.toContain('expired')
   })
-
-  it.todo(
-    'render all info of the receipt passed by props'
-    // , () => {
-    //   render(
-    //     <Provider store={fakeStore}>
-    //       <Receipt receipt={fakeReceipt} />
-    //     </Provider>
-    //   )
-    //   const parsedFakeReceiptImage = JSON.parse(fakeReceipt.image)
-    //   expect.assertions(4)
-    //   const receiptName = screen.getByRole('display-receipt-name')
-    //   expect(receiptName.textContent).toContain(fakeReceipt.name)
-    //   const receiptPrice = screen.getByRole('display-price')
-    //   expect(receiptPrice.textContent).toContain(fakeReceipt.price.toString())
-    //   const receiptImage = screen.getByRole('img', {
-    //     name: parsedFakeReceiptImage.name,
-    //   })
-    //   expect(receiptImage).toBeInTheDocument()
-    //   const receiptStore = screen.getByRole('display-store')
-    //   expect(receiptStore.textContent).toContain(fakeReceipt.store)
-    // })
-    // }
-  )
-})
+}, 15000)

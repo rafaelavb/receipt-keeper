@@ -11,7 +11,6 @@ router.get('/username', checkJwt, async (req, res) => {
     const username = await db.getUsername(auth0Id)
     res.json(username)
   } catch (err) {
-    console.log(err)
     res.status(500).send(err.message)
   }
 })
@@ -29,7 +28,6 @@ router.post('/', async (req, res) => {
     await db.createUser(user)
     res.sendStatus(201)
   } catch (err) {
-    console.error(err)
     res.status(500).send(err.message)
   }
 })

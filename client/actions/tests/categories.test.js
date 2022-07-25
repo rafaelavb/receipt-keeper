@@ -6,12 +6,12 @@ import {
 } from '../../actions'
 
 import { getCategories } from '../../apis/categories'
-import { categories } from '../../../tests/fake-data'
+import { fakeCategories } from '../../../tests/fake-data'
 
 jest.mock('../../apis/categories')
 const fakeDispatch = jest.fn()
 
-getCategories.mockReturnValue(Promise.resolve(categories))
+getCategories.mockReturnValue(Promise.resolve(fakeCategories))
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -30,7 +30,7 @@ describe('requestCategories', () => {
     //     // Assertion
     expect(firstAction.type).toEqual(REQUEST_CATEGORIES)
     expect(secondAction.type).toEqual(RECEIVE_CATEGORIES)
-    expect(secondAction.payload).toEqual(categories)
+    expect(secondAction.payload).toEqual(fakeCategories)
   })
 
   it('dispatches error when api call fails', () => {

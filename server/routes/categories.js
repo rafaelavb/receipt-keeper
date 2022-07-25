@@ -10,8 +10,7 @@ router.get('/', (req, res) => {
     .then((categories) => {
       res.json(categories)
     })
-    .catch((err) => {
-      console.error(err)
+    .catch(() => {
       res.status(500).send('Server Error')
     })
 })

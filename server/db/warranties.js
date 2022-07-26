@@ -11,7 +11,7 @@ function addWarranty(receipt, newReceiptId, db = connection) {
         : null,
       receipt_id: newReceiptId,
     },
-    'id'
+    ['id']
   )
 }
 

@@ -63,7 +63,7 @@ function addReceipt(auth0Id, newReceipt, db = connection) {
       category_id: newReceipt.categoryId,
       note: newReceipt.note,
     },
-    'id'
+    ['id']
   )
 }
 

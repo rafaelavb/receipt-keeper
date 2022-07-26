@@ -101,7 +101,9 @@ export default function EditReceipt({
           id: receipt.id,
           name,
           image: JSON.stringify(receipt.image),
-          purchaseDate,
+          purchaseDate: `${purchaseDate.getFullYear()}-${
+            purchaseDate.getMonth() + 1
+          }-${purchaseDate.getDate()}`,
           store,
           price,
           categoryId: actualCategoryId,
@@ -121,7 +123,9 @@ export default function EditReceipt({
           id: receipt.id,
           name,
           image: imageInfo,
-          purchaseDate,
+          purchaseDate: `${purchaseDate.getFullYear()}-${
+            purchaseDate.getMonth() + 1
+          }-${purchaseDate.getDate()}`,
           store,
           price,
           categoryId: actualCategoryId,

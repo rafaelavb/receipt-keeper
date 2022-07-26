@@ -58,7 +58,6 @@ export default function AddReceiptForm({ modalState, close }) {
     setNewReceipt({
       ...newReceipt,
       [name]: value,
-      purchaseDate,
     })
   }
 
@@ -107,6 +106,9 @@ export default function AddReceiptForm({ modalState, close }) {
           ...newReceipt,
           image: imageInfo,
           categoryId: actualCategoryId,
+          purchaseDate: `${purchaseDate.getFullYear()}-${
+            purchaseDate.getMonth() + 1
+          }-${purchaseDate.getDate()}`,
         })
         close(e)
       })

@@ -26,6 +26,8 @@ export function calculateExpiryDate(date, warrantyPeriod, unit) {
     expiryDate = new Date(
       purchaseDate.setFullYear(purchaseDate.getFullYear() + x)
     )
-    return expiryDate
+    return `${expiryDate.getFullYear()}-${
+      purchaseDate.getMonth() + 1
+    }-${purchaseDate.getDate()}`
   }
 }

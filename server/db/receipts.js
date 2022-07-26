@@ -51,8 +51,8 @@ async function getReceipt(receiptId, db = connection) {
     .first()
 }
 
-async function addReceipt(auth0Id, newReceipt, db = connection) {
-  await db('receipts').insert(
+function addReceipt(auth0Id, newReceipt, db = connection) {
+  return db('receipts').insert(
     {
       auth0_id: auth0Id,
       name: newReceipt.name,
@@ -63,7 +63,7 @@ async function addReceipt(auth0Id, newReceipt, db = connection) {
       category_id: newReceipt.categoryId,
       note: newReceipt.note,
     },
-    ['id']
+    'id'
   )
 }
 

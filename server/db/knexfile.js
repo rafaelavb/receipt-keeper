@@ -12,7 +12,8 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      connectionString: process.env.DATABASE_URL,
+      connectionString:
+        'postgres://ymsptlmklsmywo:bf6902530c369b7368de64b53bca64aee11cad11dba809cbfc6a46b6e27cf37a@ec2-54-208-104-27.compute-1.amazonaws.com:5432/db3fcdrpn40iqc',
       ssl: { rejectUnauthorized: false },
     },
     pool: {
